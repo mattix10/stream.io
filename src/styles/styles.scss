@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+@use "./reset.scss";
+@use "./fonts.scss";
+
+.container {
+  width: 1400px;
+  margin: auto;
+}
+
+body {
+  font-family: "Mitr-Light";
+  background-color: black;
+}
+
+.flex-center {
+}
