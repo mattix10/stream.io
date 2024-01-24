@@ -6,10 +6,34 @@
   width: 1400px;
   margin: auto;
 }
+.dashboard {
+  margin: 24px auto;
+}
 
 body {
   font-family: "Mitr-Light";
   background-color: black;
+  color: white;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Mitr-Regular";
+}
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 18px;
+}
+
+h3 {
+  font-size: 16px;
 }
 
 .flex-center {

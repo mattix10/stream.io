@@ -1,0 +1,6 @@
+<div class="movie-item-container" *ngIf="movieItem">
+  <div class="image-container">
+    <img class="image" [src]="movieItem.imgUrl" alt="Zdjęcie filmu" />
+  </div>
+  <div class="title">{{ movieItem.title }}</div>
+</div>

@@ -1,1 +1,11 @@
-<p>home works!</p>
+<div class="dashboard container home">
+  <h2>Filmy</h2>
+  <div class="movie-items-container" *ngIf="(movieItems$ | async)?.length">
+    <app-movie-item
+      class="movie-item"
+      *ngFor="let movieItem of movieItems$ | async"
+      [movieItem]="movieItem"
+    ></app-movie-item>
+  </div>
+  <h2>Seriale</h2>
+</div>
