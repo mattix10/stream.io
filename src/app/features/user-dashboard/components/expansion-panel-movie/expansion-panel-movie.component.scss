@@ -1,0 +1,60 @@
+.expansion-panel {
+  width: 100%;
+  font-size: 14px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 5px;
+  border-bottom: 1px solid gray;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.content {
+  padding: 10px;
+}
+
+.description {
+  font-size: 14px;
+  width: 100%;
+  overflow-wrap: break-word;
+}
+
+.expand-arrow {
+  margin-right: 5px;
+}
+
+.arrow-up {
+  transform: rotate(-180deg);
+}
+
+.actions {
+  display: flex;
+}
+
+.edit-icon {
+  margin: 5px;
+  cursor: pointer;
+}
+
+.delete-icon {
+  cursor: pointer;
+}
+
+.content-section {
+  margin-bottom: 14px;
+}
+
+.content-header {
+  font-family: "Mitr-Medium";
+  color: gray;
+  margin-bottom: 6px;
+}

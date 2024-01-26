@@ -1,7 +1,7 @@
 <nav class="navbar">
   <div class="content container">
     <section class="navigation-section">
-      <div class="logo">STREAM.io</div>
+      <div class="logo" routerLink="/">STREAM.io</div>
       <ul class="list">
         <li class="list-item">Filmy</li>
         <li class="list-item">Seriale</li>
@@ -9,7 +9,10 @@
       <input placeholder="Szukaj..." class="input-search" />
     </section>
     <section class="user-management-section">
-      <img src="./../../../assets/icons/user-account.svg" />
+      <img
+        src="./../../../../assets/icons/user-account.svg"
+        routerLink="/user-dashboard"
+      />
     </section>
   </div>
 </nav>

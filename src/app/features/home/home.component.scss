@@ -1,10 +1,10 @@
 .movie-items-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px 10px;
+  gap: 16px 14px;
 }
 
 .movie-item {
-  flex: 0 0 calc(25% - 7.5px);
+  flex: 0 0 calc(25% - 10.5px);
   cursor: pointer;
 }

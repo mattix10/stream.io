@@ -1,0 +1,45 @@
+<h2>Dodaj film</h2>
+
+<form [formGroup]="movieForm">
+  <div class="form-field">
+    <label class="label" for="title">Tytuł</label>
+    <input class="input" id="title" name="title" />
+  </div>
+  <div class="form-field">
+    <label class="label" for="title">Kategoria</label>
+    <select formControlName="category" class="input" id="title" name="title">
+      <option *ngFor="let category of categories">{{ category }}</option>
+    </select>
+  </div>
+  <div class="form-field">
+    <label class="label" for="title">Opis</label>
+    <textarea class="input" id="title" name="title" rows="5"></textarea>
+  </div>
+
+  <div class="form-field">
+    <div class="label">Zdjęcie</div>
+    <label class="custom-file-upload">
+      <input type="file" />
+      <div>
+        <div class="upload-image">
+          <img src="./../../../../../assets/icons/upload.svg" />
+        </div>
+        <div>Upuść plik tutaj</div>
+      </div>
+    </label>
+  </div>
+
+  <div class="form-field">
+    <div class="label">Film</div>
+    <label class="custom-file-upload">
+      <input type="file" />
+      <div>
+        <div class="upload-image">
+          <img src="./../../../../../assets/icons/upload.svg" />
+        </div>
+        <div>Upuść plik tutaj</div>
+      </div>
+    </label>
+  </div>
+  <button class="button" type="submit">Dodaj film</button>
+</form>

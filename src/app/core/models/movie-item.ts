@@ -6,6 +6,6 @@ export interface MovieItem {
 }
 
 export enum MovieCategory {
-  Series,
-  Movie,
+  Movie = 'Film',
+  Series = 'Serial',
 }

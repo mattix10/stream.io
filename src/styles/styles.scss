@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @use "./reset.scss";
 @use "./fonts.scss";
+@use "./variables.scss" as var;
 
 .container {
   width: 1400px;
@@ -24,7 +25,8 @@ h4 {
 }
 
 h1 {
-  font-size: 24px;
+  font-size: 30px;
+  margin-bottom: 32px;
 }
 
 h2 {
@@ -36,5 +38,19 @@ h3 {
   font-size: 16px;
 }
 
-.flex-center {
+.divider {
+  margin: 25px 0;
+  background-color: grey;
+  content: "";
+  height: 1px;
+}
+
+.button {
+  background-color: var.$color-primary;
+  padding: 8px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  width: 100%;
+  font-family: "Mitr-Medium";
 }

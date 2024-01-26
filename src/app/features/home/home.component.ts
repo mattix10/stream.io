@@ -13,7 +13,6 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  movieItems: MovieItem[] = [];
   movieItems$: Observable<MovieItem[]> = of([]);
 
   readonly #movieService = inject(MoviesService);

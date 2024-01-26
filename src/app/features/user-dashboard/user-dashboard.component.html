@@ -1,1 +1,18 @@
-<p>user-dashboard works!</p>
+<div class="user-dashboard dashboard container">
+  <h1 class="header-primary">Moje konto</h1>
+  <h2 class="header-second">Dane</h2>
+  <div>e-mail: example.com</div>
+  <div class="divider"></div>
+  <section class="movies-section">
+    <div class="user-movies">
+      <h2>Filmy</h2>
+      <app-expansion-panel-movie
+        *ngIf="movies$ | async as movies"
+        [movies]="movies"
+        (moviesChanged)="onMoviesChanged($event)"
+      ></app-expansion-panel-movie>
+    </div>
+
+    <app-movie-form class="movie-form"></app-movie-form>
+  </section>
+</div>
