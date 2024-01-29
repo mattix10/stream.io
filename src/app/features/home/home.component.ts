@@ -5,10 +5,11 @@ import { MoviesService } from 'src/app/core/services/movies-service/movies.servi
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, MovieItemComponent],
+  imports: [CommonModule, MovieItemComponent, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

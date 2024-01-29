@@ -5,6 +5,7 @@
       class="movie-item"
       *ngFor="let movieItem of movieItems$ | async"
       [movieItem]="movieItem"
+      [routerLink]="['/movie', movieItem.id]"
     ></app-movie-item>
   </div>
   <h2>Seriale</h2>

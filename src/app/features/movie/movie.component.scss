@@ -1,0 +1,31 @@
+@use "./variables" as var;
+
+.movie-content {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.movie-metadata {
+  margin-top: 15px;
+}
+
+.display {
+  flex-grow: 9;
+}
+
+.video {
+  width: 100%;
+  aspect-ratio: 16/9;
+  height: 100%;
+  border-radius: var.$border-radius-small;
+}
+
+.comments-wrapper {
+  flex-grow: 3;
+  max-height: 100%;
+}
+
+.comments {
+  display: block;
+}

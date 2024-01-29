@@ -4,7 +4,6 @@
   background-color: black;
   height: 60px;
   display: flex;
-  align-items: center;
 }
 
 .content {
@@ -26,7 +25,7 @@
   }
 
   .input-search {
-    width: 200px;
+    width: 250px;
     padding: 0 10px 0 40px;
     margin-left: 12px;
     border: 1px solid var.$color-grey;

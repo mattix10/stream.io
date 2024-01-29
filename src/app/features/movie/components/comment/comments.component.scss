@@ -1,0 +1,50 @@
+@use "./variables" as var;
+
+.comments {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-list {
+  overflow-y: auto;
+  height: 430px;
+  margin-bottom: 20px;
+}
+
+.comment {
+  background-color: var.$color-grey-2;
+  border-radius: var.$border-radius-small;
+  margin-bottom: 10px;
+  padding: 15px;
+  border: 1px solid var.$color-grey-3;
+  color: rgb(187, 186, 186);
+}
+
+.add-comment {
+  display: flex;
+  flex-direction: column;
+  height: 150px;
+  border-radius: var.$border-radius-small;
+  justify-content: space-between;
+}
+
+.comment-textarea {
+  background-color: black;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid var.$color-primary;
+  background-color: var.$color-grey-2;
+  color: white;
+  resize: none;
+}
+
+.username {
+  color: white;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.description {
+  font-size: 14px;
+}

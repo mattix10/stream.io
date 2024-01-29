@@ -4,8 +4,9 @@
 @use "./variables.scss" as var;
 
 .container {
-  width: 1400px;
+  max-width: 1400px;
   margin: auto;
+  width: 100%;
 }
 .dashboard {
   margin: 24px auto;
@@ -53,4 +54,20 @@ h3 {
   border: none;
   width: 100%;
   font-family: "Mitr-Medium";
+}
+
+/* Styl dla całego paska przewijania */
+::-webkit-scrollbar {
+  width: 12px; /* szerokość paska przewijania */
+}
+
+/* Styl dla tła paska przewijania (ścieżki, po której porusza się kciuk) */
+::-webkit-scrollbar-track {
+  background: var.$color-grey-2; /* kolor tła paska przewijania */
+}
+
+/* Styl dla kciuka przewijania (części przewijanej) */
+::-webkit-scrollbar-thumb {
+  background: rgb(47, 47, 47); /* kolor kciuka przewijania */
+  border-radius: var.$border-radius-small;
 }

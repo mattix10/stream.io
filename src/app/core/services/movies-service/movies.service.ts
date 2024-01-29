@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { Movie } from '../../models/movie';
 import { HttpParams } from '@angular/common/http';
 import { movieItems } from 'src/app/mocks/movie-items';
+import { movies } from 'src/app/mocks/movies';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +18,9 @@ export class MoviesService {
     return of(movieItems);
   }
 
-  getMovie(id: string): Observable<MovieItem> {
-    return this.httpService.getItem<MovieItem>('movies', id);
+  getMovie(id: string): Observable<Movie> {
+    return of(movies[0]);
+    // return this.httpService.getItem<Movie>('movies', id);
   }
 
   createMovie(id: string): Observable<MovieItem> {
@@ -26,7 +28,7 @@ export class MoviesService {
   }
 
   updateMovie(id: string, body: Movie): Observable<Movie> {
-    return this.httpService.update<Movie>('movies', id, body);
+    return this.httpService.update('movies', id, body);
   }
 
   deleteMovie(id: string): Observable<void> {

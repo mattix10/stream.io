@@ -22,6 +22,19 @@ export class UserDashboardComponent implements OnInit {
   user?: User;
 
   ngOnInit(): void {
+    this.loadUser();
+  }
+
+  onMoviesChanged(movies: Movie[]): void {
+    if (!this.user) {
+      return;
+    }
+
+    this.user.movies = [...movies];
+    this.updateUser();
+  }
+
+  private loadUser(): void {
     // TODO: Remove userId - make it dynamically
     const userId = '1';
     this.movies$ = this.#userService.getUser(userId).pipe(
@@ -31,17 +44,15 @@ export class UserDashboardComponent implements OnInit {
     );
   }
 
-  onMoviesChanged(movies: Movie[]): void {
+  private updateUser(): void {
     if (!this.user) {
       return;
     }
 
-    // TODO: Remove userId - make it dynamically
-    const userId = '1';
-    this.user.movies = [...movies];
-    this.#userService
-      .updateUser(userId, this.user)
-      .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe((user) => (this.user = user));
+    this.movies$ = this.#userService.updateUser(this.user.id, this.user).pipe(
+      takeUntilDestroyed(this.#destroyRef),
+      tap((user: User) => (this.user = user)),
+      map(({ movies }) => movies)
+    );
   }
 }

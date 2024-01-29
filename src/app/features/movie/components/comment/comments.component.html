@@ -1,0 +1,23 @@
+<ng-container *ngIf="comments?.length">
+  <div class="comments">
+    <div class="comment-list">
+      <div class="comment" *ngFor="let comment of comments">
+        <h3 class="username">{{ comment?.userName }}</h3>
+        <div class="description">
+          {{ comment?.comment }}
+        </div>
+      </div>
+    </div>
+    <div class="add-comment">
+      <textarea
+        #comment
+        class="comment-textarea"
+        rows="5"
+        placeholder="Wpisz tekst tutaj..."
+      ></textarea>
+      <button class="button" (click)="onAddComment(comment.value)">
+        Dodaj komentarz
+      </button>
+    </div>
+  </div>
+</ng-container>
