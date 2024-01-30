@@ -16,7 +16,6 @@ export const movieResolver: ResolveFn<Movie> = (
 };
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
   {
     path: 'user-dashboard',
     loadComponent: () =>
@@ -36,7 +35,9 @@ const routes: Routes = [
     path: 'auth',
     loadComponent: () =>
       import('./features/auth/auth.component').then((mod) => mod.AuthComponent),
+    loadChildren: () => import('./features/auth/auth-routes'),
   },
+  { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: '**', component: HomeComponent },
 ];
 
