@@ -6,7 +6,23 @@
         <li class="list-item">Filmy</li>
         <li class="list-item">Seriale</li>
       </ul>
-      <input placeholder="Szukaj..." class="input-search" />
+      <input
+        placeholder="Tytuł..."
+        class="input-search"
+        type="search"
+        [(ngModel)]="searchValue"
+      />
+      <button
+        type="reset"
+        class="reset"
+        (click)="reset()"
+        [class.show-reset]="searchValue"
+      >
+        &times;
+      </button>
+      <button class="button-search" (click)="search()">
+        <img src="./../../../../assets/icons/search.svg" />
+      </button>
     </section>
     <img
       src="./../../../../assets/icons/menu.svg"

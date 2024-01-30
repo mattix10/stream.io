@@ -37,6 +37,13 @@ const routes: Routes = [
       import('./features/auth/auth.component').then((mod) => mod.AuthComponent),
     loadChildren: () => import('./features/auth/auth-routes'),
   },
+  {
+    path: 'search-results',
+    loadComponent: () =>
+      import('./features/search-results/search-results.component').then(
+        (mod) => mod.SearchResultsComponent
+      ),
+  },
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: '**', component: HomeComponent },
 ];
