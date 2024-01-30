@@ -4,7 +4,7 @@ import { MovieItem } from './movie-item';
 export interface Movie extends MovieItem {
   description: string;
   userId: string;
-  comments?: MovieComment[];
+  comments: MovieComment[];
   fileImageName?: string;
   fileMovieName?: string;
 }

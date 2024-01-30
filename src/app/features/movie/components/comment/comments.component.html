@@ -1,6 +1,6 @@
-<ng-container *ngIf="comments?.length">
+<ng-container>
   <div class="comments">
-    <div class="comment-list">
+    <div class="comment-list" *ngIf="comments?.length; else noComments">
       <div class="comment" *ngFor="let comment of comments">
         <h3 class="username">{{ comment?.userName }}</h3>
         <div class="description">
@@ -8,6 +8,12 @@
         </div>
       </div>
     </div>
+    <ng-template #noComments>
+      <p class="no-comments">
+        Ten film nie ma aktualnie żadnych komentarzy. Wyraź swoją opinię
+        pierwszy.
+      </p>
+    </ng-template>
     <div class="add-comment">
       <textarea
         #comment

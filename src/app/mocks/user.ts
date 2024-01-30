@@ -11,6 +11,7 @@ export const user: User = {
       title: 'The Shawshank Redemption',
       imgUrl: './../../../../assets/images/obraz.jpg',
       description: 'Lorem ipsum',
+      comments: [],
     },
     {
       id: '2',
@@ -19,6 +20,7 @@ export const user: User = {
       title: 'The Godfather',
       imgUrl: './../../../../assets/images/obraz.jpg',
       description: 'Lorem ipsum',
+      comments: [],
     },
   ],
 };

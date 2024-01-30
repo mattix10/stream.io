@@ -17,53 +17,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class MovieComponent implements OnInit {
   #movieService = inject(MoviesService);
   #activatedRoute = inject(ActivatedRoute);
+  comments: MovieComment[] = [];
+  movie!: Movie;
 
   ngOnInit(): void {
     this.#activatedRoute.data.subscribe(({ movie }) => {
       this.movie = movie;
+      this.comments = this.movie!.comments;
       console.log(this.movie);
     });
   }
-
-  movie?: Movie;
-  comments: MovieComment[] = [
-    {
-      userName: 'user1',
-      comment: 'Test comment 1',
-    },
-    {
-      userName: 'user2',
-      comment: 'Test comment 2',
-    },
-    {
-      userName: 'user3',
-      comment: 'Test comment 3',
-    },
-    {
-      userName: 'user3',
-      comment: 'Test comment 3',
-    },
-    {
-      userName: 'user3',
-      comment: 'Test comment 3',
-    },
-    {
-      userName: 'user4',
-      comment: 'Test comment 3',
-    },
-    {
-      userName: 'user93',
-      comment: 'Test comment 3',
-    },
-    {
-      userName: 'user6',
-      comment: 'Test comment 3',
-    },
-    {
-      userName: 'user8',
-      comment: 'Test comment 3',
-    },
-  ];
 
   onCommentChanged(comment: any): void {
     console.log(comment);

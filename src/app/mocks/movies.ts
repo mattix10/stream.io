@@ -9,5 +9,6 @@ export const movies: Movie[] = [
     imgUrl: './../../../../assets/images/obraz.jpg',
     userId: '1',
     description: 'test description',
+    comments: [],
   },
 ];

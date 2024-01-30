@@ -6,6 +6,7 @@ import { Movie } from '../../models/movie';
 import { HttpParams } from '@angular/common/http';
 import { movieItems } from 'src/app/mocks/movie-items';
 import { movies } from 'src/app/mocks/movies';
+import { movie } from 'src/app/mocks/movie';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class MoviesService {
   }
 
   getMovie(id: string): Observable<Movie> {
-    return of(movies[0]);
+    return of(movie);
     // return this.httpService.getItem<Movie>('movies', id);
   }
 
