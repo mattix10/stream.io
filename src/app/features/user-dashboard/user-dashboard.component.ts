@@ -55,4 +55,9 @@ export class UserDashboardComponent implements OnInit {
       map(({ movies }) => movies)
     );
   }
+
+  // Remove 'any'
+  onMovieFormChanged(formValue: any): void {
+    // this.#userService.updateUser(this.user?.id, this.user)
+  }
 }

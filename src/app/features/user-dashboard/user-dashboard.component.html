@@ -14,7 +14,9 @@
     </div>
     <div class="movie-form">
       <h2>Dodaj film</h2>
-      <app-movie-form></app-movie-form>
+      <app-movie-form
+        (movieFormChanged)="onMovieFormChanged($event)"
+      ></app-movie-form>
     </div>
   </section>
 </div>

@@ -1,4 +1,4 @@
-<form [formGroup]="movieForm">
+<form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
   <div class="form-field">
     <label class="label" for="title">Tytuł</label>
     <input class="input" id="title" name="title" />
@@ -17,7 +17,7 @@
   <div class="form-field">
     <div class="label">Zdjęcie</div>
     <label class="custom-file-upload">
-      <input type="file" />
+      <input type="file" formControlName="fileImage" />
       <div>
         <div class="upload-image">
           <img src="./../../../../../assets/icons/upload.svg" />
@@ -30,7 +30,7 @@
   <div class="form-field">
     <div class="label">Film</div>
     <label class="custom-file-upload">
-      <input type="file" />
+      <input type="file" formControlName="fileMovie" />
       <div>
         <div class="upload-image">
           <img src="./../../../../../assets/icons/upload.svg" />

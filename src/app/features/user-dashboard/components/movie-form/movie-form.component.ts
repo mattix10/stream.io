@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MovieCategory } from 'src/app/core/models/movie-item';
 
@@ -15,7 +15,20 @@ export class MovieFormComponent {
     title: new FormControl(''),
     description: new FormControl(''),
     category: new FormControl(''),
+    fileImage: new FormControl(''),
+    fileMovie: new FormControl(''),
   });
 
   categories: MovieCategory[] = [MovieCategory.Movie, MovieCategory.Series];
+
+  // TODO: remove any
+  @Output() movieFormChanged = new EventEmitter<any>();
+
+  onSubmit(): void {
+    if (this.movieForm.invalid) {
+      return;
+    }
+
+    this.movieFormChanged.emit(this.movieForm.value);
+  }
 }
