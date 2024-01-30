@@ -8,11 +8,33 @@
       </ul>
       <input placeholder="Szukaj..." class="input-search" />
     </section>
-    <section class="user-management-section">
-      <img
-        src="./../../../../assets/icons/user-account.svg"
-        routerLink="/user-dashboard"
-      />
+    <img
+      src="./../../../../assets/icons/menu.svg"
+      class="menu-icon"
+      (click)="toggleMobileVisibility()"
+    />
+    <section class="user-management">
+      <div routerLink="/user-dashboard">
+        <span class="username">user12345</span>
+        <img
+          class="user-icon"
+          src="./../../../../assets/icons/user-account.svg"
+        />
+      </div>
     </section>
   </div>
 </nav>
+<div>
+  <ul class="mobile-menu" *ngIf="isMobileMenuVisible">
+    <li class="list-item" (click)="toggleMobileVisibility()" [routerLink]="'/'">
+      Strona główna
+    </li>
+    <li
+      class="list-item"
+      (click)="toggleMobileVisibility()"
+      [routerLink]="'/user-dashboard'"
+    >
+      Panel użytkownika
+    </li>
+  </ul>
+</div>

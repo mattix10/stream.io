@@ -28,64 +28,39 @@ export class MovieComponent implements OnInit {
   movie?: Movie;
   comments: MovieComment[] = [
     {
-      userName: '1',
+      userName: 'user1',
       comment: 'Test comment 1',
     },
     {
-      userName: '2',
+      userName: 'user2',
       comment: 'Test comment 2',
     },
     {
-      userName: '3',
+      userName: 'user3',
       comment: 'Test comment 3',
     },
     {
-      userName: '3',
+      userName: 'user3',
       comment: 'Test comment 3',
     },
     {
-      userName: '3',
+      userName: 'user3',
       comment: 'Test comment 3',
     },
     {
-      userName: '3',
+      userName: 'user4',
       comment: 'Test comment 3',
     },
     {
-      userName: '3',
+      userName: 'user93',
       comment: 'Test comment 3',
     },
     {
-      userName: '3',
+      userName: 'user6',
       comment: 'Test comment 3',
     },
     {
-      userName: '3',
-      comment: 'Test comment 3',
-    },
-    {
-      userName: '3',
-      comment: 'Test comment 3',
-    },
-    {
-      userName: '3',
-      comment: 'Test comment 3',
-    },
-
-    {
-      userName: '3',
-      comment: 'Test comment 3',
-    },
-    {
-      userName: '3',
-      comment: 'Test comment 3',
-    },
-    {
-      userName: '3',
-      comment: 'Test comment 3',
-    },
-    {
-      userName: '3',
+      userName: 'user8',
       comment: 'Test comment 3',
     },
   ];

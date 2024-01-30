@@ -11,7 +11,8 @@
 }
 
 .display {
-  flex-grow: 9;
+  // flex-grow: 9;
+  width: 75%;
 }
 
 .video {
@@ -22,10 +23,43 @@
 }
 
 .comments-wrapper {
-  flex-grow: 3;
+  // flex-grow: 3;
   max-height: 100%;
+  width: 25%;
 }
 
 .comments {
   display: block;
+}
+
+.comments-mobile {
+  display: none;
+}
+
+@media screen and (max-width: var.$breakpoint-large) {
+  .display,
+  .comments-wrapper {
+    height: 66%;
+  }
+
+  .display,
+  .comments-wrapper {
+    width: 100%;
+  }
+
+  .comments-wrapper {
+    display: none;
+  }
+
+  .comments {
+    margin-top: 50px;
+  }
+
+  .comments-desktop {
+    display: none;
+  }
+
+  .comments-mobile {
+    display: block;
+  }
 }
