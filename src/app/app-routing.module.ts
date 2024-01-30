@@ -33,11 +33,9 @@ const routes: Routes = [
     resolve: { movie: movieResolver },
   },
   {
-    path: 'authorisation',
+    path: 'auth',
     loadComponent: () =>
-      import('./features/authorisation/authorisation.component').then(
-        (mod) => mod.AuthorisationComponent
-      ),
+      import('./features/auth/auth.component').then((mod) => mod.AuthComponent),
   },
   { path: '**', component: HomeComponent },
 ];

@@ -8,6 +8,12 @@
 
 .movie-metadata {
   margin-top: 15px;
+  width: 75%;
+  text-align: justify;
+
+  .description {
+    margin-right: 15px;
+  }
 }
 
 .display {
@@ -61,5 +67,9 @@
 
   .comments-mobile {
     display: block;
+  }
+
+  .movie-metadata {
+    width: 100%;
   }
 }
