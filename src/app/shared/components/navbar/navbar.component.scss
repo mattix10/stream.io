@@ -98,6 +98,12 @@
   color: white;
 }
 
+@media screen and (max-width: var.$breakpoint-large) {
+  .username {
+    display: none;
+  }
+}
+
 @media screen and (max-width: var.$breakpoint-medium) {
   .list,
   .input-search,
@@ -117,6 +123,12 @@
   .menu-icon {
     display: block;
     cursor: pointer;
+  }
+
+  .input-search,
+  .button-search,
+  .reset {
+    display: none;
   }
 }
 
