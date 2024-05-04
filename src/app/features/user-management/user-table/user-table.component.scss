@@ -1,0 +1,27 @@
+@use "./variables" as var;
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border-bottom: 1px solid var.$color-grey-3;
+  text-align: left;
+  padding: 8px;
+  font-size: 12px;
+}
+
+th {
+  font-size: 14px;
+}
+
+tr:nth-child(even) {
+  background-color: #2f2f2f;
+}
+
+tr:hover {
+  cursor: pointer;
+  background-color: #5b5b5b;
+}

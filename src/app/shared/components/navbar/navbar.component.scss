@@ -75,6 +75,21 @@
 
 .user-management {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  .navigation-list {
+    display: flex;
+    padding: 0 12px;
+
+    .navigation-item {
+      padding-right: 18px;
+    }
+
+    li:last-of-type {
+      padding-right: 24px;
+    }
+  }
 
   .user-icon {
     width: 36px;

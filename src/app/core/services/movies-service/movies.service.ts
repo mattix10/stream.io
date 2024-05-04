@@ -20,7 +20,8 @@ export class MoviesService {
   }
 
   getMovie(id: string): Observable<Movie> {
-    return of(movie);
+    const movie = movies.find((movie) => movie.id === id);
+    return of(movie as Movie);
     // return this.httpService.getItem<Movie>('movies', id);
   }
 

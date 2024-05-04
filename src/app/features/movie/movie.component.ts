@@ -22,6 +22,7 @@ export class MovieComponent implements OnInit {
 
   ngOnInit(): void {
     this.#activatedRoute.data.subscribe(({ movie }) => {
+      console.log(movie);
       this.movie = movie;
       this.comments = this.movie!.comments;
       console.log(this.movie);

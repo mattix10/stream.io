@@ -19,11 +19,14 @@ export class SearchResultsComponent {
   #activatedRoute = inject(ActivatedRoute);
   movieItems: MovieItem[] = [];
 
+  // TODO: Remove
+  searchValue: string = '';
   ngOnInit(): void {
     this.#activatedRoute.queryParams
       .pipe(
         mergeMap((params: Params) => {
-          const searchValue = params['search'];
+          const searchValue: string = params['search'];
+          this.searchValue = searchValue.toLowerCase();
           let param = new HttpParams().set('search', searchValue);
           return this.#moviesService.getMovies(param);
         })
@@ -31,7 +34,9 @@ export class SearchResultsComponent {
       .subscribe((movieItems) => {
         console.log(movieItems);
         // TODO: Remove
-        this.movieItems = movieItems.filter((d: any) => d.id.includes('1'));
+        this.movieItems = movieItems.filter((movie: any) =>
+          movie.title.toLowerCase().includes(this.searchValue)
+        );
       });
   }
 }

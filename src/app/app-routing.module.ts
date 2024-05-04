@@ -24,6 +24,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'user-management',
+    loadComponent: () =>
+      import('./features/user-management/user-management.component').then(
+        (mod) => mod.UserManagementComponent
+      ),
+  },
+  {
     path: 'movie/:id',
     loadComponent: () =>
       import('./features/movie/movie.component').then(

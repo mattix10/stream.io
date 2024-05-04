@@ -2,7 +2,8 @@ export interface MovieItem {
   id: string;
   imgUrl: string;
   title: string;
-  category: MovieCategory;
+  movieUrl?: string;
+  category?: MovieCategory;
 }
 
 export enum MovieCategory {

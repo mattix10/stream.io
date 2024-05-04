@@ -2,15 +2,12 @@
   <div class="content container">
     <section class="navigation-section">
       <div class="logo" routerLink="/">STREAM.io</div>
-      <ul class="list">
-        <li class="list-item">Filmy</li>
-        <li class="list-item">Seriale</li>
-      </ul>
       <input
         placeholder="Tytuł..."
         class="input-search"
         type="search"
         [(ngModel)]="searchValue"
+        (keyup.enter)="search()"
       />
       <button
         type="reset"
@@ -30,6 +27,17 @@
       (click)="toggleMobileVisibility()"
     />
     <section class="user-management">
+      <ul class="navigation-list">
+        <li [routerLink]="'/user-management'" class="navigation-item">
+          Użytkownicy
+        </li>
+        <li [routerLink]="'/user-dashboard'" class="navigation-item">
+          Mojek konto
+        </li>
+        <li [routerLink]="'/user-dashboard'" class="navigation-item">
+          Wyloguj
+        </li>
+      </ul>
       <div routerLink="/user-dashboard">
         <span class="username">user12345</span>
         <img
