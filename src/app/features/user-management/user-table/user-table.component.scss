@@ -10,18 +10,18 @@ th {
   border-bottom: 1px solid var.$color-grey-3;
   text-align: left;
   padding: 8px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 th {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 tr:nth-child(even) {
   background-color: #2f2f2f;
 }
 
-tr:hover {
+tr:hover:not(:first-of-type) {
   cursor: pointer;
   background-color: #5b5b5b;
 }

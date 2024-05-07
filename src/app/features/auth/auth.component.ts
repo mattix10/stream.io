@@ -6,7 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, tap } from 'rxjs';
+import { LoginRequest } from 'src/app/core/models/login-request';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 
 @Component({
@@ -35,17 +36,26 @@ export class AuthComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log(this.form);
     if (this.form.invalid) {
       return;
     }
 
-    const formvalue = this.form.value;
+    const formvalue = this.form.value as LoginRequest;
 
     if (this.isSignInMode) {
-      // this.#authService.login(formvalue);
+      this.#authService
+        .login(formvalue)
+        .pipe(tap(() => this.#router.navigateByUrl('/')))
+        .subscribe();
+    } else {
+      this.#authService
+        .registration(formvalue)
+        .pipe(tap(() => this.#router.navigateByUrl('/auth/signin')))
+        .subscribe();
     }
 
-    // this.#authService.registration(formvalue);
+    this.form.setValue({ email: '', password: '' });
   }
 
   protected navigate(): void {

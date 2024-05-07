@@ -1,17 +1,17 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HttpService {
-  readonly #API_URL = '/';
-
   constructor(private httpClient: HttpClient) {}
 
   getItems<T>(url: string, params?: HttpParams): Observable<T> {
-    return this.httpClient.get<T>(url, { params });
+    console.log('getitiems');
+    return this.httpClient.get<T>(this.createUrl(url), { params });
   }
 
   getItem<T>(url: string, id: string): Observable<T> {
@@ -31,6 +31,7 @@ export class HttpService {
   }
 
   private createUrl(url: string, id?: string): string {
-    return this.#API_URL + url + (id ? '/' + id : '');
+    console.log(url);
+    return environment.AUTH_URL + url + (id ? '/' + id : '');
   }
 }

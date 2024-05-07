@@ -39,6 +39,10 @@
   resize: none;
 }
 
+textarea::placeholder {
+  font-family: "Mitr-Light"; /* Rodzina czcionki */
+}
+
 .username {
   color: white;
   font-size: 14px;

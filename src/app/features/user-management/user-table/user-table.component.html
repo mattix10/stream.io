@@ -1,12 +1,20 @@
 <table>
   <tr>
-    <th>Nazwa użytkownika</th>
+    <th>Id</th>
     <th>E-mail</th>
+    <th>Numer telefonu</th>
     <th>Rola</th>
+    <th></th>
   </tr>
-  <tr>
-    <td>Alfreds Futterkiste</td>
-    <td>Maria Anders</td>
-    <td>Germany</td>
-  </tr>
+  <ng-container *ngIf="users">
+    @for (user of users; track user) {
+    <tr>
+      <td>{{ user.id }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.phoneNumber }}</td>
+      <td>{{ user.roles[0] }}</td>
+      <td></td>
+    </tr>
+    }
+  </ng-container>
 </table>

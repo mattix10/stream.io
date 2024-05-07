@@ -7,17 +7,17 @@
         class="input-search"
         type="search"
         [(ngModel)]="searchValue"
-        (keyup.enter)="search()"
+        (keyup.enter)="navigateToSearchResults()"
       />
       <button
         type="reset"
         class="reset"
-        (click)="reset()"
+        (click)="resetSearchValue()"
         [class.show-reset]="searchValue"
       >
         &times;
       </button>
-      <button class="button-search" (click)="search()">
+      <button class="button-search" (click)="navigateToSearchResults()">
         <img src="./../../../../assets/icons/search.svg" />
       </button>
     </section>
@@ -34,12 +34,20 @@
         <li [routerLink]="'/user-dashboard'" class="navigation-item">
           Mojek konto
         </li>
-        <li [routerLink]="'/user-dashboard'" class="navigation-item">
+        <li
+          [routerLink]="'/'"
+          class="navigation-item"
+          (click)="logout()"
+          *ngIf="user"
+        >
           Wyloguj
         </li>
+        <li [routerLink]="'/auth/signin'" class="navigation-item" *ngIf="!user">
+          Zaloguj
+        </li>
       </ul>
-      <div routerLink="/user-dashboard">
-        <span class="username">user12345</span>
+      <div routerLink="/user-dashboard" *ngIf="user">
+        <span class="username">{{ user.email }}</span>
         <img
           class="user-icon"
           src="./../../../../assets/icons/user-account.svg"
@@ -48,7 +56,7 @@
     </section>
   </div>
 </nav>
-<div>
+<div class="mobile-menu-container">
   <ul class="mobile-menu" *ngIf="isMobileMenuVisible">
     <li class="list-item" (click)="toggleMobileVisibility()" [routerLink]="'/'">
       Strona główna

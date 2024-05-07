@@ -80,14 +80,10 @@
 
   .navigation-list {
     display: flex;
-    padding: 0 12px;
+    justify-content: flex-end;
 
     .navigation-item {
-      padding-right: 18px;
-    }
-
-    li:last-of-type {
-      padding-right: 24px;
+      padding-left: 50px;
     }
   }
 
@@ -96,7 +92,6 @@
   }
 
   .username {
-    font-size: 12px;
     padding-right: 10px;
   }
 }
@@ -145,6 +140,13 @@
   .reset {
     display: none;
   }
+}
+
+.mobile-menu-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .mobile-menu {
