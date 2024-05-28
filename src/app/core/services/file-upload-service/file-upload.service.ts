@@ -22,7 +22,6 @@ export class FileUploadService {
   }
 
   getLinkForUploadMovie(): Observable<string> {
-    return of('example-link');
     return this.#httpClient.get<string>(`${environment.API_URL}/upload`);
   }
 }
