@@ -4,7 +4,7 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { User } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
@@ -18,6 +18,7 @@ import { MoviesService } from 'src/app/core/services/movies-service/movies.servi
 })
 export class NavbarComponent implements OnInit {
   user: User | null = null;
+  isLoggedIn$: Observable<boolean> = of(false);
   protected isMobileMenuVisible = false;
   protected searchValue: string = '';
 
@@ -59,11 +60,15 @@ export class NavbarComponent implements OnInit {
   }
 
   private getUserData(): void {
+    // this.isLoggedIn$ = this.#authService.isLoggedIn$;
     this.#authService.currentUser$
       .pipe(
         takeUntilDestroyed(this.#destroyRef),
         tap((data: any) => console.log(data))
       )
-      .subscribe((user) => (this.user = user));
+      .subscribe((user) => {
+        this.user = user;
+        console.log(this.user);
+      });
   }
 }

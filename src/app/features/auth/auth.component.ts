@@ -9,6 +9,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, tap } from 'rxjs';
 import { LoginRequest } from 'src/app/core/models/login-request';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth',
@@ -29,6 +30,7 @@ export class AuthComponent implements OnInit {
 
   #router = inject(Router);
   #authService = inject(AuthService);
+  #toastrService = inject(ToastrService);
 
   ngOnInit(): void {
     this.setMode();
@@ -47,7 +49,9 @@ export class AuthComponent implements OnInit {
       this.#authService
         .login(formvalue)
         .pipe(tap(() => this.#router.navigateByUrl('/')))
-        .subscribe();
+        .subscribe(() => {
+          this.#toastrService.success('success');
+        });
     } else {
       this.#authService
         .registration(formvalue)

@@ -59,3 +59,11 @@ textarea::placeholder {
   font-size: 12px;
   text-align: center;
 }
+
+.button-disabled {
+  background-color: var.$color-grey;
+}
+
+textarea.disabled {
+  border-color: var.$color-grey;
+}

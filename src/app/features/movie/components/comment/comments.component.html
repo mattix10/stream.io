@@ -20,8 +20,15 @@
         class="comment-textarea"
         rows="5"
         placeholder="Wpisz tekst tutaj..."
+        [disabled]="!(isLoggedIn$ | async)"
+        [class.disabled]="!(isLoggedIn$ | async)"
       ></textarea>
-      <button class="button" (click)="onAddComment(comment.value)">
+      <button
+        class="button"
+        (click)="onAddComment(comment.value)"
+        [disabled]="!(isLoggedIn$ | async)"
+        [class.button-disabled]="!(isLoggedIn$ | async)"
+      >
         Dodaj komentarz
       </button>
     </div>

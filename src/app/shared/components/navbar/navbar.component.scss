@@ -74,7 +74,6 @@
 }
 
 .user-management {
-  cursor: pointer;
   display: flex;
   align-items: center;
 
@@ -83,7 +82,12 @@
     justify-content: flex-end;
 
     .navigation-item {
-      padding-left: 50px;
+      margin-left: 50px;
+      font-size: 14px;
+    }
+
+    .list-title {
+      cursor: pointer;
     }
   }
 
@@ -93,7 +97,14 @@
 
   .username {
     padding-right: 10px;
+    font-size: 14px;
   }
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  margin-left: 50px;
 }
 
 .reset {
@@ -160,11 +171,13 @@
   }
 
   .list-item {
-    cursor: pointer;
     text-align: center;
     padding: 10px;
     border-bottom: 2px solid black;
     font-size: 14px;
+  }
+  .list-title {
+    cursor: pointer;
   }
 
   .list-item:hover {

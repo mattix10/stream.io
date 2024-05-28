@@ -1,6 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { MovieComment } from 'src/app/core/models/movie-comment';
+import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 
 @Component({
   selector: 'app-comments',
@@ -9,12 +18,21 @@ import { MovieComment } from 'src/app/core/models/movie-comment';
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.scss',
 })
-export class CommentsComponent {
+export class CommentsComponent implements OnInit {
   @Input() comments?: MovieComment[];
 
   @Output() commentChanged = new EventEmitter<string>();
 
+  isLoggedIn$: Observable<boolean> = of(false);
+
+  readonly #authService = inject(AuthService);
+
   onAddComment(comment: string): void {
     this.commentChanged.emit(comment);
+  }
+
+  ngOnInit(): void {
+    this.#authService.isLoggedIn$.subscribe((data) => console.log(data));
+    this.isLoggedIn$ = this.#authService.isLoggedIn$;
   }
 }

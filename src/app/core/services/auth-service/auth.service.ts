@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from './../../../../environment/environment';
-import { map, Observable, ReplaySubject } from 'rxjs';
+import { map, Observable, ReplaySubject, tap } from 'rxjs';
 import { Response } from '../../models/response';
 import { UserResponse } from '../../models/user-response';
 import { User } from '../../models/user';
@@ -12,6 +12,10 @@ import { Router } from '@angular/router';
 export class AuthService {
   #currentUserSource = new ReplaySubject<User | null>(1);
   currentUser$ = this.#currentUserSource.asObservable();
+  isLoggedIn$: Observable<boolean> = this.currentUser$.pipe(
+    tap((data) => console.log(data)),
+    map((user) => !!user?.email)
+  );
   #httpClient = inject(HttpClient);
   #router = inject(Router);
 
@@ -46,12 +50,12 @@ export class AuthService {
   }
 
   private setCurrentUser(token: string): void {
-    if (!token) {
-    }
-    const user = this.getDecodedToken(token).user;
+    console.log(token);
+    const user = this.getDecodedToken(token);
     this.#currentUserSource.next(user);
-    // this.setToken(token);
     console.log(user);
+    console.log(token);
+    this.setToken(token);
   }
 
   private getDecodedToken(token: string) {
@@ -60,6 +64,7 @@ export class AuthService {
 
   private getToken = () => localStorage.getItem('token');
 
-  // private setToken = (token: string) =>
-  // localStorage.setItem('token', JSON.stringify(token));
+  private setToken(token: string) {
+    localStorage.setItem('token', token);
+  }
 }

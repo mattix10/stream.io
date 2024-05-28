@@ -28,11 +28,19 @@
     />
     <section class="user-management">
       <ul class="navigation-list">
-        <li [routerLink]="'/user-management'" class="navigation-item">
+        <li
+          [routerLink]="'/user-management'"
+          class="navigation-item"
+          *ngIf="user"
+        >
           Użytkownicy
         </li>
-        <li [routerLink]="'/user-dashboard'" class="navigation-item">
-          Mojek konto
+        <li
+          [routerLink]="'/user-dashboard'"
+          class="navigation-item"
+          *ngIf="user"
+        >
+          <span class="list-title"> Mojek konto </span>
         </li>
         <li
           [routerLink]="'/'"
@@ -40,13 +48,16 @@
           (click)="logout()"
           *ngIf="user"
         >
-          Wyloguj
+          <span class="list-title"> Wyloguj </span>
         </li>
         <li [routerLink]="'/auth/signin'" class="navigation-item" *ngIf="!user">
-          Zaloguj
+          <span class="list-title"> Zaloguj </span>
+        </li>
+        <li [routerLink]="'/auth/signup'" class="navigation-item" *ngIf="!user">
+          <span class="list-title"> Zarejestruj się </span>
         </li>
       </ul>
-      <div routerLink="/user-dashboard" *ngIf="user">
+      <div routerLink="/user-dashboard" *ngIf="user" class="user">
         <span class="username">{{ user.email }}</span>
         <img
           class="user-icon"
@@ -59,21 +70,21 @@
 <div class="mobile-menu-container">
   <ul class="mobile-menu" *ngIf="isMobileMenuVisible">
     <li class="list-item" (click)="toggleMobileVisibility()" [routerLink]="'/'">
-      Strona główna
+      <span class="list-title"> Strona główna </span>
     </li>
     <li
       class="list-item"
       (click)="toggleMobileVisibility()"
       [routerLink]="'/user-dashboard'"
     >
-      Panel użytkownika
+      <span class="list-title"> Panel użytkownika </span>
     </li>
     <li
       class="list-item"
       (click)="toggleMobileVisibility()"
       [routerLink]="'/auth/signin'"
     >
-      Zaloguj
+      <span class="list-title"> Zaloguj </span>
     </li>
   </ul>
 </div>
