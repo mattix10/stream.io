@@ -3,21 +3,29 @@
     <label class="label" for="title">Tytuł</label>
     <input class="input" id="title" name="title" />
   </div>
+
   <div class="form-field">
-    <label class="label" for="title">Kategoria</label>
-    <select formControlName="category" class="input" id="title" name="title">
-      <option *ngFor="let category of categories">{{ category }}</option>
-    </select>
-  </div>
-  <div class="form-field">
-    <label class="label" for="title">Opis</label>
-    <textarea class="input" id="title" name="title" rows="5"></textarea>
+    <label class="label" for="description">Opis</label>
+    <textarea
+      class="input"
+      id="description"
+      name="description"
+      rows="5"
+      formControlName="description"
+    ></textarea>
   </div>
 
   <div class="form-field">
     <div class="label">Zdjęcie</div>
-    <label class="custom-file-upload">
-      <input type="file" formControlName="fileImage" />
+    <label
+      class="custom-file-upload"
+      *ngIf="!movieForm.controls.image.value; else showFileImage"
+    >
+      <input
+        type="file"
+        (change)="onImageSelected($event)"
+        formControlName="image"
+      />
       <div>
         <div class="upload-image">
           <img src="./../../../../../assets/icons/upload.svg" />
@@ -29,8 +37,11 @@
 
   <div class="form-field">
     <div class="label">Film</div>
-    <label class="custom-file-upload">
-      <input type="file" formControlName="fileMovie" />
+    <label
+      class="custom-file-upload"
+      *ngIf="!movieForm.controls.movie.value; else showFileMovie"
+    >
+      <input type="file" (change)="onMovieSelected($event)" />
       <div>
         <div class="upload-image">
           <img src="./../../../../../assets/icons/upload.svg" />
@@ -41,3 +52,26 @@
   </div>
   <button class="button" type="submit">Dodaj film</button>
 </form>
+
+<ng-template #showFileMovie>
+  <div class="uploaded-movie">
+    <div>
+      {{ movieFilename }}
+    </div>
+    <img
+      src="./../../../../../assets/icons/delete.svg"
+      (click)="removeFile('movie')"
+    />
+  </div>
+</ng-template>
+<ng-template #showFileImage>
+  <div class="uploaded-movie">
+    <div>
+      {{ imageFilename }}
+    </div>
+    <img
+      src="./../../../../../assets/icons/delete.svg"
+      (click)="removeFile('image')"
+    />
+  </div>
+</ng-template>
