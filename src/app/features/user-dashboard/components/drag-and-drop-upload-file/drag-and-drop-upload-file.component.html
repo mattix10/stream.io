@@ -1,0 +1,31 @@
+<div class="form-field">
+  <div class="label">{{ label }}</div>
+  <label
+    class="custom-file-upload"
+    [class.drag-over]="isDragOver"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+    (dragleave)="onDragLeave($event)"
+    *ngIf="!file; else showUploadedFile"
+  >
+    <input type="file" (change)="onInputChange($event)" class="file-input" />
+    <div>
+      <div class="upload-file">
+        <img src="./../../../../../assets/icons/upload.svg" />
+      </div>
+      <div>Upuść plik tutaj</div>
+    </div>
+  </label>
+</div>
+<ng-template #showUploadedFile>
+  <div class="uploaded-file">
+    <div>
+      {{ file?.name }}
+    </div>
+    <img
+      class="remove-icon"
+      src="./../../../../../assets/icons/delete.svg"
+      (click)="removeFile()"
+    />
+  </div>
+</ng-template>

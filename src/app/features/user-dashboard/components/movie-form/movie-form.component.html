@@ -15,63 +15,18 @@
     ></textarea>
   </div>
 
-  <div class="form-field">
-    <div class="label">Zdjęcie</div>
-    <label
-      class="custom-file-upload"
-      *ngIf="!movieForm.controls.image.value; else showFileImage"
-    >
-      <input
-        type="file"
-        (change)="onImageSelected($event)"
-        formControlName="image"
-      />
-      <div>
-        <div class="upload-image">
-          <img src="./../../../../../assets/icons/upload.svg" />
-        </div>
-        <div>Upuść plik tutaj</div>
-      </div>
-    </label>
-  </div>
+  <app-drag-and-drop-upload-file
+    [fileType]="fileType.Image"
+    [label]="'Zdjęcie'"
+    (removeFileChanged)="onRemoveFile('image')"
+    (uploadFileChanged)="onUploadImage($event)"
+  ></app-drag-and-drop-upload-file>
 
-  <div class="form-field">
-    <div class="label">Film</div>
-    <label
-      class="custom-file-upload"
-      *ngIf="!movieForm.controls.movie.value; else showFileMovie"
-    >
-      <input type="file" (change)="onMovieSelected($event)" />
-      <div>
-        <div class="upload-image">
-          <img src="./../../../../../assets/icons/upload.svg" />
-        </div>
-        <div>Upuść plik tutaj</div>
-      </div>
-    </label>
-  </div>
+  <app-drag-and-drop-upload-file
+    [fileType]="fileType.Movie"
+    [label]="'Film'"
+    (removeFileChanged)="onRemoveFile('movie')"
+    (uploadFileChanged)="onUploadMovie($event)"
+  ></app-drag-and-drop-upload-file>
   <button class="button" type="submit">Dodaj film</button>
 </form>
-
-<ng-template #showFileMovie>
-  <div class="uploaded-movie">
-    <div>
-      {{ movieFilename }}
-    </div>
-    <img
-      src="./../../../../../assets/icons/delete.svg"
-      (click)="removeFile('movie')"
-    />
-  </div>
-</ng-template>
-<ng-template #showFileImage>
-  <div class="uploaded-movie">
-    <div>
-      {{ imageFilename }}
-    </div>
-    <img
-      src="./../../../../../assets/icons/delete.svg"
-      (click)="removeFile('image')"
-    />
-  </div>
-</ng-template>

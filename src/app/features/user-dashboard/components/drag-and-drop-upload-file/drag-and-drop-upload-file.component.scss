@@ -1,6 +1,6 @@
 @use "./variables" as var;
 
-input[type="file"] {
+.file-input {
   display: none;
 }
 
@@ -15,9 +15,14 @@ input[type="file"] {
   border-radius: 5px;
   font-size: 14px;
   cursor: pointer;
+
+  &.drag-over {
+    padding: 5px 12px;
+    border: 2px dashed var.$color-primary;
+  }
 }
 
-.upload-image {
+.upload-file {
   display: flex;
   justify-content: center;
   margin-bottom: 5px;
@@ -27,8 +32,12 @@ input[type="file"] {
   }
 }
 
-.uploaded-movie {
+.uploaded-file {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.remove-icon {
+  cursor: pointer;
 }
