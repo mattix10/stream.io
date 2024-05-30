@@ -1,10 +1,11 @@
+import { Role } from '../core/models/roles.enum';
 import { User } from '../core/models/user';
 
 export const user: User = {
   id: '12312323',
   username: 'user1',
   email: 'user1@gmail.com',
-  roles: ['User'],
+  roles: [Role.USER],
   movies: [
     {
       id: '1',

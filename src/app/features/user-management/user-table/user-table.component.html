@@ -12,7 +12,10 @@
       <td>{{ user.id }}</td>
       <td>{{ user.email }}</td>
       <td>{{ user.phoneNumber }}</td>
-      <td>{{ user.roles[0] }}</td>
+      @for (role of user.roles; track role) {
+      <td>{{ role }}</td>
+
+      }
       <td></td>
     </tr>
     }

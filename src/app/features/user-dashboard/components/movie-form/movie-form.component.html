@@ -18,14 +18,14 @@
   <app-drag-and-drop-upload-file
     [fileType]="fileType.Image"
     [label]="'Zdjęcie'"
-    (removeFileChanged)="onRemoveFile('image')"
+    (removeFileChanged)="onRemoveImage()"
     (uploadFileChanged)="onUploadImage($event)"
   ></app-drag-and-drop-upload-file>
 
   <app-drag-and-drop-upload-file
     [fileType]="fileType.Movie"
     [label]="'Film'"
-    (removeFileChanged)="onRemoveFile('movie')"
+    (removeFileChanged)="onRemoveMovie()"
     (uploadFileChanged)="onUploadMovie($event)"
   ></app-drag-and-drop-upload-file>
   <button class="button" type="submit">Dodaj film</button>

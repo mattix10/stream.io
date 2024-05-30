@@ -1,6 +1,5 @@
-import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { Component, Input, SimpleChanges } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { User } from 'src/app/core/models/user';
 
 @Component({

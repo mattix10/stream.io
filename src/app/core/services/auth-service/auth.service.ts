@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from './../../../../environment/environment';
-import { map, Observable, ReplaySubject, tap } from 'rxjs';
+import { map, Observable, ReplaySubject } from 'rxjs';
 import { Response } from '../../models/response';
 import { UserResponse } from '../../models/user-response';
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
+import { Role } from '../../models/roles.enum';
 @Injectable({
   providedIn: 'root',
 })
@@ -13,16 +14,18 @@ export class AuthService {
   #currentUserSource = new ReplaySubject<User | null>(1);
   currentUser$ = this.#currentUserSource.asObservable();
   isLoggedIn$: Observable<boolean> = this.currentUser$.pipe(
-    tap((data) => console.log(data)),
     map((user) => !!user?.email)
   );
-  #httpClient = inject(HttpClient);
-  #router = inject(Router);
+
+  readonly #httpClient = inject(HttpClient);
+  readonly #router = inject(Router);
 
   constructor() {
     const token = this.getToken();
     if (token) {
       this.setCurrentUser(token);
+    } else {
+      this.removeCurrentUser();
     }
   }
 
@@ -37,6 +40,11 @@ export class AuthService {
       );
   }
 
+  logout(): void {
+    localStorage.removeItem('token');
+    this.#currentUserSource.next(null);
+  }
+
   registration(form: { password: string; email: string }): Observable<boolean> {
     return this.#httpClient.post<boolean>(
       `${environment.AUTH_URL}register`,
@@ -44,18 +52,30 @@ export class AuthService {
     );
   }
 
-  logout(): void {
-    localStorage.removeItem('token');
-    this.#currentUserSource.next(null);
-  }
+  isAdmin = (): Observable<boolean> =>
+    this.currentUser$.pipe(
+      map((user: User | null) => {
+        console.log(!!user?.roles.includes(Role.ADMIN));
+        return !!user?.roles.includes(Role.ADMIN);
+      })
+    );
+
+  isContentCreator = (): Observable<boolean> =>
+    this.currentUser$.pipe(
+      map((user: User | null) => !!user?.roles.includes(Role.CONTENT_CREATOR))
+    );
 
   private setCurrentUser(token: string): void {
     console.log(token);
-    const user = this.getDecodedToken(token);
+    const { role, email, username } = this.getDecodedToken(token);
+    const user = new User('', [role], email, username);
     this.#currentUserSource.next(user);
     console.log(user);
-    console.log(token);
     this.setToken(token);
+  }
+
+  private removeCurrentUser(): void {
+    this.#currentUserSource.next(null);
   }
 
   private getDecodedToken(token: string) {

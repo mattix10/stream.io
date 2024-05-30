@@ -1,13 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { HttpParams } from '@angular/common/http';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
-import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 
 @Component({
   selector: 'app-navbar',
@@ -17,19 +14,20 @@ import { MoviesService } from 'src/app/core/services/movies-service/movies.servi
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
-  user: User | null = null;
-  isLoggedIn$: Observable<boolean> = of(false);
+  user$: Observable<User | null> = of(null);
+  isUserAdmin$: Observable<boolean> = of(false);
+
   protected isMobileMenuVisible = false;
   protected searchValue: string = '';
 
   readonly #router = inject(Router);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
-  readonly #destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.getSearchValue();
-    this.getUserData();
+    this.getCurrentUser();
+    this.checkIsUserAdmin();
   }
 
   logout(): void {
@@ -59,16 +57,11 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  private getUserData(): void {
-    // this.isLoggedIn$ = this.#authService.isLoggedIn$;
-    this.#authService.currentUser$
-      .pipe(
-        takeUntilDestroyed(this.#destroyRef),
-        tap((data: any) => console.log(data))
-      )
-      .subscribe((user) => {
-        this.user = user;
-        console.log(this.user);
-      });
+  private getCurrentUser(): void {
+    this.user$ = this.#authService.currentUser$;
+  }
+
+  private checkIsUserAdmin(): void {
+    this.isUserAdmin$ = this.#authService.isAdmin();
   }
 }

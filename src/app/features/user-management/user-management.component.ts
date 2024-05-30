@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { UserTableComponent } from './user-table/user-table.component';
 import { User } from 'src/app/core/models/user';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
-import { Observable, of } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
 @Component({

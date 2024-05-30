@@ -8,8 +8,6 @@ import { MovieMetadataService } from 'src/app/core/services/movie-metadata-servi
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
 import { FileType } from 'src/app/core/models/file-type';
 
-type FileControlName = 'image' | 'movie';
-
 @Component({
   selector: 'app-movie-form',
   standalone: true,
@@ -37,8 +35,12 @@ export class MovieFormComponent {
     this.movieForm.controls.movie.patchValue(file);
   }
 
-  onRemoveFile(controlName: FileControlName): void {
-    this.movieForm.controls[controlName].patchValue(null);
+  onRemoveImage(): void {
+    this.movieForm.controls.image.patchValue(null);
+  }
+
+  onRemoveMovie(): void {
+    this.movieForm.controls.movie.patchValue(null);
   }
 
   onSubmit(): void {

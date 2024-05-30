@@ -31,33 +31,45 @@
         <li
           [routerLink]="'/user-management'"
           class="navigation-item"
-          *ngIf="user"
+          *ngIf="user$ && (isUserAdmin$ | async)"
         >
           Użytkownicy
         </li>
         <li
           [routerLink]="'/user-dashboard'"
           class="navigation-item"
-          *ngIf="user"
+          *ngIf="user$ | async"
         >
-          <span class="list-title"> Mojek konto </span>
+          <span class="list-title"> Moje konto </span>
         </li>
         <li
           [routerLink]="'/'"
           class="navigation-item"
           (click)="logout()"
-          *ngIf="user"
+          *ngIf="user$ | async"
         >
           <span class="list-title"> Wyloguj </span>
         </li>
-        <li [routerLink]="'/auth/signin'" class="navigation-item" *ngIf="!user">
+        <li
+          [routerLink]="'/auth/signin'"
+          class="navigation-item"
+          *ngIf="!(user$ | async)"
+        >
           <span class="list-title"> Zaloguj </span>
         </li>
-        <li [routerLink]="'/auth/signup'" class="navigation-item" *ngIf="!user">
+        <li
+          [routerLink]="'/auth/signup'"
+          class="navigation-item"
+          *ngIf="!(user$ | async)"
+        >
           <span class="list-title"> Zarejestruj się </span>
         </li>
       </ul>
-      <div routerLink="/user-dashboard" *ngIf="user" class="user">
+      <div
+        routerLink="/user-dashboard"
+        *ngIf="user$ | async as user"
+        class="user"
+      >
         <span class="username">{{ user.email }}</span>
         <img
           class="user-icon"
@@ -76,13 +88,15 @@
       class="list-item"
       (click)="toggleMobileVisibility()"
       [routerLink]="'/user-dashboard'"
+      *ngIf="user$ | async"
     >
-      <span class="list-title"> Panel użytkownika </span>
+      <span class="list-title"> Moje konto </span>
     </li>
     <li
       class="list-item"
       (click)="toggleMobileVisibility()"
       [routerLink]="'/auth/signin'"
+      *ngIf="!(user$ | async)"
     >
       <span class="list-title"> Zaloguj </span>
     </li>

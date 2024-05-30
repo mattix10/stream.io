@@ -8,16 +8,17 @@ import {
 import { HomeComponent } from './features/home/home.component';
 import { MoviesService } from './core/services/movies-service/movies.service';
 import { Movie } from './core/models/movie';
+import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin-guard';
 
 export const movieResolver: ResolveFn<Movie> = (
   route: ActivatedRouteSnapshot
-) => {
-  return inject(MoviesService).getMovie(route.paramMap.get('id')!);
-};
+) => inject(MoviesService).getMovie(route.paramMap.get('id')!);
 
 const routes: Routes = [
   {
     path: 'user-dashboard',
+    canMatch: [authGuard],
     loadComponent: () =>
       import('./features/user-dashboard/user-dashboard.component').then(
         (mod) => mod.UserDashboardComponent
@@ -25,6 +26,7 @@ const routes: Routes = [
   },
   {
     path: 'user-management',
+    canMatch: [adminGuard],
     loadComponent: () =>
       import('./features/user-management/user-management.component').then(
         (mod) => mod.UserManagementComponent
