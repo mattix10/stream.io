@@ -6,6 +6,8 @@ import { MovieComment } from 'src/app/core/models/movie-comment';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AuthService } from 'src/app/core/services/auth-service/auth.service';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-movie',
@@ -15,12 +17,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './movie.component.scss',
 })
 export class MovieComponent implements OnInit {
-  #movieService = inject(MoviesService);
-  #activatedRoute = inject(ActivatedRoute);
+  readonly #movieService = inject(MoviesService);
+  readonly #activatedRoute = inject(ActivatedRoute);
+  readonly #authService = inject(AuthService);
   comments: MovieComment[] = [];
   movie!: Movie;
 
+  isLoggedIn$: Observable<boolean> = of(false);
+
   ngOnInit(): void {
+    this.isLoggedIn$ = this.#authService.isLoggedIn$;
     this.#activatedRoute.data.subscribe(({ movie }) => {
       console.log(movie);
       this.movie = movie;

@@ -1,9 +1,14 @@
 <div class="user-dashboard dashboard container">
   <h1 class="header-primary">Moje konto</h1>
   <h2 class="header-second">Dane</h2>
-  <div>e-mail: example.com</div>
+  <div>
+    e-mail: <span *ngIf="user$ | async as user"></span>{{ user?.email }}
+  </div>
   <div class="divider"></div>
-  <section class="movies-section">
+  <section
+    class="movies-section"
+    *ngIf="(isContentCreator$ | async) || (isUserAdmin$ | async)"
+  >
     <div class="user-movies">
       <h2>Filmy</h2>
       <app-expansion-panel-movie

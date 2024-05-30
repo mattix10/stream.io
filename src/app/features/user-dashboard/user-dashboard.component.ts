@@ -2,11 +2,12 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
 import { Movie } from 'src/app/core/models/movie';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { User } from 'src/app/core/models/user';
+import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -17,11 +18,19 @@ import { User } from 'src/app/core/models/user';
 })
 export class UserDashboardComponent implements OnInit {
   readonly #userService = inject(UserService);
+  readonly #authService = inject(AuthService);
   readonly #destroyRef = inject(DestroyRef);
   movies$?: Observable<Movie[]>;
   user?: User;
 
+  isContentCreator$: Observable<boolean> = of(false);
+  isUserAdmin$: Observable<boolean> = of(false);
+  user$: Observable<User | null> = of(null);
+
   ngOnInit(): void {
+    this.isContentCreator$ = this.#authService.isContentCreator();
+    this.user$ = this.#authService.currentUser$;
+    this.isUserAdmin$ = this.#authService.isAdmin();
     this.loadUser();
   }
 

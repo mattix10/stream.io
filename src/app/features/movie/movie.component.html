@@ -1,7 +1,7 @@
 <div class="movie-container dashboard container" *ngIf="movie">
   <div class="movie-content">
     <div class="display">
-      <video controls class="video">
+      <video controls class="video" *ngIf="isLoggedIn$ | async">
         <source [src]="movie.movieUrl" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
