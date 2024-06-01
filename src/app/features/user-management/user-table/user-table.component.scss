@@ -25,3 +25,8 @@ tr:hover:not(:first-of-type) {
   cursor: pointer;
   background-color: #5b5b5b;
 }
+
+.management-cell,
+.management-header {
+  text-align: center;
+}

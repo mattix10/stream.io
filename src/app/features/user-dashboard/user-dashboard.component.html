@@ -1,13 +1,22 @@
 <div class="user-dashboard dashboard container">
-  <h1 class="header-primary">Moje konto</h1>
+  <h1 class="header-primary">
+    {{
+      isAdminUserEditMode ? "Konto użytkownika " + user?.userName : "Moje konto"
+    }}
+  </h1>
 
   @if (user) {
-  <app-user-data [user]="user" (userDataChanged)="onUserDataChanged($event)" />
+  <app-user-data
+    [user]="user"
+    [isAdminEditMode]="isAdminUserEditMode"
+    (userDataChanged)="onUserDataChanged($event)"
+  />
   }
+  <!-- Czy admin, gdy edytuje użytkownika, to powinien korzystać z tego samego endpointu co użytkownik? -->
 
   <div class="divider"></div>
 
-  @if ((isContentCreator$ | async) || (isUserAdmin$ | async)) {
+  @if (isContentCreator || isAdmin) {
   <section class="movies-section">
     <div class="movie-form">
       <app-headers
@@ -40,7 +49,7 @@
         (removeMovieChanged)="onRemoveMovieChanged($event)"
       />
       } @else {
-      <div>Aktualnie nie masz żadnych filmów.</div>
+      <div>Aktualnie brak dodanych filmów.</div>
       }
     </div>
   </section>

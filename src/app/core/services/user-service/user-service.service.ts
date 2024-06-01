@@ -5,6 +5,7 @@ import { User } from '../../models/user';
 import { user } from 'src/app/mocks/user';
 import { HttpService } from '../http-service/http.service';
 import { UserData } from '../../../features/user-dashboard/models/user-data';
+import { UserResponse } from '../../models/user-response';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +13,8 @@ import { UserData } from '../../../features/user-dashboard/models/user-data';
 export class UserService {
   #httpService = inject(HttpService);
 
-  getUser(id: string, params?: HttpParams): Observable<User> {
-    // return this.#httpService.getItem<User>('users', id);
-    return of(user);
+  getUser(id: string, params?: HttpParams): Observable<any> {
+    return this.#httpService.getItem<UserResponse>('users', id);
   }
 
   updateUser(id: string, user: User): Observable<User> {
@@ -27,5 +27,9 @@ export class UserService {
 
   getUsers(): Observable<any> {
     return this.#httpService.getItems('users');
+  }
+
+  deleteUser(id: string): Observable<any> {
+    return this.#httpService.delete('users', id);
   }
 }

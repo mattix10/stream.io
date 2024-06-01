@@ -23,6 +23,8 @@ const routes: Routes = [
       import('./features/user-dashboard/user-dashboard.component').then(
         (mod) => mod.UserDashboardComponent
       ),
+    loadChildren: () =>
+      import('./features/user-dashboard/user-dashboard-routes'),
   },
   {
     path: 'user-management',
@@ -42,7 +44,6 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    canMatch: [authGuard],
     loadComponent: () =>
       import('./features/auth/auth.component').then((mod) => mod.AuthComponent),
     loadChildren: () => import('./features/auth/auth-routes'),

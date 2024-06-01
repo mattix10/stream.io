@@ -4,7 +4,8 @@
     <th>E-mail</th>
     <th>Numer telefonu</th>
     <th>Rola</th>
-    <th></th>
+    <th class="management-header">Edytuj</th>
+    <th class="management-header">Usuń</th>
   </tr>
   <ng-container *ngIf="users">
     @for (user of users; track user) {
@@ -12,11 +13,23 @@
       <td>{{ user.id }}</td>
       <td>{{ user.email }}</td>
       <td>{{ user.phoneNumber }}</td>
-      @for (role of user.roles; track role) {
+      @if (user.roles.length === 0) {
+      <td>-</td>
+      } @for (role of user.roles; track role) {
       <td>{{ role }}</td>
-
       }
-      <td></td>
+      <td class="management-cell">
+        <img
+          src="./../../../../assets/icons/edit.svg"
+          (click)="onEditUser(user.id)"
+        />
+      </td>
+      <td class="management-cell">
+        <img
+          src="./../../../../assets/icons/delete.svg"
+          (click)="onDeleteUser(user.id)"
+        />
+      </td>
     </tr>
     }
   </ng-container>

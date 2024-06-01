@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from './../../../../environment/environment';
-import { map, Observable, ReplaySubject } from 'rxjs';
+import { map, Observable, ReplaySubject, take, tap } from 'rxjs';
 import { Response } from '../../models/response';
 import { UserResponse } from '../../models/user-response';
 import { User } from '../../models/user';
@@ -67,8 +67,8 @@ export class AuthService {
 
   private setCurrentUser(token: string): void {
     console.log(token);
-    const { role, email, username } = this.getDecodedToken(token);
-    const user = new User('', [role], email, username);
+    const { role, email, userName } = this.getDecodedToken(token);
+    const user = new User('', [role], email, userName);
     this.#currentUserSource.next(user);
     console.log(user);
     this.setToken(token);

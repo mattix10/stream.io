@@ -27,7 +27,7 @@ export class HttpService {
   }
 
   delete(url: string, id: string): Observable<void> {
-    return this.httpClient.delete<void>(this.createUrl(url));
+    return this.httpClient.delete<void>(this.createUrl(url, id));
   }
 
   private createUrl(url: string, id?: string): string {

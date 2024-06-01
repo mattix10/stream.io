@@ -2,7 +2,15 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
-import { Observable, of } from 'rxjs';
+import {
+  combineLatestWith,
+  forkJoin,
+  mergeMap,
+  Observable,
+  of,
+  tap,
+  zip,
+} from 'rxjs';
 import { Movie } from 'src/app/core/models/movie';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
@@ -12,6 +20,7 @@ import { UserDataComponent } from './components/user-data/user-data.component';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 import { HeadersComponent } from './components/headers/headers.component';
 import { UserData } from './models/user-data';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -29,20 +38,21 @@ import { UserData } from './models/user-data';
 export class UserDashboardComponent implements OnInit {
   user: User | null = null;
   isEditMode: boolean = false;
+  isAdminUserEditMode: boolean = false;
   selectedMovieForEdit: Movie | null = null;
 
   movies?: Movie[];
-  isContentCreator$: Observable<boolean> = of(false);
-  isUserAdmin$: Observable<boolean> = of(false);
+  isContentCreator: boolean = false;
+  isAdmin: boolean = false;
 
   readonly #userService = inject(UserService);
   readonly #authService = inject(AuthService);
   readonly #destroyRef = inject(DestroyRef);
   readonly #moviesService = inject(MoviesService);
+  readonly #activatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.loadUser();
-    this.checkUserRole();
+    this.loadUserData();
     this.getUserMovies();
     this.getSelectedMovieForEdit();
   }
@@ -69,15 +79,60 @@ export class UserDashboardComponent implements OnInit {
     // TODO: Catch error toastr
   }
 
-  private loadUser(): void {
-    this.#authService.currentUser$
-      .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe((user) => (this.user = user));
+  private loadUserData(): void {
+    this.checkUserRole()
+      .pipe(
+        mergeMap(() =>
+          this.isAdmin
+            ? this.getUsernameFromQueryParam()
+            : this.loadCurrentUser()
+        )
+      )
+      .subscribe();
   }
 
-  private checkUserRole(): void {
-    this.isContentCreator$ = this.#authService.isContentCreator();
-    this.isUserAdmin$ = this.#authService.isAdmin();
+  private checkUserRole(): Observable<any> {
+    return zip([
+      this.#authService.isContentCreator(),
+      this.#authService.isAdmin(),
+    ]).pipe(
+      tap(([isContentCreator, isAdmin]) => {
+        this.isContentCreator = isContentCreator;
+        this.isAdmin = isAdmin;
+      }),
+      takeUntilDestroyed(this.#destroyRef)
+    );
+  }
+
+  private getUsernameFromQueryParam(): Observable<any> {
+    return this.#activatedRoute.queryParams.pipe(
+      mergeMap((params: Params) => {
+        const username = params['username'];
+        this.checkIsAdminEditMode(username);
+
+        return this.isAdminUserEditMode
+          ? this.loadUserForAdminEditor(username)
+          : of(null);
+      })
+    );
+  }
+
+  private checkIsAdminEditMode(username: string) {
+    this.isAdminUserEditMode =
+      !!username && location.pathname.includes('user-dashboard/edit');
+  }
+
+  private loadCurrentUser(): Observable<any> {
+    return this.#authService.currentUser$.pipe(
+      takeUntilDestroyed(this.#destroyRef),
+      tap((user) => (this.user = user))
+    );
+  }
+
+  private loadUserForAdminEditor(userId: string): Observable<any> {
+    return this.#userService
+      .getUser(userId)
+      .pipe(tap(({ result }) => (this.user = result.user)));
   }
 
   private getUserMovies(): void {

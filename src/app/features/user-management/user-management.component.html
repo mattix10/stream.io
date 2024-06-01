@@ -1,4 +1,7 @@
 <div class="dashboard container">
   <h1 class="header-primary">Użytkownicy</h1>
-  <app-user-table [users]="users"></app-user-table>
+  <app-user-table
+    [users]="users"
+    (deleteUserChanged)="onDeleteUser($event)"
+  ></app-user-table>
 </div>

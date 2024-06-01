@@ -7,37 +7,52 @@
   />
 </div>
 
+@if (isEditMode) {
 <div class="user-data-item">
-  <div class="form-field">
-    <div class="label">e-mail:</div>
+  <form [formGroup]="userDataForm">
+    <div class="form-field">
+      <div class="label">E-mail:</div>
+      <input type="email" class="input" formControlName="email" />
+    </div>
 
-    @if (isEditMode) {
-    <input
-      type="email"
-      class="input"
-      [(ngModel)]="email"
-      [disabled]="!isEditMode"
-    />
-    } @else {
-    <div class="user-data-item">{{ user.email }}</div>
-    }
-  </div>
-  <div class="form-field">
-    <div class="label">hasło:</div>
+    <div class="form-field">
+      <div class="label">Hasło:</div>
+      <input type="password" class="input" formControlName="password" />
+    </div>
 
-    @if (isEditMode) {
-    <input
-      type="password"
-      class="input"
-      [(ngModel)]="password"
-      [disabled]="!isEditMode"
-    />
-    } @else {
-    <div class="user-data-item">********</div>
-    }
-  </div>
+    <div class="form-field">
+      <div class="label">Rola:</div>
+      <select
+        type="text"
+        class="input"
+        formControlName="role"
+        [disabled]="!isAdminEditMode"
+      >
+        <option *ngFor="let role of roles" [selected]="user.roles[0]">
+          {{ role }}
+        </option>
+      </select>
+    </div>
+  </form>
 </div>
 
-@if (isEditMode) {
 <button class="button" (click)="onSave()">Zapisz</button>
+
+} @else {
+<div class="user-data-item">
+  <div class="form-field">
+    <div class="label">E-mail:</div>
+    <div class="user-data-item">{{ user.email }}</div>
+  </div>
+  <div class="form-field">
+    <div class="label">Hasło:</div>
+    <div class="user-data-item">********</div>
+  </div>
+  <div class="form-field">
+    <div class="label">Rola:</div>
+    <div class="user-data-item">
+      {{ user.roles.length ? user.roles[0] : "-" }}
+    </div>
+  </div>
+</div>
 }

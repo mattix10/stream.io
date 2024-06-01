@@ -3,6 +3,7 @@ import { UserTableComponent } from './user-table/user-table.component';
 import { User } from 'src/app/core/models/user';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
 import { AsyncPipe } from '@angular/common';
+import { mergeMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-user-management',
@@ -18,9 +19,21 @@ export class UserManagementComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('here2');
-    this.#userService.getUsers().subscribe(({ result }) => {
-      console.log(result);
-      this.users = result.users;
-    });
+    this.getUserList().subscribe();
+  }
+
+  onDeleteUser(id: string): void {
+    this.#userService
+      .deleteUser(id)
+      .pipe(mergeMap(() => this.getUserList()))
+      .subscribe();
+  }
+
+  getUserList() {
+    return this.#userService.getUsers().pipe(
+      tap(({ result }) => {
+        this.users = result.users;
+      })
+    );
   }
 }

@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
-import { mergeMap, take } from 'rxjs';
+import { mergeMap } from 'rxjs';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 import { MovieItemComponent } from '../home/movie-item/movie-item.component';
 import { MovieItem } from 'src/app/core/models/movie-item';
@@ -14,20 +14,26 @@ import { CommonModule } from '@angular/common';
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.scss',
 })
-export class SearchResultsComponent {
+export class SearchResultsComponent implements OnInit {
   #moviesService = inject(MoviesService);
   #activatedRoute = inject(ActivatedRoute);
   movieItems: MovieItem[] = [];
-
-  // TODO: Remove
   searchValue: string = '';
+  searchParamName = 'search';
+
   ngOnInit(): void {
+    this.getSearchedMovies();
+  }
+
+  getSearchedMovies(): void {
     this.#activatedRoute.queryParams
       .pipe(
         mergeMap((params: Params) => {
-          const searchValue: string = params['search'];
-          this.searchValue = searchValue.toLowerCase();
-          let param = new HttpParams().set('search', searchValue);
+          this.searchValue = params[this.searchParamName]?.toLowerCase();
+          const param = new HttpParams().set(
+            this.searchParamName,
+            this.searchValue
+          );
           return this.#moviesService.getMovies(param);
         })
       )
