@@ -1,0 +1,22 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-data-item {
+  width: 40%;
+
+  .label {
+    margin-right: 6px;
+  }
+}
+
+.button {
+  margin-top: 12px;
+  width: 40%;
+}
+
+.block {
+  display: block;
+}

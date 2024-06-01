@@ -42,6 +42,7 @@ const routes: Routes = [
   },
   {
     path: 'auth',
+    canMatch: [authGuard],
     loadComponent: () =>
       import('./features/auth/auth.component').then((mod) => mod.AuthComponent),
     loadChildren: () => import('./features/auth/auth-routes'),

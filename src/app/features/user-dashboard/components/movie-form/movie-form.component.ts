@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { forkJoin, mergeMap, Observable } from 'rxjs';
 import { MovieMetadata } from 'src/app/core/models/movie-metadata';
@@ -7,6 +7,7 @@ import { FileUploadService } from 'src/app/core/services/file-upload-service/fil
 import { MovieMetadataService } from 'src/app/core/services/movie-metadata-service/movie-metadata.service';
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
 import { FileType } from 'src/app/core/models/file-type';
+import { Movie } from 'src/app/core/models/movie';
 
 @Component({
   selector: 'app-movie-form',
@@ -16,6 +17,19 @@ import { FileType } from 'src/app/core/models/file-type';
   providers: [MovieMetadataService, FileUploadService],
 })
 export class MovieFormComponent {
+  @Input({ required: true }) isEditMode = false;
+
+  @Input() set movie(movie: Movie | null) {
+    if (movie) {
+      this.movieForm.patchValue({
+        title: movie.title,
+        description: movie.description,
+        image: movie.fileImageName,
+        movie: movie.fileMovieName,
+      });
+    }
+  }
+
   movieForm = new FormGroup({
     title: new FormControl(''),
     description: new FormControl(''),
@@ -48,11 +62,15 @@ export class MovieFormComponent {
       return;
     }
 
-    forkJoin([
-      // this.uploadImage(),
-      this.uploadMovie(),
-      this.uploadMovieMetadata(this.movieForm.value),
-    ]).subscribe();
+    if (this.isEditMode) {
+      // TODO: Implement editing
+    } else {
+      forkJoin([
+        // this.uploadImage(),
+        this.uploadMovie(),
+        this.uploadMovieMetadata(this.movieForm.value),
+      ]).subscribe();
+    }
   }
 
   private uploadImage(): void {

@@ -1,6 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Movie } from 'src/app/core/models/movie';
+import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 
 type MovieList = Movie & {
   isExpanded: boolean;
@@ -14,27 +22,32 @@ type MovieList = Movie & {
 })
 export class ExpansionPanelMovieComponent implements OnInit {
   @Input() movies: Movie[] = [];
+  @Output() removeMovieChanged = new EventEmitter<string>();
+
   movieList: MovieList[] = [];
 
-  @Output() moviesChanged: EventEmitter<Movie[]> = new EventEmitter<Movie[]>();
+  readonly #moviesService = inject(MoviesService);
 
   ngOnInit(): void {
     this.addExpandedtoMovieList();
   }
 
   toggleMovie(movieId: string): void {
-    console.log(movieId);
     this.movieList = this.movieList.map((movie) =>
       movie.id === movieId ? { ...movie, isExpanded: !movie.isExpanded } : movie
     );
-    console.log(this.movieList);
   }
 
-  editMovie(movieId: string): void {}
+  editMovie(movieId: string): void {
+    const movie = this.movieList.find((movie) => movie.id === movieId);
+    if (!movie) {
+      return;
+    }
+    this.#moviesService.selectedMovieForEdit$.next(movie);
+  }
 
   deleteMovie(movieId: string): void {
-    const movies = this.movies.filter(({ id }) => id !== movieId);
-    this.moviesChanged.emit(movies);
+    this.removeMovieChanged.emit(movieId);
   }
 
   private addExpandedtoMovieList(): void {

@@ -11,11 +11,15 @@ export const authGuard: CanActivateFn = () => {
     take(1),
     map((isLoggedIn) => {
       if (!isLoggedIn) {
-        console.log('not logged in');
         router.navigateByUrl('auth/signin');
         return false;
       }
-      console.log('logged in');
+
+      if (location.pathname.includes('auth')) {
+        router.navigateByUrl('/');
+        return false;
+      }
+
       return true;
     })
   );

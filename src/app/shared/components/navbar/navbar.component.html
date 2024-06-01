@@ -33,7 +33,7 @@
           class="navigation-item"
           *ngIf="user$ && (isUserAdmin$ | async)"
         >
-          Użytkownicy
+          <span class="list-title">Użytkownicy</span>
         </li>
         <li
           [routerLink]="'/user-dashboard'"

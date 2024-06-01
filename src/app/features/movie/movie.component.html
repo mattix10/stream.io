@@ -1,10 +1,26 @@
 <div class="movie-container dashboard container" *ngIf="movie">
   <div class="movie-content">
     <div class="display">
-      <video controls class="video" *ngIf="isLoggedIn$ | async">
+      <video
+        controls
+        class="video"
+        *ngIf="isLoggedIn$ | async; else noAccessInfo"
+      >
         <source [src]="movie.movieUrl" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
+
+      <ng-template #noAccessInfo>
+        <div class="no-access-wrapper">
+          <img [src]="movie.imgUrl" class="no-access-image" />
+          <div class="no-access-bar">
+            <img src="./../../../assets/icons/info.svg" class="info-icon" />
+            <p class="no-access-title">
+              Musisz być zalogowany, aby móc oglądać ten film.
+            </p>
+          </div>
+        </div>
+      </ng-template>
     </div>
     <div class="comments-wrapper">
       <app-comments

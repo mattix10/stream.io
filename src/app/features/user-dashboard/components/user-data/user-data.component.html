@@ -1,0 +1,43 @@
+<div class="header">
+  <h2 class="header-second">Dane</h2>
+  <img
+    src="./../../../../../assets/icons/edit.svg"
+    (click)="onEdit()"
+    class="icon"
+  />
+</div>
+
+<div class="user-data-item">
+  <div class="form-field">
+    <div class="label">e-mail:</div>
+
+    @if (isEditMode) {
+    <input
+      type="email"
+      class="input"
+      [(ngModel)]="email"
+      [disabled]="!isEditMode"
+    />
+    } @else {
+    <div class="user-data-item">{{ user.email }}</div>
+    }
+  </div>
+  <div class="form-field">
+    <div class="label">hasło:</div>
+
+    @if (isEditMode) {
+    <input
+      type="password"
+      class="input"
+      [(ngModel)]="password"
+      [disabled]="!isEditMode"
+    />
+    } @else {
+    <div class="user-data-item">********</div>
+    }
+  </div>
+</div>
+
+@if (isEditMode) {
+<button class="button" (click)="onSave()">Zapisz</button>
+}

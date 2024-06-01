@@ -42,6 +42,39 @@
   display: none;
 }
 
+.no-access-wrapper {
+  position: relative;
+
+  .no-access-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    height: 100%;
+    opacity: 0.5;
+  }
+}
+
+.no-access-bar {
+  position: absolute;
+  top: calc(50% - 24px);
+  padding: 24px 0;
+  background-color: var.$color-grey;
+  width: 100%;
+  font-size: 18px;
+  font-family: "Mitr-Regular";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .info-icon {
+    height: 24px;
+    width: 24px;
+  }
+
+  .no-access-title {
+    margin-left: 6px;
+  }
+}
+
 @media screen and (max-width: var.$breakpoint-large) {
   .display,
   .comments-wrapper {

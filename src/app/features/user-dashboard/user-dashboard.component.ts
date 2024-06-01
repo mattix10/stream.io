@@ -2,71 +2,95 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
-import { Observable, map, of, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Movie } from 'src/app/core/models/movie';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { User } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
+import { UserDataComponent } from './components/user-data/user-data.component';
+import { UserData } from 'src/app/core/models/user-data';
+import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
+import { HeadersComponent } from './components/headers/headers.component';
 
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [CommonModule, MovieFormComponent, ExpansionPanelMovieComponent],
+  imports: [
+    CommonModule,
+    MovieFormComponent,
+    ExpansionPanelMovieComponent,
+    UserDataComponent,
+    HeadersComponent,
+  ],
   templateUrl: './user-dashboard.component.html',
   styleUrl: './user-dashboard.component.scss',
 })
 export class UserDashboardComponent implements OnInit {
+  user: User | null = null;
+  isEditMode: boolean = false;
+  selectedMovieForEdit: Movie | null = null;
+
+  movies?: Movie[];
+  isContentCreator$: Observable<boolean> = of(false);
+  isUserAdmin$: Observable<boolean> = of(false);
+
   readonly #userService = inject(UserService);
   readonly #authService = inject(AuthService);
   readonly #destroyRef = inject(DestroyRef);
-  movies$?: Observable<Movie[]>;
-  user?: User;
-
-  isContentCreator$: Observable<boolean> = of(false);
-  isUserAdmin$: Observable<boolean> = of(false);
-  user$: Observable<User | null> = of(null);
+  readonly #moviesService = inject(MoviesService);
 
   ngOnInit(): void {
-    this.isContentCreator$ = this.#authService.isContentCreator();
-    this.user$ = this.#authService.currentUser$;
-    this.isUserAdmin$ = this.#authService.isAdmin();
     this.loadUser();
+    this.checkUserRole();
+    this.getUserMovies();
+    this.getSelectedMovieForEdit();
   }
 
-  onMoviesChanged(movies: Movie[]): void {
-    if (!this.user) {
+  onUserDataChanged({ password, email }: UserData): void {
+    this.#userService.updateMe('', { password, email });
+  }
+
+  onEditModeChange(isEditMode: boolean): void {
+    this.isEditMode = isEditMode;
+  }
+
+  onMovieFormChanged(formValue: any): void {
+    // this.#userService.updateUser(this.user?.id, this.user)
+  }
+
+  onRemoveMovieChanged(movieId: string): void {
+    if (!movieId) {
       return;
     }
 
-    this.user.movies = [...movies];
-    this.updateUser();
+    this.#moviesService.deleteMovie(movieId);
+    // TODO: loading
+    // TODO: Catch error toastr
   }
 
   private loadUser(): void {
-    // TODO: Remove userId - make it dynamically
-    const userId = '1';
-    this.movies$ = this.#userService.getUser(userId).pipe(
-      takeUntilDestroyed(this.#destroyRef),
-      tap((user: User) => (this.user = user)),
-      map(({ movies }) => movies)
-    );
+    this.#authService.currentUser$
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe((user) => (this.user = user));
   }
 
-  private updateUser(): void {
-    if (!this.user) {
-      return;
-    }
-
-    this.movies$ = this.#userService.updateUser(this.user.id, this.user).pipe(
-      takeUntilDestroyed(this.#destroyRef),
-      tap((user: User) => (this.user = user)),
-      map(({ movies }) => movies)
-    );
+  private checkUserRole(): void {
+    this.isContentCreator$ = this.#authService.isContentCreator();
+    this.isUserAdmin$ = this.#authService.isAdmin();
   }
 
-  // Remove 'any'
-  onMovieFormChanged(formValue: any): void {
-    // this.#userService.updateUser(this.user?.id, this.user)
+  private getUserMovies(): void {
+    this.#moviesService.getMovies().pipe(takeUntilDestroyed(this.#destroyRef));
+    // .subscribe((movies) => (this.movies = movies));
+  }
+
+  private getSelectedMovieForEdit(): void {
+    this.#moviesService.selectedMovieForEdit$
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe((selectedMovieForEdit) => {
+        this.isEditMode = !!selectedMovieForEdit;
+        this.selectedMovieForEdit = selectedMovieForEdit;
+      });
   }
 }

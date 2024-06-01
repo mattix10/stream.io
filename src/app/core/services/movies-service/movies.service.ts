@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http-service/http.service';
 import { MovieItem } from '../../models/movie-item';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Movie } from '../../models/movie';
 import { HttpParams } from '@angular/common/http';
 import { movieItems } from 'src/app/mocks/movie-items';
 import { movies } from 'src/app/mocks/movies';
-import { movie } from 'src/app/mocks/movie';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MoviesService {
+  selectedMovieForEdit$ = new BehaviorSubject<Movie | null>(null);
   constructor(private httpService: HttpService) {}
 
   getMovies(params?: HttpParams): Observable<MovieItem[]> {

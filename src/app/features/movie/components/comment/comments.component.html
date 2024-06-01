@@ -10,7 +10,7 @@
     </div>
     <ng-template #noComments>
       <p class="no-comments">
-        Ten film nie ma aktualnie żadnych komentarzy. Wyraź swoją opinię
+        Ten film nie ma aktualnie żadnych komentarzy. Wyraź swoją opinię jako
         pierwszy.
       </p>
     </ng-template>
@@ -19,7 +19,11 @@
         #comment
         class="comment-textarea"
         rows="5"
-        placeholder="Wpisz tekst tutaj..."
+        [placeholder]="
+          (isLoggedIn$ | async)
+            ? 'Wpisz tekst tutaj...'
+            : 'Musisz być zalogowany, aby móc dodać komentarz.'
+        "
         [disabled]="!(isLoggedIn$ | async)"
         [class.disabled]="!(isLoggedIn$ | async)"
       ></textarea>

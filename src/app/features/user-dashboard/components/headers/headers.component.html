@@ -1,0 +1,8 @@
+<div class="headers">
+  <h2 [class.header-highlight]="!isEditMode" (click)="changeEditMode(false)">
+    Dodaj film
+  </h2>
+  <h2 [class.header-highlight]="isEditMode" (click)="changeEditMode(true)">
+    Edytuj film
+  </h2>
+</div>

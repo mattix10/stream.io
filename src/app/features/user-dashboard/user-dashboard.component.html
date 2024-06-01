@@ -1,27 +1,48 @@
 <div class="user-dashboard dashboard container">
   <h1 class="header-primary">Moje konto</h1>
-  <h2 class="header-second">Dane</h2>
-  <div>
-    e-mail: <span *ngIf="user$ | async as user"></span>{{ user?.email }}
-  </div>
+
+  @if (user) {
+  <app-user-data [user]="user" (userDataChanged)="onUserDataChanged($event)" />
+  }
+
   <div class="divider"></div>
-  <section
-    class="movies-section"
-    *ngIf="(isContentCreator$ | async) || (isUserAdmin$ | async)"
-  >
-    <div class="user-movies">
-      <h2>Filmy</h2>
-      <app-expansion-panel-movie
-        *ngIf="movies$ | async as movies"
-        [movies]="movies"
-        (moviesChanged)="onMoviesChanged($event)"
-      ></app-expansion-panel-movie>
-    </div>
+
+  @if ((isContentCreator$ | async) || (isUserAdmin$ | async)) {
+  <section class="movies-section">
     <div class="movie-form">
-      <h2>Dodaj film</h2>
+      <app-headers
+        [isEditMode]="isEditMode"
+        (editModeChanged)="onEditModeChange($event)"
+      />
+
+      @if (!isEditMode) {
       <app-movie-form
         (movieFormChanged)="onMovieFormChanged($event)"
-      ></app-movie-form>
+        [isEditMode]="isEditMode"
+      />
+      } @else if (selectedMovieForEdit) {
+      <app-movie-form
+        (movieFormChanged)="onMovieFormChanged($event)"
+        [isEditMode]="isEditMode"
+        [movie]="selectedMovieForEdit"
+      />
+      } @else {
+      <p>Wybierz z listy film, który chcesz edytować.</p>
+      }
+    </div>
+
+    <div class="movie-list">
+      <h2>Filmy</h2>
+
+      @if (movies) {
+      <app-expansion-panel-movie
+        [movies]="movies"
+        (removeMovieChanged)="onRemoveMovieChanged($event)"
+      />
+      } @else {
+      <div>Aktualnie nie masz żadnych filmów.</div>
+      }
     </div>
   </section>
+  }
 </div>

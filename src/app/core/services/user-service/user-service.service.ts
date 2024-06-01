@@ -6,6 +6,7 @@ import { user } from 'src/app/mocks/user';
 import { HttpService } from '../http-service/http.service';
 import { environment } from 'src/environment/environment';
 import { Response } from '../../models/response';
+import { UserData } from '../../models/user-data';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,10 @@ export class UserService {
 
   updateUser(id: string, user: User): Observable<User> {
     return this.#httpService.update<User>('users', id, user);
+  }
+
+  updateMe(id: string, user: UserData): Observable<UserData> {
+    return this.#httpService.update<UserData>('users', id, user);
   }
 
   getUsers(): Observable<any> {

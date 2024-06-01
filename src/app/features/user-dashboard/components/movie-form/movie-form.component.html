@@ -1,7 +1,7 @@
 <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
   <div class="form-field">
     <label class="label" for="title">Tytuł</label>
-    <input class="input" id="title" name="title" />
+    <input class="input" id="title" formControlName="title" />
   </div>
 
   <div class="form-field">
@@ -9,9 +9,8 @@
     <textarea
       class="input"
       id="description"
-      name="description"
-      rows="5"
       formControlName="description"
+      rows="5"
     ></textarea>
   </div>
 
@@ -28,5 +27,8 @@
     (removeFileChanged)="onRemoveMovie()"
     (uploadFileChanged)="onUploadMovie($event)"
   ></app-drag-and-drop-upload-file>
-  <button class="button" type="submit">Dodaj film</button>
+
+  <button class="button" type="submit">
+    {{ isEditMode ? "Edytuj" : "Dodaj" }} film
+  </button>
 </form>
