@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { User } from 'src/app/core/models/user';
-import { UserData } from 'src/app/core/models/user-data';
+import { UserData } from '../../models/user-data';
 
 @Component({
   selector: 'app-user-data',

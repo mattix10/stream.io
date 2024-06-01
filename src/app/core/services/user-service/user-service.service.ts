@@ -4,16 +4,13 @@ import { Observable, of } from 'rxjs';
 import { User } from '../../models/user';
 import { user } from 'src/app/mocks/user';
 import { HttpService } from '../http-service/http.service';
-import { environment } from 'src/environment/environment';
-import { Response } from '../../models/response';
-import { UserData } from '../../models/user-data';
+import { UserData } from '../../../features/user-dashboard/models/user-data';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   #httpService = inject(HttpService);
-  #httpClient = inject(HttpClient);
 
   getUser(id: string, params?: HttpParams): Observable<User> {
     // return this.#httpService.getItem<User>('users', id);

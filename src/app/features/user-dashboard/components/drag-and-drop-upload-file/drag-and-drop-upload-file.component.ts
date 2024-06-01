@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FileType } from 'src/app/core/models/file-type';
+import { FileType } from '../../models/file-type';
 
 @Component({
   selector: 'app-drag-and-drop-upload-file',

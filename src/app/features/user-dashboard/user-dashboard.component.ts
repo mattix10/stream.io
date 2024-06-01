@@ -9,9 +9,9 @@ import { CommonModule } from '@angular/common';
 import { User } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 import { UserDataComponent } from './components/user-data/user-data.component';
-import { UserData } from 'src/app/core/models/user-data';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 import { HeadersComponent } from './components/headers/headers.component';
+import { UserData } from './models/user-data';
 
 @Component({
   selector: 'app-user-dashboard',

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpService } from '../http-service/http.service';
 import { MovieItem } from '../../models/movie-item';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -12,7 +12,7 @@ import { movies } from 'src/app/mocks/movies';
 })
 export class MoviesService {
   selectedMovieForEdit$ = new BehaviorSubject<Movie | null>(null);
-  constructor(private httpService: HttpService) {}
+  readonly #httpService = inject(HttpService);
 
   getMovies(params?: HttpParams): Observable<MovieItem[]> {
     // return this.httpService.getItems<MovieItem[]>('movies', params);
@@ -26,14 +26,14 @@ export class MoviesService {
   }
 
   createMovie(id: string): Observable<MovieItem> {
-    return this.httpService.getItem<MovieItem>('movies', id);
+    return this.#httpService.getItem<MovieItem>('movies', id);
   }
 
   updateMovie(id: string, body: Movie): Observable<Movie> {
-    return this.httpService.update('movies', id, body);
+    return this.#httpService.update('movies', id, body);
   }
 
   deleteMovie(id: string): Observable<void> {
-    return this.httpService.delete('movies', id);
+    return this.#httpService.delete('movies', id);
   }
 }

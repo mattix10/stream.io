@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { forkJoin, mergeMap, Observable } from 'rxjs';
-import { MovieMetadata } from 'src/app/core/models/movie-metadata';
-import { FileUploadService } from 'src/app/core/services/file-upload-service/file-upload.service';
-import { MovieMetadataService } from 'src/app/core/services/movie-metadata-service/movie-metadata.service';
+import { FileUploadService } from 'src/app/features/user-dashboard/services/file-upload-service/file-upload.service';
+import { MovieMetadataService } from 'src/app/features/user-dashboard/services/movie-metadata-service/movie-metadata.service';
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
-import { FileType } from 'src/app/core/models/file-type';
 import { Movie } from 'src/app/core/models/movie';
+import { FileType } from '../../models/file-type';
+import { MovieMetadata } from '../../models/movie-metadata';
 
 @Component({
   selector: 'app-movie-form',
