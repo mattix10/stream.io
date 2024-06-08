@@ -6,7 +6,7 @@ import { MoviesService } from 'src/app/core/services/movies-service/movies.servi
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 import { Observable, of, tap } from 'rxjs';
-import { MovieMetadata } from 'src/app/core/models/movie-item';
+import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 
 @Component({
   selector: 'app-movie',

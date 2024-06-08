@@ -4,8 +4,8 @@ import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 import { mergeMap } from 'rxjs';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 import { MovieMetadataComponent } from '../home/movie-item/movie-item.component';
-import { MovieMetadata } from 'src/app/core/models/movie-item';
 import { CommonModule } from '@angular/common';
+import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 
 @Component({
   selector: 'app-search-results',

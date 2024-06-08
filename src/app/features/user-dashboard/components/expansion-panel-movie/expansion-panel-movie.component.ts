@@ -7,7 +7,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { UserMovieMetadata } from 'src/app/core/models/user-movie-item';
+import { UserMovieMetadata } from 'src/app/core/models/user-movie-metadata';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 
 type MovieListItem = UserMovieMetadata & {

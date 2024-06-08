@@ -2,16 +2,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
-import {
-  combineLatestWith,
-  forkJoin,
-  mergeMap,
-  Observable,
-  of,
-  tap,
-  zip,
-} from 'rxjs';
-import { Movie } from 'src/app/core/models/movie';
+import { mergeMap, Observable, of, tap, zip } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { User } from 'src/app/core/models/user';
@@ -21,7 +12,7 @@ import { MoviesService } from 'src/app/core/services/movies-service/movies.servi
 import { HeadersComponent } from './components/headers/headers.component';
 import { UserData } from './models/user-data';
 import { ActivatedRoute, Params } from '@angular/router';
-import { UserMovieMetadata } from 'src/app/core/models/user-movie-item';
+import { UserMovieMetadata } from 'src/app/core/models/user-movie-metadata';
 
 @Component({
   selector: 'app-user-dashboard',

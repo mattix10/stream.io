@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { MovieMetadata } from 'src/app/core/models/movie-item';
+import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 
 @Component({
   selector: 'app-movie-item',

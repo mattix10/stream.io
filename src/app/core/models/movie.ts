@@ -1,5 +1,5 @@
 import { MovieComment } from './movie-comment';
-import { MovieMetadata } from './movie-item';
+import { MovieMetadata } from './movie-metadata';
 
 export interface Movie extends MovieMetadata {
   description: string;

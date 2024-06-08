@@ -1,4 +1,4 @@
-import { MovieMetadata } from '../core/models/movie-item';
+import { MovieMetadata } from '../core/models/movie-metadata';
 
 export const movieItems: MovieMetadata[] = [
   {

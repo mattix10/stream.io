@@ -1,9 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { MovieMetadataComponent } from './movie-item/movie-item.component';
-import { MovieMetadata } from 'src/app/core/models/movie-item';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 @Component({
   selector: 'app-home',
   standalone: true,

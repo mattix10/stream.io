@@ -6,7 +6,7 @@ import { MovieMetadataService } from 'src/app/features/user-dashboard/services/m
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
 import { FileType } from '../../models/file-type';
 import { MovieMetadata } from '../../models/movie-metadata';
-import { UserMovieMetadata } from 'src/app/core/models/user-movie-item';
+import { UserMovieMetadata } from 'src/app/core/models/user-movie-metadata';
 
 @Component({
   selector: 'app-movie-form',

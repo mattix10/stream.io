@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpService } from '../http-service/http.service';
-import { MovieMetadata } from '../../models/movie-item';
+import { MovieMetadata } from '../../models/movie-metadata';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Movie } from '../../models/movie';
 import { HttpParams } from '@angular/common/http';
 import { movieItems } from 'src/app/mocks/movie-items';
-import { UserMovieMetadata } from '../../models/user-movie-item';
+import { UserMovieMetadata } from '../../models/user-movie-metadata';
 import { MovieComment } from '../../models/movie-comment';
 import { comments } from 'src/app/mocks/comments';
 
