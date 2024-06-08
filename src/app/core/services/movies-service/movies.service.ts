@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { HttpService } from '../http-service/http.service';
 import { MovieMetadata } from '../../models/movie-metadata';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { Movie } from '../../models/movie';
 import { HttpParams } from '@angular/common/http';
 import { movieItems } from 'src/app/mocks/movie-items';
 import { UserMovieMetadata } from '../../models/user-movie-metadata';
@@ -29,7 +28,7 @@ export class MoviesService {
   /**
    * Returns link to watch movie
    * @param {string} slug
-   * @returns
+   * @returns {Observable<string>}
    */
 
   getMovieLink(slug: string): Observable<string> {
@@ -41,7 +40,7 @@ export class MoviesService {
     return this.#httpService.getItem<MovieMetadata>('movies', slug);
   }
 
-  updateMovie(slug: string, body: Movie): Observable<Movie> {
+  updateMovie(slug: string, body: MovieMetadata): Observable<MovieMetadata> {
     return this.#httpService.update('movies', slug, body);
   }
 

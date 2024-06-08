@@ -7,7 +7,7 @@ import { environment } from 'src/environment/environment';
   providedIn: 'root',
 })
 export class HttpService {
-  #httpClient = inject(HttpClient);
+  readonly #httpClient = inject(HttpClient);
 
   getItems<T>(url: string, params?: HttpParams): Observable<T> {
     return this.#httpClient.get<T>(this.createUrl(url), { params });
@@ -30,7 +30,6 @@ export class HttpService {
   }
 
   private createUrl(url: string, id?: string): string {
-    console.log(url);
     return environment.API_URL + url + (id ? '/' + id : '');
   }
 }
