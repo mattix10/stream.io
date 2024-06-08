@@ -7,10 +7,10 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Movie } from 'src/app/core/models/movie';
+import { UserMovieMetadata } from 'src/app/core/models/user-movie-item';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 
-type MovieList = Movie & {
+type MovieListItem = UserMovieMetadata & {
   isExpanded: boolean;
 };
 @Component({
@@ -21,10 +21,10 @@ type MovieList = Movie & {
   styleUrl: './expansion-panel-movie.component.scss',
 })
 export class ExpansionPanelMovieComponent implements OnInit {
-  @Input() movies: Movie[] = [];
+  @Input() movies: UserMovieMetadata[] = [];
   @Output() removeMovieChanged = new EventEmitter<string>();
 
-  movieList: MovieList[] = [];
+  movieList: MovieListItem[] = [];
 
   readonly #moviesService = inject(MoviesService);
 
@@ -32,14 +32,14 @@ export class ExpansionPanelMovieComponent implements OnInit {
     this.addExpandedtoMovieList();
   }
 
-  toggleMovie(movieId: string): void {
+  toggleMovie(slug: string): void {
     this.movieList = this.movieList.map((movie) =>
-      movie.id === movieId ? { ...movie, isExpanded: !movie.isExpanded } : movie
+      movie.slug === slug ? { ...movie, isExpanded: !movie.isExpanded } : movie
     );
   }
 
-  editMovie(movieId: string): void {
-    const movie = this.movieList.find((movie) => movie.id === movieId);
+  editMovie(slug: string): void {
+    const movie = this.movieList.find((movie) => movie.slug === slug);
     if (!movie) {
       return;
     }

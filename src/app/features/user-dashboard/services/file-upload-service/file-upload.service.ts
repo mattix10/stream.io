@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
+import { FileType } from '../../models/file-type';
 
 @Injectable()
 export class FileUploadService {
@@ -18,6 +19,17 @@ export class FileUploadService {
   }
 
   getLinkForUploadMovie(): Observable<string> {
-    return this.#httpClient.get<string>(`${environment.API_URL}upload`);
+    return this.getLinkForUpload(FileType.Movie);
+  }
+
+  getLinkForUploadImage(): Observable<string> {
+    return this.getLinkForUpload(FileType.Image);
+  }
+
+  private getLinkForUpload(fileType: FileType): Observable<string> {
+    const uploadLink = fileType == FileType.Movie ? 'Movie' : 'Image';
+    return this.#httpClient.get<string>(
+      `${environment.API_URL}upload${uploadLink}`
+    );
   }
 }

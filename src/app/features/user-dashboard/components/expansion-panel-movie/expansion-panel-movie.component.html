@@ -1,6 +1,6 @@
 <div class="expansion-panel" *ngFor="let movie of movieList">
   <div class="header">
-    <div class="title" (click)="toggleMovie(movie.id)">
+    <div class="title" (click)="toggleMovie(movie.slug)">
       <img
         class="expand-arrow"
         [class.arrow-up]="movie.isExpanded"
@@ -13,13 +13,13 @@
         class="edit-icon"
         src="./../../../../../assets/icons/edit.svg"
         title="Edytuj"
-        (click)="editMovie(movie.id)"
+        (click)="editMovie(movie.slug)"
       />
       <img
         class="delete-icon"
         src="./../../../../../assets/icons/delete.svg"
         title="Usuń"
-        (click)="deleteMovie(movie.id)"
+        (click)="deleteMovie(movie.slug)"
       />
     </div>
   </div>
@@ -30,13 +30,13 @@
         {{ movie.description }}
       </p>
     </div>
-    <div class="content-section">
+    <!-- <div class="content-section">
       <p class="content-header">Nazwa pliku ze zdjęciem:</p>
       <p>{{ movie?.fileImageName ? movie?.fileImageName : "-" }}</p>
     </div>
     <div class="content-section">
       <p class="content-header">Nazwa pliku z filmem:</p>
       <p>{{ movie?.fileMovieName ? movie?.fileMovieName : "-" }}</p>
-    </div>
+    </div> -->
   </div>
 </div>

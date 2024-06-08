@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from './../../../../environment/environment';
-import { map, Observable, ReplaySubject, take, tap } from 'rxjs';
+import { map, Observable, ReplaySubject } from 'rxjs';
 import { Response } from '../../models/response';
 import { UserResponse } from '../../models/user-response';
 import { User } from '../../models/user';
@@ -31,7 +31,7 @@ export class AuthService {
 
   login(form: { password: string; email: string }): Observable<void> {
     return this.#httpClient
-      .post<Response<UserResponse>>(`${environment.AUTH_URL}login`, form)
+      .post<Response<UserResponse>>(`${environment.API_URL}login`, form)
       .pipe(
         map(({ result: { token } }) => {
           this.setCurrentUser(token);
@@ -47,7 +47,7 @@ export class AuthService {
 
   registration(form: { password: string; email: string }): Observable<boolean> {
     return this.#httpClient.post<boolean>(
-      `${environment.AUTH_URL}register`,
+      `${environment.API_URL}register`,
       form
     );
   }

@@ -1,64 +1,81 @@
-import { MovieItem } from '../core/models/movie-item';
+import { MovieMetadata } from '../core/models/movie-item';
 
-export const movieItems: MovieItem[] = [
+export const movieItems: MovieMetadata[] = [
   {
-    id: '1',
-    title: 'Django',
-    imgUrl: './../../../../assets/images/django.jpg',
-    movieUrl: './../../../../assets/movies/django.mp4',
+    slug: '1',
+    title: 'The Shawshank Redemption',
+    imgUrl: './../../../../assets/images/obraz.jpg',
+    description:
+      'Opowieść o nadziei i przyjaźni w więzieniu, gdzie dwaj osadzeni nawiązują niezwykłą więź, rozpoczynając podróż ku odkupieniu.',
   },
   {
-    id: '2',
+    slug: '1',
+    title: 'Django Unchained',
+    imgUrl: './../../../../assets/images/django.jpg',
+    description:
+      'Wyzwolony niewolnik współpracuje z łowcą nagród, by uratować swoją żonę z rąk brutalnego właściciela plantacji, wymierzając sprawiedliwość z zemstą.',
+  },
+  {
+    slug: '2',
     title: 'The Godfather',
     imgUrl: './../../../../assets/images/ojciec-chrzestny.jpg',
-    movieUrl: './../../../../assets/movies/godfather.mp4',
+    description:
+      'Ikoniczna saga o rodzinie, władzy i lojalności, śledząca losy rodziny Corleone w świecie zorganizowanej przestępczości.',
   },
   {
-    id: '3',
+    slug: '3',
     title: 'The Dark Knight',
     imgUrl: './../../../../assets/images/mroczny-rycerz.jpg',
-    movieUrl: './../../../../assets/movies/dark_knight.mp4',
+    description:
+      'Batman staje w obliczu anarchii i chaosu, gdy Joker zagraża Gotham, zmuszając Mrocznego Rycerza do przekroczenia granic swojego moralnego kodeksu.',
   },
   {
-    id: '4',
+    slug: '4',
     title: 'Pulp Fiction',
     imgUrl: './../../../../assets/images/pulp-fiction.jpg',
-    movieUrl: './../../../../assets/movies/pulp_fiction.mp4',
+    description:
+      'Zaskakujący kolaż historii kryminalnych, ukazujący przestępczy światek Los Angeles w unikalny, niechronologiczny sposób.',
   },
   {
-    id: '5',
+    slug: '5',
     title: 'Fight Club',
     imgUrl: './../../../../assets/images/fight-club.jpg',
-    movieUrl: './../../../../assets/movies/fight_club.mp4',
+    description:
+      'Mężczyzna w kryzysie tworzy podziemny klub walki, odkrywając ciemne strony ludzkiej natury w szaleńczym poszukiwaniu sensu życia.',
   },
   {
-    id: '6',
+    slug: '6',
     title: 'Forrest Gump',
     imgUrl: './../../../../assets/images/forrest-gump.jpg',
-    movieUrl: './../../../../assets/movies/forrest_gump.mp4',
+    description:
+      'Niezwykłe życie prostolinijnego człowieka, który nieświadomie wpływa na kluczowe wydarzenia XX wieku.',
   },
   {
-    id: '7',
+    slug: '7',
     title: 'Inception',
     imgUrl: './../../../../assets/images/incepcja.jpg',
-    movieUrl: './../../../../assets/movies/inception.mp4',
+    description:
+      'Mistrz złodziejstwa próbuje zaszczepić pomysł w umyśle miliardera poprzez sny, balansując na granicy rzeczywistości i iluzji.',
   },
   {
-    id: '8',
+    slug: '8',
     title: 'The Matrix',
     imgUrl: './../../../../assets/images/matrix.jpg',
-    movieUrl: './../../../../assets/movies/matrix.mp4',
+    description:
+      'Neo odkrywa mroczną prawdę o świecie, w którym żyje, i dołącza do walki przeciwko maszynom rządzącym ludzkością.',
   },
   {
-    id: '9',
+    slug: '9',
     title: 'Goodfellas',
     imgUrl: './../../../../assets/images/goodfellas.jpg',
-    movieUrl: './../../../../assets/movies/goodfellas.mp4',
+    description:
+      'Wciągająca opowieść o wzlotach i upadkach życia w świecie przestępczym, ukazana z perspektywy jednego z jego członków.',
   },
   {
-    id: '10',
+    slug: '10',
     title: 'The Lord of the Rings: The Return of the King',
     imgUrl: './../../../../assets/images/obraz.jpg',
-    movieUrl: './../../../../assets/movies/lord_of_the_rings.mp4',
+    description:
+      'Ostateczna bitwa o Śródziemie toczy się, gdy Frodo zbliża się do wulkanu, by zniszc',
   },
 ];

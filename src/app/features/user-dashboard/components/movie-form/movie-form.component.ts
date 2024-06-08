@@ -1,31 +1,30 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { forkJoin, mergeMap, Observable } from 'rxjs';
 import { FileUploadService } from 'src/app/features/user-dashboard/services/file-upload-service/file-upload.service';
 import { MovieMetadataService } from 'src/app/features/user-dashboard/services/movie-metadata-service/movie-metadata.service';
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
-import { Movie } from 'src/app/core/models/movie';
 import { FileType } from '../../models/file-type';
 import { MovieMetadata } from '../../models/movie-metadata';
+import { UserMovieMetadata } from 'src/app/core/models/user-movie-item';
 
 @Component({
   selector: 'app-movie-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DragAndDropUploadFileComponent],
+  imports: [ReactiveFormsModule, DragAndDropUploadFileComponent],
   templateUrl: './movie-form.component.html',
   providers: [MovieMetadataService, FileUploadService],
 })
 export class MovieFormComponent {
   @Input({ required: true }) isEditMode = false;
 
-  @Input() set movie(movie: Movie | null) {
+  @Input() set movie(movie: UserMovieMetadata | null) {
     if (movie) {
       this.movieForm.patchValue({
         title: movie.title,
         description: movie.description,
-        image: movie.fileImageName,
-        movie: movie.fileMovieName,
+        image: this.createUserFilename(movie.title, FileType.Image),
+        movie: this.createUserFilename(movie.title, FileType.Movie),
       });
     }
   }
@@ -66,15 +65,11 @@ export class MovieFormComponent {
       // TODO: Implement editing
     } else {
       forkJoin([
-        // this.uploadImage(),
         this.uploadMovie(),
+        this.uploadImage(),
         this.uploadMovieMetadata(this.movieForm.value),
       ]).subscribe();
     }
-  }
-
-  private uploadImage(): void {
-    // TODO: Implement this method
   }
 
   private uploadMovie(): Observable<void> {
@@ -90,10 +85,27 @@ export class MovieFormComponent {
       );
   }
 
+  private uploadImage(): Observable<void> {
+    return this.#fileUploadService
+      .getLinkForUploadImage()
+      .pipe(
+        mergeMap((link: string) =>
+          this.#fileUploadService.upload(
+            this.movieForm.controls.image.value!,
+            link
+          )
+        )
+      );
+  }
+
   private uploadMovieMetadata({
     title,
     description,
   }: any): Observable<MovieMetadata> {
     return this.#movieMetadataService.uploadMovieMetadata(title, description);
+  }
+
+  private createUserFilename(title: string, type: FileType): string {
+    return `${title}_${type}_file`;
   }
 }

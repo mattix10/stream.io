@@ -1,39 +1,57 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpService } from '../http-service/http.service';
-import { MovieItem } from '../../models/movie-item';
+import { MovieMetadata } from '../../models/movie-item';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Movie } from '../../models/movie';
 import { HttpParams } from '@angular/common/http';
 import { movieItems } from 'src/app/mocks/movie-items';
-import { movies } from 'src/app/mocks/movies';
+import { UserMovieMetadata } from '../../models/user-movie-item';
+import { MovieComment } from '../../models/movie-comment';
+import { comments } from 'src/app/mocks/comments';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MoviesService {
-  selectedMovieForEdit$ = new BehaviorSubject<Movie | null>(null);
+  selectedMovieForEdit$ = new BehaviorSubject<UserMovieMetadata | null>(null);
   readonly #httpService = inject(HttpService);
 
-  getMovies(params?: HttpParams): Observable<MovieItem[]> {
-    // return this.httpService.getItems<MovieItem[]>('movies', params);
-    return of(movieItems);
+  getMovies<T>(params?: HttpParams): Observable<T[]> {
+    // return this.httpService.getItems<MovieMetadata[]>('movies', params);
+    return of(movieItems as T[]);
   }
 
-  getMovie(id: string): Observable<Movie> {
-    const movie = movies.find((movie) => movie.id === id);
-    return of(movie as Movie);
-    // return this.httpService.getItem<Movie>('movies', id);
+  getMovieMetadata(slug: string): Observable<MovieMetadata> {
+    // return this.#httpService.getItem<MovieMetadata>(`movies`, slug);
+    return of(movieItems[0]);
   }
 
-  createMovie(id: string): Observable<MovieItem> {
-    return this.#httpService.getItem<MovieItem>('movies', id);
+  /**
+   * Returns link to watch movie
+   * @param {string} slug
+   * @returns
+   */
+
+  getMovieLink(slug: string): Observable<string> {
+    return of('./../../../../assets/movies/lord_of_the_rings.mp4');
+    // return this.httpService.getItem<string>('movieLink', slug);
   }
 
-  updateMovie(id: string, body: Movie): Observable<Movie> {
-    return this.#httpService.update('movies', id, body);
+  createMovie(slug: string): Observable<MovieMetadata> {
+    return this.#httpService.getItem<MovieMetadata>('movies', slug);
   }
 
-  deleteMovie(id: string): Observable<void> {
-    return this.#httpService.delete('movies', id);
+  updateMovie(slug: string, body: Movie): Observable<Movie> {
+    return this.#httpService.update('movies', slug, body);
+  }
+
+  deleteMovie(slug: string): Observable<void> {
+    return this.#httpService.delete('movies', slug);
+  }
+
+  getComments(slug: string): Observable<MovieComment[]> {
+    // const params = new HttpParams().set('slug', 12);
+    // return this.#httpService.getItems('comments', params);
+    return of(comments);
   }
 }

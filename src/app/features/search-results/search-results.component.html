@@ -1,11 +1,14 @@
 <div class="dashboard container home">
   <h2>Wyniki wyszukiwania dla {{ searchValue }}:</h2>
-  <div class="movie-items-container" *ngIf="movieItems.length">
+  @if (movieMetadataList.length) {
+  <div class="movie-items-container">
     <app-movie-item
       class="movie-item"
-      *ngFor="let movieItem of movieItems"
-      [movieItem]="movieItem"
-      [routerLink]="['/movie', movieItem.id]"
+      *ngFor="let movieMetadata of movieMetadataList"
+      [movieMetadata]="movieMetadata"
     ></app-movie-item>
   </div>
+  } @else {
+  <div>Brak wyników</div>
+  }
 </div>

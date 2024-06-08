@@ -1,19 +1,8 @@
-import { NgModule, inject } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  ResolveFn,
-  RouterModule,
-  Routes,
-} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
-import { MoviesService } from './core/services/movies-service/movies.service';
-import { Movie } from './core/models/movie';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin-guard';
-
-export const movieResolver: ResolveFn<Movie> = (
-  route: ActivatedRouteSnapshot
-) => inject(MoviesService).getMovie(route.paramMap.get('id')!);
 
 const routes: Routes = [
   {
@@ -35,12 +24,11 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'movie/:id',
+    path: 'movie/:slug',
     loadComponent: () =>
       import('./features/movie/movie.component').then(
         (mod) => mod.MovieComponent
       ),
-    resolve: { movie: movieResolver },
   },
   {
     path: 'auth',

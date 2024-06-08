@@ -1,0 +1,58 @@
+// Widok: strona główna
+// GetAllMetadataResponse - lista odpowiedzi zwracanych dla strony głównej, na kteóej wyświetlone są filmy
+{
+  "response": [
+    {
+      "title": "Matrix Reaktywacja",
+      "imgUrl": "https://test.com",
+      "uuid": "sad12nj312ofqwi234no23ro",
+      "slug": "matrix-reaktywacja"
+    }
+  ]
+}
+
+// GetContentResponse
+{
+  "response": {
+    "link": "https://sdfafadsadsfdsffsddasfads" // link do stremu - nwm jaka dokładna będzie zwracana odpowiedź
+  }
+}
+// Widok: szczegóły filmu
+// GetMetadataDetailsResponse - odpowiedź zwracana dla pojedynczego filmu, gdy wybierzemy jakiś, aby go obejrzeć.
+// Odpowiedź powina zawierać liste komentarzy
+{
+  "response":     {
+    "title": "Matrix Reaktywacja",
+    "description": "Film opowiada o przygodach Neo w wirtualnym świecie.",
+    "imgUrl": "https://test.com",
+    "uuid": "sad12nj312ofqwi234no23ro",
+    "slug": "matrix-reaktywacja-film-opowiada-o-przygodach-neo-23142451",
+    "comments": [
+      {
+        "uuid": "svv3nj312ofqwi234no23ro",
+        "userName": "user1",
+        "description": "Bardzo fajny film 10/10",
+        "createdAt": "10-02-2024:23:00:00"
+      }
+    ]
+  }
+}
+
+// Widok: edycja filmu w paneliu administratora
+// GetAllMetadataResponse - odpowiedź zwracana, gdy użytkownik chce edytować jakieś swoje filmy i ich dane lub admin je edytuje
+// Administrator powinien mieć możliwość pobrania wszystkich metadanych użytkownika, czyli getContentMetadataByUsername(username: string) (content - jako film też czy może jest to bez sensu?)
+// Administrator powinien miec możliwość usuwania i edytowania metadanych i kontentu
+{
+  "response": [
+    {
+      "uuid": "s990lmm2ofqwi234no23ro",
+      "title": "Matrix Reaktywacja",
+      "description": "Film opowiada o przygodach Neo w wirtualnym świecie.",
+      "license":"21342431251fsfsdfsafasfsf", // Tu do obgadania jakie pole ma być
+      "imgName": "matrix-poster.jpg", // Tu nie wiem, czy nie lepiej "imgUrl" czy może jedno i drugie,
+      "movieName": "matrix.mp4"
+    }
+  ]
+}
+
+

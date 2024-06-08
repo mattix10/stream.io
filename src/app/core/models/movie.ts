@@ -1,7 +1,7 @@
 import { MovieComment } from './movie-comment';
-import { MovieItem } from './movie-item';
+import { MovieMetadata } from './movie-item';
 
-export interface Movie extends MovieItem {
+export interface Movie extends MovieMetadata {
   description: string;
   userId: string;
   comments: MovieComment[];
@@ -9,7 +9,7 @@ export interface Movie extends MovieItem {
   fileMovieName?: string;
 }
 
-export interface MovieRequest extends MovieItem {
+export interface MovieRequest extends MovieMetadata {
   description: string;
   userId: string;
   comments?: MovieComment[];

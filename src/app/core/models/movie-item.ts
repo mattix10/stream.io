@@ -1,12 +1,5 @@
-export interface MovieItem {
-  id: string;
-  imgUrl: string;
-  title: string;
-  movieUrl?: string;
-  category?: MovieCategory;
-}
+import { BaseMovieMetadata } from './base-movie-item';
 
-export enum MovieCategory {
-  Movie = 'Film',
-  Series = 'Serial',
+export interface MovieMetadata extends BaseMovieMetadata {
+  imgUrl: string;
 }

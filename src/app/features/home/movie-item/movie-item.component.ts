@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { MovieItem } from 'src/app/core/models/movie-item';
+import { Component, inject, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { MovieMetadata } from 'src/app/core/models/movie-item';
 
 @Component({
   selector: 'app-movie-item',
@@ -9,6 +10,14 @@ import { MovieItem } from 'src/app/core/models/movie-item';
   templateUrl: './movie-item.component.html',
   styleUrl: './movie-item.component.scss',
 })
-export class MovieItemComponent {
-  @Input() movieItem!: MovieItem;
+export class MovieMetadataComponent {
+  @Input() movieMetadata!: MovieMetadata;
+
+  readonly #router = inject(Router);
+
+  protected navigateToMovieDetails(): void {
+    this.#router.navigate(['/movie', this.movieMetadata.slug], {
+      state: { movieMetadata: this.movieMetadata },
+    });
+  }
 }

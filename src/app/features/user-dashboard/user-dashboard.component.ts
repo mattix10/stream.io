@@ -21,6 +21,7 @@ import { MoviesService } from 'src/app/core/services/movies-service/movies.servi
 import { HeadersComponent } from './components/headers/headers.component';
 import { UserData } from './models/user-data';
 import { ActivatedRoute, Params } from '@angular/router';
+import { UserMovieMetadata } from 'src/app/core/models/user-movie-item';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -39,9 +40,9 @@ export class UserDashboardComponent implements OnInit {
   user: User | null = null;
   isEditMode: boolean = false;
   isAdminUserEditMode: boolean = false;
-  selectedMovieForEdit: Movie | null = null;
+  selectedMovieForEdit: UserMovieMetadata | null = null;
 
-  movies?: Movie[];
+  movies?: UserMovieMetadata[];
   isContentCreator: boolean = false;
   isAdmin: boolean = false;
 
@@ -136,8 +137,10 @@ export class UserDashboardComponent implements OnInit {
   }
 
   private getUserMovies(): void {
-    this.#moviesService.getMovies().pipe(takeUntilDestroyed(this.#destroyRef));
-    // .subscribe((movies) => (this.movies = movies));
+    this.#moviesService
+      .getMovies<UserMovieMetadata>()
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe((movies) => (this.movies = movies));
   }
 
   private getSelectedMovieForEdit(): void {
