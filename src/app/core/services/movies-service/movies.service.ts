@@ -53,4 +53,8 @@ export class MoviesService {
     // return this.#httpService.getItems('comments', params);
     return of(comments);
   }
+
+  postComment(comment: string): Observable<string> {
+    return this.#httpService.create<string>('comments', comment);
+  }
 }

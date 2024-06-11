@@ -1,19 +1,25 @@
 <ng-container>
   <div class="comments">
-    <div class="comment-list" *ngIf="comments?.length; else noComments">
-      <div class="comment" *ngFor="let comment of comments">
+    @if (comments?.length) {
+    <div class="comment-list">
+      @for (comment of comments; track comment) {
+      <div class="comment">
         <h3 class="username">{{ comment?.userName }}</h3>
         <div class="description">
           {{ comment?.comment }}
         </div>
       </div>
+      }
     </div>
+    } @else {
     <ng-template #noComments>
       <p class="no-comments">
         Ten film nie ma aktualnie żadnych komentarzy. Wyraź swoją opinię jako
         pierwszy.
       </p>
     </ng-template>
+    }
+
     <div class="add-comment">
       <textarea
         #comment

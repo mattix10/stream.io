@@ -7,7 +7,12 @@
         class="video"
         *ngIf="isLoggedIn$ | async; else noAccessInfo"
       >
-        <source [src]="movieLink" type="video/mp4" />
+        <source
+          [src]="
+            'https://cdn.flowplayer.com/a30bd6bc-f98b-47bc-abf5-97633d4faea0/v-de3f6ca7-2db3-4689-8160-0f574a5996ad.mp4'
+          "
+          type="video/mp4"
+        />
         Your browser does not support the video tag.
       </video>
 

@@ -41,15 +41,14 @@ export class UserDataComponent implements OnInit {
   }
 
   onSave(): void {
-    if (!this.userDataForm.valid) {
-      return;
-    }
+    if (!this.userDataForm.valid) return;
+
     const { role, ...formValue } = this.userDataForm.value;
 
     let updatedUserData = formValue;
-    if (this.isAdminEditMode) {
-      updatedUserData = this.userDataForm.value;
-    }
+
+    if (this.isAdminEditMode) updatedUserData = this.userDataForm.value;
+
     this.userDataChanged.emit(updatedUserData as UserData);
     this.resetFields();
   }

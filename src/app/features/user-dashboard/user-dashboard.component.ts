@@ -2,7 +2,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
-import { mergeMap, Observable, of, tap, zip } from 'rxjs';
+import { mergeMap, Observable, of, switchMap, tap, zip } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { User } from 'src/app/core/models/user';
@@ -32,7 +32,6 @@ export class UserDashboardComponent implements OnInit {
   isEditMode: boolean = false;
   isAdminUserEditMode: boolean = false;
   selectedMovieForEdit: UserMovieMetadata | null = null;
-
   movies?: UserMovieMetadata[];
   isContentCreator: boolean = false;
   isAdmin: boolean = false;
@@ -45,8 +44,8 @@ export class UserDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserData();
-    this.getUserMovies();
-    this.getSelectedMovieForEdit();
+    this.loadUserMovies();
+    this.loadSelectedMovieForEdit();
   }
 
   onUserDataChanged({ password, email }: UserData): void {
@@ -55,18 +54,19 @@ export class UserDashboardComponent implements OnInit {
 
   onEditModeChange(isEditMode: boolean): void {
     this.isEditMode = isEditMode;
+    if (!this.isEditMode) this.#moviesService.selectedMovieForEdit$.next(null);
   }
 
-  onMovieFormChanged(formValue: any): void {
-    // this.#userService.updateUser(this.user?.id, this.user)
-  }
+  onRemoveMovieChanged(movieSlug: string): void {
+    if (!movieSlug) return;
 
-  onRemoveMovieChanged(movieId: string): void {
-    if (!movieId) {
-      return;
-    }
-
-    this.#moviesService.deleteMovie(movieId);
+    this.#moviesService
+      .deleteMovie(movieSlug)
+      .pipe(
+        switchMap(() => this.#moviesService.getMovies<UserMovieMetadata>()),
+        tap((movies) => (this.movies = movies))
+      )
+      .subscribe();
     // TODO: loading
     // TODO: Catch error toastr
   }
@@ -103,7 +103,7 @@ export class UserDashboardComponent implements OnInit {
         this.checkIsAdminEditMode(username);
 
         return this.isAdminUserEditMode
-          ? this.loadUserForAdminEditor(username)
+          ? this.getUserForAdminEditor(username)
           : of(null);
       })
     );
@@ -121,20 +121,19 @@ export class UserDashboardComponent implements OnInit {
     );
   }
 
-  private loadUserForAdminEditor(userId: string): Observable<any> {
+  private getUserForAdminEditor(userId: string): Observable<any> {
     return this.#userService
       .getUser(userId)
       .pipe(tap(({ result }) => (this.user = result.user)));
   }
 
-  private getUserMovies(): void {
+  private loadUserMovies(): void {
     this.#moviesService
       .getMovies<UserMovieMetadata>()
-      .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe((movies) => (this.movies = movies));
   }
 
-  private getSelectedMovieForEdit(): void {
+  private loadSelectedMovieForEdit(): void {
     this.#moviesService.selectedMovieForEdit$
       .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe((selectedMovieForEdit) => {

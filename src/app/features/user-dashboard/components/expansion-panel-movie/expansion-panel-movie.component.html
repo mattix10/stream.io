@@ -1,4 +1,5 @@
-<div class="expansion-panel" *ngFor="let movie of movieList">
+@for (movie of movieList; track movie) {
+<div class="expansion-panel">
   <div class="header">
     <div class="title" (click)="toggleMovie(movie.slug)">
       <img
@@ -23,20 +24,15 @@
       />
     </div>
   </div>
-  <div class="content" *ngIf="movie.isExpanded">
+  @if (movie.isExpanded) {
+  <div class="content">
     <div class="content-section">
       <p class="content-header">Opis:</p>
       <p class="description">
         {{ movie.description }}
       </p>
     </div>
-    <!-- <div class="content-section">
-      <p class="content-header">Nazwa pliku ze zdjęciem:</p>
-      <p>{{ movie?.fileImageName ? movie?.fileImageName : "-" }}</p>
-    </div>
-    <div class="content-section">
-      <p class="content-header">Nazwa pliku z filmem:</p>
-      <p>{{ movie?.fileMovieName ? movie?.fileMovieName : "-" }}</p>
-    </div> -->
   </div>
+  }
 </div>
+}

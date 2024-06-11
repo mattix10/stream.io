@@ -40,14 +40,12 @@ export class ExpansionPanelMovieComponent implements OnInit {
 
   editMovie(slug: string): void {
     const movie = this.movieList.find((movie) => movie.slug === slug);
-    if (!movie) {
-      return;
-    }
+    if (!movie) return;
     this.#moviesService.selectedMovieForEdit$.next(movie);
   }
 
-  deleteMovie(movieId: string): void {
-    this.removeMovieChanged.emit(movieId);
+  deleteMovie(movieSlug: string): void {
+    this.removeMovieChanged.emit(movieSlug);
   }
 
   private addExpandedtoMovieList(): void {

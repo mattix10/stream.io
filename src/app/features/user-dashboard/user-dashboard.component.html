@@ -24,19 +24,13 @@
         (editModeChanged)="onEditModeChange($event)"
       />
 
-      @if (!isEditMode) {
+      @if (isEditMode && !selectedMovieForEdit) {
+      <p>Wybierz z listy film, który chcesz edytować.</p>
+      } @else {
       <app-movie-form
-        (movieFormChanged)="onMovieFormChanged($event)"
-        [isEditMode]="isEditMode"
-      />
-      } @else if (selectedMovieForEdit) {
-      <app-movie-form
-        (movieFormChanged)="onMovieFormChanged($event)"
         [isEditMode]="isEditMode"
         [movie]="selectedMovieForEdit"
       />
-      } @else {
-      <p>Wybierz z listy film, który chcesz edytować.</p>
       }
     </div>
 

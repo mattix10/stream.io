@@ -18,7 +18,6 @@ export class UserManagementComponent implements OnInit {
   readonly #userService = inject(UserService);
 
   ngOnInit(): void {
-    console.log('here2');
     this.getUserList().subscribe();
   }
 
@@ -29,11 +28,9 @@ export class UserManagementComponent implements OnInit {
       .subscribe();
   }
 
-  getUserList() {
-    return this.#userService.getUsers().pipe(
-      tap(({ result }) => {
-        this.users = result.users;
-      })
-    );
+  private getUserList() {
+    return this.#userService
+      .getUsers()
+      .pipe(tap(({ result }) => (this.users = result.users)));
   }
 }

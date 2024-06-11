@@ -27,12 +27,13 @@ export class CommentsComponent implements OnInit {
 
   readonly #authService = inject(AuthService);
 
-  onAddComment(comment: string): void {
-    this.commentChanged.emit(comment);
-  }
-
   ngOnInit(): void {
     this.#authService.isLoggedIn$.subscribe((data) => console.log(data));
     this.isLoggedIn$ = this.#authService.isLoggedIn$;
+  }
+
+  onAddComment(comment: string): void {
+    if (!comment) return;
+    this.commentChanged.emit(comment);
   }
 }

@@ -1,6 +1,6 @@
 import { Component, inject, Input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { forkJoin, mergeMap, Observable } from 'rxjs';
+import { forkJoin, mergeMap, Observable, of } from 'rxjs';
 import { FileUploadService } from 'src/app/features/user-dashboard/services/file-upload-service/file-upload.service';
 import { MovieMetadataService } from 'src/app/features/user-dashboard/services/movie-metadata-service/movie-metadata.service';
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
@@ -16,7 +16,10 @@ import { UserMovieMetadata } from 'src/app/core/models/user-movie-metadata';
   providers: [MovieMetadataService, FileUploadService],
 })
 export class MovieFormComponent {
-  @Input({ required: true }) isEditMode = false;
+  @Input({ required: true }) set isEditMode(isEditMode: boolean) {
+    this._isEditMode = isEditMode;
+    if (!this._isEditMode) this.movieForm.reset();
+  }
 
   @Input() set movie(movie: UserMovieMetadata | null) {
     if (movie) {
@@ -36,6 +39,7 @@ export class MovieFormComponent {
     movie: new FormControl(),
   });
 
+  _isEditMode = false;
   readonly fileType = FileType;
   readonly #fileUploadService = inject(FileUploadService);
   readonly #movieMetadataService = inject(MovieMetadataService);
@@ -72,7 +76,9 @@ export class MovieFormComponent {
     }
   }
 
-  private uploadMovie(): Observable<void> {
+  private uploadMovie(): Observable<null> {
+    if (!this.movieForm.get('movie')) return of(null);
+
     return this.#fileUploadService
       .getLinkForUploadMovie()
       .pipe(
@@ -85,7 +91,9 @@ export class MovieFormComponent {
       );
   }
 
-  private uploadImage(): Observable<void> {
+  private uploadImage(): Observable<null> {
+    if (!this.movieForm.get('image')) return of(null);
+
     return this.#fileUploadService
       .getLinkForUploadImage()
       .pipe(

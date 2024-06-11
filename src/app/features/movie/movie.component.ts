@@ -5,7 +5,7 @@ import { MovieComment } from 'src/app/core/models/movie-comment';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
-import { Observable, of, tap } from 'rxjs';
+import { mergeMap, Observable, of, tap } from 'rxjs';
 import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 
 @Component({
@@ -32,45 +32,62 @@ export class MovieComponent implements OnInit {
     this.getMovieDetails();
   }
 
-  onCommentChanged(comment: any): void {
-    console.log(comment);
-    this.#movieService;
-    // .updateMovie(this.movie?.id, comment)
-    // .pipe(takeUntilDestroyed());
+  onCommentChanged(comment: string): void {
+    this.#movieService
+      .postComment(comment)
+      .pipe(mergeMap(() => this.getComments()))
+      .subscribe();
   }
 
   private getMovieDetails(): void {
-    this.#activatedRoute.paramMap
+    this.getMovieSlug()
       .pipe(
-        tap((params: ParamMap) => {
-          this.movieSlug = params.has('slug') ? params.get('slug')! : '';
-
-          if (!this.movieSlug) return;
-
-          const navigation = this.#router.getCurrentNavigation();
-
-          if (navigation?.extras?.state) {
-            this.movieMetadata = navigation.extras.state['movieMetadata'];
-            this.getMovieLinkAndComments();
-          } else {
-            this.getAllMovieData();
-          }
-        })
+        mergeMap(() =>
+          this.isLoggedIn$.pipe(
+            tap((isLoggedIn) => {
+              if (isLoggedIn) {
+                if (this.movieMetadata) {
+                  this.getMovieLinkAndComments();
+                } else {
+                  this.getAllMovieData();
+                }
+              } else {
+                this.getMovieMetadata().subscribe();
+              }
+            })
+          )
+        )
       )
       .subscribe();
   }
 
-  private getMovieLinkAndComments() {
+  private getMovieSlug(): Observable<ParamMap> {
+    return this.#activatedRoute.paramMap.pipe(
+      tap((params: ParamMap) => {
+        this.movieSlug = params.has('slug') ? params.get('slug')! : '';
+
+        if (!this.movieSlug) return;
+
+        const navigation = this.#router.getCurrentNavigation();
+
+        if (navigation?.extras?.state) {
+          this.movieMetadata = navigation.extras.state['movieMetadata'];
+        }
+      })
+    );
+  }
+
+  private getMovieLinkAndComments(): void {
     this.getComments().subscribe();
     this.getMovieLink().subscribe();
   }
 
-  private getAllMovieData() {
+  private getAllMovieData(): void {
     this.getMovieMetadata().subscribe();
     this.getMovieLinkAndComments();
   }
 
-  private getMovieMetadata() {
+  private getMovieMetadata(): Observable<MovieMetadata> {
     return this.#movieService
       .getMovieMetadata(this.movieSlug)
       .pipe(tap((metadata) => (this.movieMetadata = metadata)));
