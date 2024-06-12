@@ -1,0 +1,24 @@
+<div class="title-container">
+  <h2 class="title">Zaloguj</h2>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form-field">
+    <label class="label" for="email">E-mail*</label>
+    <input
+      type="email"
+      class="input"
+      id="email"
+      formControlName="email"
+      required
+    />
+  </div>
+  <div class="form-field">
+    <label class="label" for="password">Hasło*</label>
+    <input type="password" class="input" formControlName="password" required />
+  </div>
+  <button type="submit" class="button">Zaloguj</button>
+</form>
+<div class="link-info">
+  Nie masz konta? Zarejestruj się
+  <span class="redirect-message" (click)="navigate()">tutaj</span>
+</div>

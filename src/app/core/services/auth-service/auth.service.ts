@@ -7,6 +7,8 @@ import { UserResponse } from '../../models/user-response';
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
 import { Role } from '../../models/roles.enum';
+import { RegistrationContentCreatorRequest } from 'src/app/features/auth/models/registration-content-creator-request';
+import { BaseRegistrationRequest } from 'src/app/features/auth/models/base-registration-request';
 @Injectable({
   providedIn: 'root',
 })
@@ -45,10 +47,19 @@ export class AuthService {
     this.#currentUserSource.next(null);
   }
 
-  registration(form: { password: string; email: string }): Observable<boolean> {
+  registerEndUser(formValue: BaseRegistrationRequest): Observable<boolean> {
     return this.#httpClient.post<boolean>(
       `${environment.API_URL}register`,
-      form
+      formValue
+    );
+  }
+
+  registerContentCreator(
+    registrationForm: RegistrationContentCreatorRequest
+  ): Observable<void> {
+    return this.#httpClient.post<void>(
+      `${environment.API_URL}registerContentCreator`,
+      registrationForm
     );
   }
 

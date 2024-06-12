@@ -25,14 +25,33 @@ export class UserDataComponent implements OnInit {
   @Output() userDataChanged = new EventEmitter<UserData>();
 
   userDataForm = new FormGroup({
-    email: new FormControl('', Validators.required),
+    email: new FormControl(''),
     password: new FormControl(''),
-    role: new FormControl('', Validators.required),
+    role: new FormControl(''),
+    phoneNumber: new FormControl(''),
+    nip: new FormControl(''),
+    // TODO: Pomyśl czy warto dodawać
+    // active: new FormControl(false),
+    // może pole być sprawdzane podczas logowania: jeśli nie jest aktywny to nie może się zalogować
   });
   isEditMode: boolean = false;
   roles = Object.values(Role);
 
+  get isContentCreator(): boolean {
+    return this.user.roles[0] === Role.CONTENT_CREATOR;
+  }
+
   ngOnInit(): void {
+    if (!this.isAdminEditMode) {
+      this.userDataForm.controls.role.disable();
+
+      console.log(this.user);
+      if (!this.isContentCreator) {
+        this.userDataForm.controls.phoneNumber.disable();
+        this.userDataForm.controls.nip.disable();
+      }
+    }
+
     this.setUserData();
   }
 

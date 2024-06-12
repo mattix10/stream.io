@@ -1,10 +1,20 @@
 <div class="header">
   <h2 class="header-second">Dane</h2>
+  @if (isEditMode) {
+  <img
+    src="./../../../../../assets/icons/close.svg"
+    (click)="onEdit()"
+    title="Zamknij tryb edycji"
+    class="icon"
+  />
+  } @else {
   <img
     src="./../../../../../assets/icons/edit.svg"
     (click)="onEdit()"
+    title="Edytuj"
     class="icon"
   />
+  }
 </div>
 
 @if (isEditMode) {
@@ -20,19 +30,56 @@
       <input type="password" class="input" formControlName="password" />
     </div>
 
+    @if (isContentCreator) {
+    <div class="form-field">
+      <label class="label" for="phoneNumber">Numer telefonu</label>
+      <input
+        type="number"
+        class="input"
+        id="phoneNumber"
+        formControlName="phoneNumber"
+        [class.disabled]="!isContentCreator"
+      />
+    </div>
+
+    <div class="form-field">
+      <label class="label" for="nip">NIP</label>
+      <input
+        type="number"
+        class="input"
+        id="nip"
+        formControlName="nip"
+        [class.disabled]="!isContentCreator"
+      />
+    </div>
+    }
+
     <div class="form-field">
       <div class="label">Rola:</div>
       <select
         type="text"
         class="input"
         formControlName="role"
-        [disabled]="!isAdminEditMode"
+        [class.disabled]="!isAdminEditMode"
       >
-        <option *ngFor="let role of roles" [selected]="user.roles[0]">
+        <!-- TODO: napraw wyświetlanie ról w trybie edycji - obecnie zawsze wyświetla się "USER"-->
+        <option *ngFor="let role of roles" [selected]="'user.roles[0]'">
           {{ role }}
         </option>
       </select>
     </div>
+
+    @if (isAdminEditMode) {
+    <div class="form-field">
+      <label class="label" for="active">Active</label>
+      <input
+        type="checkbox"
+        class="input"
+        id="active"
+        formControlName="active"
+      />
+    </div>
+    }
   </form>
 </div>
 
@@ -47,6 +94,20 @@
     <div class="label">Hasło:</div>
     <div class="user-data-item">********</div>
   </div>
+
+  @if(isContentCreator) {
+  <div class="form-field">
+    <div class="label">Numer telefonu:</div>
+    <div class="user-data-item">
+      {{ user.phoneNumber ? user.phoneNumber : "-" }}
+    </div>
+  </div>
+  <div class="form-field">
+    <div class="label">NIP:</div>
+    <div class="user-data-item">{{ user.nip ? user.nip : "-" }}</div>
+  </div>
+  }
+
   <div class="form-field">
     <div class="label">Rola:</div>
     <div class="user-data-item">

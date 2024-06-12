@@ -1,0 +1,32 @@
+<div class="title-container">
+  <h2 class="title">Rejestracja</h2>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form-field">
+    <label class="label" for="username">Nazwa użytkownika*</label>
+    <input type="text" class="input" formControlName="username" />
+  </div>
+  <div class="form-field">
+    <label class="label" for="email">E-mail*</label>
+    <input type="email" class="input" id="email" formControlName="email" />
+  </div>
+  <div class="form-field">
+    <label class="label" for="password">Hasło*</label>
+    <input type="password" class="input" formControlName="password" />
+  </div>
+  <button type="submit" class="button">Zarejestruj</button>
+</form>
+<div class="link-info">
+  Masz już konto? Zaloguj się
+  <span class="redirect-message" (click)="navigateToSignIn()">tutaj</span>
+</div>
+<div class="link-info">
+  Chcesz zostać partnerem i dostarczać filmy?
+  <p [style.marginTop]="'6px'">
+    <span
+      class="redirect-message"
+      (click)="navigateToContentCreatorRegistration()"
+      >Zarejestruj się jako partner</span
+    >
+  </p>
+</div>

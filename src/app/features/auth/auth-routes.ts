@@ -1,12 +1,17 @@
-import { AuthComponent } from './auth.component';
+import { RegistrationContentCreatorComponent } from './registration-content-creator/registration-content-creator.component';
+import { RegistrationEndUserComponent } from './registration-end-user/registration-end-user.component';
+import { SigninComponent } from './signin/signin.component';
 
 export default [
   {
     path: '',
-    component: AuthComponent,
     children: [
-      { path: 'signin', component: AuthComponent },
-      { path: 'signup', component: AuthComponent },
+      { path: 'signup', component: RegistrationEndUserComponent },
+      {
+        path: 'signup-content-creator',
+        component: RegistrationContentCreatorComponent,
+      },
+      { path: 'signin', component: SigninComponent },
     ],
   },
   {

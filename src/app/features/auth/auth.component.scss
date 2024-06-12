@@ -9,25 +9,8 @@
 .auth-panel {
   margin-top: 100px;
   min-height: 300px;
-  min-width: 300px;
+  width: 400px;
   padding: 25px;
   border-radius: 5px;
   border: 1px solid var.$color-grey-3;
-}
-
-.title-container {
-  text-align: center;
-  margin-bottom: 50px;
-}
-
-.link-info {
-  margin-top: 15px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.redirect-message {
-  color: var.$color-primary;
-  text-decoration: underline;
-  cursor: pointer;
 }

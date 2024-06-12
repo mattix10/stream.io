@@ -49,7 +49,11 @@ export class UserDashboardComponent implements OnInit {
   }
 
   onUserDataChanged({ password, email }: UserData): void {
-    this.#userService.updateMe('', { password, email });
+    if (!this.isAdmin) {
+      this.#userService.updateMe('', { password, email });
+      return;
+    } else {
+    }
   }
 
   onEditModeChange(isEditMode: boolean): void {
@@ -104,7 +108,7 @@ export class UserDashboardComponent implements OnInit {
 
         return this.isAdminUserEditMode
           ? this.getUserForAdminEditor(username)
-          : of(null);
+          : this.loadCurrentUser();
       })
     );
   }
@@ -117,7 +121,10 @@ export class UserDashboardComponent implements OnInit {
   private loadCurrentUser(): Observable<any> {
     return this.#authService.currentUser$.pipe(
       takeUntilDestroyed(this.#destroyRef),
-      tap((user) => (this.user = user))
+      tap((user) => {
+        console.log(this.user);
+        this.user = user;
+      })
     );
   }
 

@@ -1,0 +1,40 @@
+<div class="title-container">
+  <h2 class="title">Rejestracja dla firm</h2>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form-field">
+    <label class="label" for="username">Nazwa użytkownika*</label>
+    <input type="text" class="input" formControlName="username" />
+  </div>
+  <div class="form-field">
+    <label class="label" for="email">E-mail*</label>
+    <input type="email" class="input" id="email" formControlName="email" />
+  </div>
+  <div class="form-field">
+    <label class="label" for="password">Hasło*</label>
+    <input
+      class="input"
+      type="password"
+      id="password"
+      formControlName="password"
+    />
+  </div>
+  <div class="form-field">
+    <label class="label" for="phoneNumber">Numer telefonu*</label>
+    <input
+      type="number"
+      class="input"
+      id="phoneNumber"
+      formControlName="phoneNumber"
+    />
+  </div>
+  <div class="form-field">
+    <label class="label" for="nip">NIP*</label>
+    <input type="number" class="input" id="nip" formControlName="nip" />
+  </div>
+  <button type="submit" class="button">Zarejestruj</button>
+</form>
+<div class="link-info">
+  Masz już konto? Zaloguj się
+  <span class="redirect-message" (click)="navigateToSignIn()">tutaj</span>
+</div>

@@ -1,9 +1,7 @@
 <div class="auth-container container">
   <div class="auth-panel">
-    <div class="title-container">
-      <h2 class="title">
-        {{ actionTitle === "Zaloguj" ? "Logowanie" : "Rejestracja" }}
-      </h2>
+    <!-- <div class="title-container">
+      <h2 class="title">Zaloguj</h2>
     </div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-field">
@@ -14,11 +12,12 @@
         <label class="label" for="password">Hasło</label>
         <input type="password" class="input" formControlName="password" />
       </div>
-      <button type="submit" class="button">{{ actionTitle }}</button>
+      <button type="submit" class="button">Zaloguj</button>
     </form>
     <div class="link-info">
-      {{ info }}
+      Nie masz konta? Zarejestruj się
       <span class="redirect-message" (click)="navigate()">tutaj</span>
-    </div>
+    </div> -->
+    <router-outlet></router-outlet>
   </div>
 </div>

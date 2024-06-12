@@ -1,0 +1,18 @@
+@use "./variables" as var;
+
+.title-container {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.link-info {
+  margin-top: 15px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.redirect-message {
+  color: var.$color-primary;
+  text-decoration: underline;
+  cursor: pointer;
+}
