@@ -40,8 +40,8 @@ export class MoviesService {
     return this.#httpService.getItem<MovieMetadata>('movies', slug);
   }
 
-  updateMovie(slug: string, body: MovieMetadata): Observable<MovieMetadata> {
-    return this.#httpService.update('movies', slug, body);
+  updateMovie(body: MovieMetadata, slug: string): Observable<MovieMetadata> {
+    return this.#httpService.update('movies', body, slug);
   }
 
   deleteMovie(slug: string): Observable<void> {

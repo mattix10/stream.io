@@ -13,8 +13,8 @@ import { BaseRegistrationRequest } from 'src/app/features/auth/models/base-regis
   providedIn: 'root',
 })
 export class AuthService {
-  #currentUserSource = new ReplaySubject<User | null>(1);
-  currentUser$ = this.#currentUserSource.asObservable();
+  currentUserSource = new ReplaySubject<User | null>(1);
+  currentUser$ = this.currentUserSource.asObservable();
   isLoggedIn$: Observable<boolean> = this.currentUser$.pipe(
     map((user) => !!user?.userName)
   );
@@ -25,11 +25,11 @@ export class AuthService {
 
   constructor() {
     const token = this.getToken();
-    if (token) {
-      this.setCurrentUser(token);
-    } else {
-      this.removeCurrentUser();
-    }
+    token
+      ? this.isTokenExpired()
+        ? this.removeToken()
+        : this.setCurrentUser(token)
+      : null;
   }
 
   login(form: { password: string; email: string }): Observable<void> {
@@ -44,8 +44,8 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    this.#currentUserSource.next(null);
+    this.removeToken();
+    this.removeCurrentUser();
   }
 
   registerEndUser(formValue: BaseRegistrationRequest): Observable<boolean> {
@@ -63,36 +63,58 @@ export class AuthService {
 
   isAdmin = (): Observable<boolean> =>
     this.currentUser$.pipe(
-      map((user: User | null) => {
-        return user?.role === Role.ADMIN;
-      })
+      map((user: User | null) => user?.role === Role.Admin)
     );
 
   isContentCreator = (): Observable<boolean> =>
     this.currentUser$.pipe(
-      map((user: User | null) => user?.role === Role.CONTENT_CREATOR)
+      map((user: User | null) => user?.role === Role.ContentCreator)
     );
 
-  private setCurrentUser(token: string): void {
+  isEndUser = (): Observable<boolean> =>
+    this.currentUser$.pipe(
+      map((user: User | null) => user?.role === Role.EndUser)
+    );
+
+  setCurrentUser(token: string): void {
     console.log(token);
     const { sub: id, role, email, name } = this.getDecodedToken(token);
     const user = new User(id, role, email, name);
-    this.#currentUserSource.next(user);
+    this.currentUserSource.next(user);
     console.log(user);
     this.setToken(token);
   }
 
+  getToken() {
+    return localStorage.getItem('token');
+  }
+
+  isTokenExpired() {
+    const token = this.getToken();
+
+    if (!token) return true;
+
+    return this.tokenExpired(token) ? true : false;
+  }
+
   private removeCurrentUser(): void {
-    this.#currentUserSource.next(null);
+    this.currentUserSource.next(null);
+  }
+
+  private removeToken() {
+    localStorage.removeItem('token');
   }
 
   private getDecodedToken(token: string) {
     return JSON.parse(atob(token.split('.')[1]));
   }
 
-  private getToken = () => localStorage.getItem('token');
-
   private setToken(token: string) {
     localStorage.setItem('token', token);
+  }
+
+  private tokenExpired(token: string) {
+    const expiry = this.getDecodedToken(token).exp;
+    return Math.floor(new Date().getTime() / 1000) >= expiry;
   }
 }

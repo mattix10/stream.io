@@ -1,5 +1,7 @@
 export interface UserData {
   email?: string;
+  username?: string;
   password?: string;
-  role?: string;
+  nip?: string;
+  phoneNumber?: string;
 }

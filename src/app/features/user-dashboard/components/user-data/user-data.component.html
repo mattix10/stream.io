@@ -68,22 +68,14 @@
         </option>
       </select>
     </div>
-
-    @if (isAdminEditMode) {
-    <div class="form-field">
-      <label class="label" for="active">Active</label>
-      <input
-        type="checkbox"
-        class="input"
-        id="active"
-        formControlName="active"
-      />
-    </div>
-    }
   </form>
 </div>
 
-<button class="button" (click)="onSave()">Zapisz</button>
+<button class="button" (click)="onSave()">
+  @if (isLoading) {
+  <app-spinner [diameter]="18"></app-spinner>
+  } @else { Zapisz }
+</button>
 } @else {
 <div class="user-data-item">
   <div class="form-field">

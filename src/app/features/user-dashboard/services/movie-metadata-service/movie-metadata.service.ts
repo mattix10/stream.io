@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { MovieMetadata } from '../../models/movie-metadata';
 
@@ -8,13 +8,13 @@ import { MovieMetadata } from '../../models/movie-metadata';
 export class MovieMetadataService {
   #httpClient = inject(HttpClient);
 
-  uploadMovieMetadata(
-    title: string,
-    description: string
-  ): Observable<MovieMetadata> {
-    return this.#httpClient.post<MovieMetadata>(`${environment.API_URL}`, {
-      title,
-      description,
-    });
+  uploadMovieMetadata(title: string, description: string): Observable<boolean> {
+    // return throwError(() => new Error('error'));
+    return of(true);
+
+    // return this.#httpClient.post<boolean>(`${environment.API_URL}`, {
+    //   title,
+    //   description,
+    // }).pipe();
   }
 }

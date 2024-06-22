@@ -13,7 +13,7 @@ export class HttpService {
     return this.#httpClient.get<T>(this.createUrl(url), { params });
   }
 
-  getItem<T>(url: string, id: string): Observable<T> {
+  getItem<T>(url: string, id?: string): Observable<T> {
     return this.#httpClient.get<T>(this.createUrl(url, id));
   }
 
@@ -21,7 +21,7 @@ export class HttpService {
     return this.#httpClient.post<T>(this.createUrl(url), body);
   }
 
-  update<T>(url: string, id: string, body: T): Observable<T> {
+  update<T>(url: string, body: T, id?: string): Observable<T> {
     return this.#httpClient.put<T>(this.createUrl(url, id), body);
   }
 

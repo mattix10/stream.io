@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { FileType } from '../../models/file-type';
 
@@ -11,7 +11,7 @@ export class FileUploadService {
   upload(file: File, uploadLink: string): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file);
-
+    return of(true);
     return this.#httpClient.post(`${uploadLink}`, formData, {
       reportProgress: true,
       observe: 'events',
@@ -19,6 +19,7 @@ export class FileUploadService {
   }
 
   getLinkForUploadMovie(): Observable<string> {
+    // return of('ss');
     return this.getLinkForUpload(FileType.Movie);
   }
 

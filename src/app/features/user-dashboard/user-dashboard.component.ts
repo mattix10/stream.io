@@ -2,7 +2,17 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
-import { mergeMap, Observable, of, switchMap, tap, zip } from 'rxjs';
+import {
+  catchError,
+  EMPTY,
+  forkJoin,
+  mergeMap,
+  Observable,
+  of,
+  switchMap,
+  tap,
+  zip,
+} from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { User } from 'src/app/core/models/user';
@@ -13,6 +23,7 @@ import { HeadersComponent } from './components/headers/headers.component';
 import { UserData } from './models/user-data';
 import { ActivatedRoute, Params } from '@angular/router';
 import { UserMovieMetadata } from 'src/app/core/models/user-movie-metadata';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -34,13 +45,14 @@ export class UserDashboardComponent implements OnInit {
   selectedMovieForEdit: UserMovieMetadata | null = null;
   movies?: UserMovieMetadata[];
   isContentCreator: boolean = false;
+  isEndUser: boolean = false;
   isAdmin: boolean = false;
 
   readonly #userService = inject(UserService);
   readonly #authService = inject(AuthService);
   readonly #destroyRef = inject(DestroyRef);
   readonly #moviesService = inject(MoviesService);
-  readonly #activatedRoute = inject(ActivatedRoute);
+  readonly #toastrService = inject(ToastrService);
 
   ngOnInit(): void {
     this.loadUserData();
@@ -48,11 +60,22 @@ export class UserDashboardComponent implements OnInit {
     this.loadSelectedMovieForEdit();
   }
 
-  onUserDataChanged({ password, email }: UserData): void {
-    if (!this.isAdmin) {
-      this.#userService.updateMe('', { password, email });
-      return;
+  onUserDataChanged(userData: UserData): void {
+    let call: Observable<any> = of(null);
+
+    if (this.isContentCreator) {
+      call = this.#userService.updateContentCreator(userData);
     }
+
+    if (this.isEndUser) {
+      call = this.#userService.updateEndUser(userData);
+    }
+
+    call
+      .pipe(switchMap(() => this.loadUser()))
+      .subscribe(() =>
+        this.#toastrService.success('Dane zostały zaktualizowane')
+      );
   }
 
   onEditModeChange(isEditMode: boolean): void {
@@ -75,62 +98,34 @@ export class UserDashboardComponent implements OnInit {
   }
 
   private loadUserData(): void {
-    this.checkUserRole()
-      .pipe(
-        mergeMap(() =>
-          this.isAdmin
-            ? this.getUsernameFromQueryParam()
-            : this.loadCurrentUser()
-        )
-      )
+    this.loadUser()
+      .pipe(switchMap(() => this.checkUserRole()))
       .subscribe();
   }
 
   private checkUserRole(): Observable<any> {
     return zip([
       this.#authService.isContentCreator(),
-      this.#authService.isAdmin(),
+      this.#authService.isEndUser(),
     ]).pipe(
-      tap(([isContentCreator, isAdmin]) => {
+      tap(([isContentCreator, isEndUser]) => {
         this.isContentCreator = isContentCreator;
-        this.isAdmin = isAdmin;
+        this.isEndUser = isEndUser;
       }),
       takeUntilDestroyed(this.#destroyRef)
     );
   }
 
-  private getUsernameFromQueryParam(): Observable<any> {
-    return this.#activatedRoute.queryParams.pipe(
-      mergeMap((params: Params) => {
-        const username = params['username'];
-        this.checkIsAdminEditMode(username);
-
-        return this.isAdminUserEditMode
-          ? this.getUserForAdminEditor(username)
-          : this.loadCurrentUser();
-      })
-    );
-  }
-
-  private checkIsAdminEditMode(username: string) {
-    this.isAdminUserEditMode =
-      !!username && location.pathname.includes('user-dashboard/edit');
-  }
-
-  private loadCurrentUser(): Observable<any> {
-    return this.#authService.currentUser$.pipe(
-      takeUntilDestroyed(this.#destroyRef),
-      tap((user) => {
-        console.log(this.user);
+  private loadUser(): Observable<any> {
+    return this.#userService.getUser().pipe(
+      catchError(() => {
+        this.#toastrService.error('Nie udało się załadować danych użytkownika');
+        return EMPTY;
+      }),
+      tap(({ result: user }) => {
         this.user = user;
       })
     );
-  }
-
-  private getUserForAdminEditor(userId: string): Observable<any> {
-    return this.#userService
-      .getUser(userId)
-      .pipe(tap(({ result }) => (this.user = result.user)));
   }
 
   private loadUserMovies(): void {

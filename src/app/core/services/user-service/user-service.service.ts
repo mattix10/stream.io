@@ -1,11 +1,11 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { User } from '../../models/user';
-import { user } from 'src/app/mocks/user';
 import { HttpService } from '../http-service/http.service';
 import { UserData } from '../../../features/user-dashboard/models/user-data';
-import { UserResponse } from '../../models/user-response';
+import { BaseUpdateUserRequest } from '../../models/base-update-user-request';
+import { UpdateContentCreatorRequest } from '../../models/update-content-creator-request';
+import { Response } from '../../models/response';
 
 @Injectable({
   providedIn: 'root',
@@ -13,16 +13,20 @@ import { UserResponse } from '../../models/user-response';
 export class UserService {
   #httpService = inject(HttpService);
 
-  getUser(id: string, params?: HttpParams): Observable<any> {
-    return this.#httpService.getItem<UserResponse>('users', id);
+  getUser(): Observable<Response<User>> {
+    return this.#httpService.getItem<Response<User>>('users/user');
   }
 
-  updateUser(id: string, user: User): Observable<User> {
-    return this.#httpService.update<User>('users', id, user);
+  updateEndUser(
+    user: BaseUpdateUserRequest
+  ): Observable<BaseUpdateUserRequest> {
+    return this.#httpService.update<UserData>('users/end-user', user);
   }
 
-  updateMe(id: string, user: UserData): Observable<UserData> {
-    return this.#httpService.update<UserData>('users', id, user);
+  updateContentCreator(
+    user: UpdateContentCreatorRequest
+  ): Observable<UpdateContentCreatorRequest> {
+    return this.#httpService.update<UserData>('users/content-creator', user);
   }
 
   getUsers(): Observable<any> {

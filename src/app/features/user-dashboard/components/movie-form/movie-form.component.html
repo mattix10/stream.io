@@ -29,6 +29,9 @@
   ></app-drag-and-drop-upload-file>
 
   <button class="button" type="submit">
-    {{ _isEditMode ? "Edytuj" : "Dodaj" }} film
+    @if (isLoading) {
+    <app-spinner [diameter]="18"></app-spinner>
+    } @else {
+    {{ _isEditMode ? "Edytuj" : "Dodaj" }} film }
   </button>
 </form>

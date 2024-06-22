@@ -5,51 +5,47 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { User } from 'src/app/core/models/user';
 import { UserData } from '../../models/user-data';
 import { Role } from 'src/app/core/models/roles.enum';
+import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { isLoading } from 'src/app/features/auth/models/loading';
 
 @Component({
   selector: 'app-user-data',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, SpinnerComponent],
   templateUrl: './user-data.component.html',
   styleUrl: './user-data.component.scss',
 })
-export class UserDataComponent implements OnInit {
+export class UserDataComponent implements OnInit, isLoading {
   @Input({ required: true }) user!: User;
   @Input({ required: true }) isAdminEditMode: boolean = false;
 
   @Output() userDataChanged = new EventEmitter<UserData>();
 
+  isLoading: boolean = false;
   userDataForm = new FormGroup({
     email: new FormControl(''),
     password: new FormControl(''),
     role: new FormControl(''),
     phoneNumber: new FormControl(''),
     nip: new FormControl(''),
-    // TODO: Pomyśl czy warto dodawać
-    // active: new FormControl(false),
-    // może pole być sprawdzane podczas logowania: jeśli nie jest aktywny to nie może się zalogować
   });
   isEditMode: boolean = false;
   roles = Object.values(Role);
 
   get isContentCreator(): boolean {
-    return this.user.role === Role.CONTENT_CREATOR;
+    return this.user.role === Role.ContentCreator;
   }
 
   ngOnInit(): void {
-    if (!this.isAdminEditMode) {
-      this.userDataForm.controls.role.disable();
+    this.userDataForm.controls.role.disable();
 
-      console.log(this.user);
-      if (!this.isContentCreator) {
-        this.userDataForm.controls.phoneNumber.disable();
-        this.userDataForm.controls.nip.disable();
-      }
+    if (!this.isContentCreator) {
+      this.userDataForm.controls.phoneNumber.disable();
+      this.userDataForm.controls.nip.disable();
     }
 
     this.setUserData();
@@ -57,6 +53,10 @@ export class UserDataComponent implements OnInit {
 
   onEdit(): void {
     this.isEditMode = !this.isEditMode;
+
+    if (this.isEditMode) {
+      this.setUserData();
+    }
   }
 
   onSave(): void {
@@ -66,17 +66,26 @@ export class UserDataComponent implements OnInit {
 
     let updatedUserData = formValue;
     this.isEditMode = false;
+
     if (this.isAdminEditMode) updatedUserData = this.userDataForm.value;
 
     this.userDataChanged.emit(updatedUserData as UserData);
+
     this.resetFields();
   }
 
   private setUserData(): void {
     this.userDataForm.patchValue({
       email: this.user.email,
-      role: undefined,
+      role: this.user.role ? this.user.role : undefined,
     });
+
+    if (this.isContentCreator) {
+      this.userDataForm.patchValue({
+        nip: this.user.nip ? this.user.nip : '',
+        phoneNumber: this.user.phoneNumber ? this.user.phoneNumber : '',
+      });
+    }
   }
 
   private resetFields(): void {

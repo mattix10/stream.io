@@ -52,7 +52,7 @@ export class SigninComponent implements isLoading {
         finalize(() => (this.isLoading = false))
       )
       .subscribe(() => {
-        this.#toastrService.success('success');
+        this.#toastrService.clear();
         this.form.setValue({ email: '', password: '' });
       });
   }

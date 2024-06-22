@@ -12,11 +12,10 @@
     (userDataChanged)="onUserDataChanged($event)"
   />
   }
-  <!-- Czy admin, gdy edytuje użytkownika, to powinien korzystać z tego samego endpointu co użytkownik? -->
 
   <div class="divider"></div>
 
-  @if (isContentCreator || isAdmin) {
+  @if (isContentCreator) {
   <section class="movies-section">
     <div class="movie-form">
       <app-headers

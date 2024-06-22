@@ -5,7 +5,7 @@ export const user: User = {
   id: '12312323',
   userName: 'user1',
   email: 'user1@gmail.com',
-  role: Role.USER,
+  role: Role.EndUser,
   // movies: [
   //   {
   //     id: '1',
