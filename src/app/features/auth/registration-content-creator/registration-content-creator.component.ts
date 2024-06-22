@@ -8,22 +8,25 @@ import {
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 import { RegistrationContentCreatorRequest } from '../models/registration-content-creator-request';
-import { catchError, EMPTY, tap } from 'rxjs';
+import { catchError, EMPTY, finalize, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { registrationSuccess } from '../constants/toastr-messages';
+import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { isLoading } from '../models/loading';
 
 @Component({
   selector: 'app-registration-content-creator',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SpinnerComponent],
   templateUrl: './registration-content-creator.component.html',
   styleUrl: './../shared/shared-form.component.scss',
 })
-export class RegistrationContentCreatorComponent {
+export class RegistrationContentCreatorComponent implements isLoading {
   readonly #fb = inject(FormBuilder);
   readonly #router = inject(Router);
   readonly #authService = inject(AuthService);
   readonly #toastrService = inject(ToastrService);
+  isLoading: boolean = false;
 
   form = this.#fb.group({
     email: new FormControl('', [Validators.email, Validators.required]),
@@ -50,6 +53,7 @@ export class RegistrationContentCreatorComponent {
   onSubmit(): void {
     console.log(this.form);
     if (this.form.invalid) return;
+    this.isLoading = true;
 
     const formValue = this.form.value;
 
@@ -62,7 +66,8 @@ export class RegistrationContentCreatorComponent {
         catchError(() => {
           this.#toastrService.error();
           return EMPTY;
-        })
+        }),
+        finalize(() => (this.isLoading = false))
       )
       .subscribe(() => this.#toastrService.success(registrationSuccess));
   }

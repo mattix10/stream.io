@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { User } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 
@@ -58,7 +58,9 @@ export class NavbarComponent implements OnInit {
   }
 
   private getCurrentUser(): void {
-    this.user$ = this.#authService.currentUser$;
+    this.user$ = this.#authService.currentUser$.pipe(
+      tap((user) => console.log(user))
+    );
   }
 
   private checkIsUserAdmin(): void {

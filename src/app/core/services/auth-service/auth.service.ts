@@ -16,8 +16,9 @@ export class AuthService {
   #currentUserSource = new ReplaySubject<User | null>(1);
   currentUser$ = this.#currentUserSource.asObservable();
   isLoggedIn$: Observable<boolean> = this.currentUser$.pipe(
-    map((user) => !!user?.email)
+    map((user) => !!user?.userName)
   );
+  authUrl = environment.API_URL + 'auth/';
 
   readonly #httpClient = inject(HttpClient);
   readonly #router = inject(Router);
@@ -33,7 +34,7 @@ export class AuthService {
 
   login(form: { password: string; email: string }): Observable<void> {
     return this.#httpClient
-      .post<Response<UserResponse>>(`${environment.API_URL}login`, form)
+      .post<Response<UserResponse>>(`${this.authUrl}login`, form)
       .pipe(
         map(({ result: { token } }) => {
           this.setCurrentUser(token);
@@ -48,17 +49,14 @@ export class AuthService {
   }
 
   registerEndUser(formValue: BaseRegistrationRequest): Observable<boolean> {
-    return this.#httpClient.post<boolean>(
-      `${environment.API_URL}register`,
-      formValue
-    );
+    return this.#httpClient.post<boolean>(`${this.authUrl}end-user`, formValue);
   }
 
   registerContentCreator(
     registrationForm: RegistrationContentCreatorRequest
   ): Observable<void> {
     return this.#httpClient.post<void>(
-      `${environment.API_URL}registerContentCreator`,
+      `${this.authUrl}content-creator`,
       registrationForm
     );
   }
@@ -66,20 +64,19 @@ export class AuthService {
   isAdmin = (): Observable<boolean> =>
     this.currentUser$.pipe(
       map((user: User | null) => {
-        console.log(!!user?.roles.includes(Role.ADMIN));
-        return !!user?.roles.includes(Role.ADMIN);
+        return user?.role === Role.ADMIN;
       })
     );
 
   isContentCreator = (): Observable<boolean> =>
     this.currentUser$.pipe(
-      map((user: User | null) => !!user?.roles.includes(Role.CONTENT_CREATOR))
+      map((user: User | null) => user?.role === Role.CONTENT_CREATOR)
     );
 
   private setCurrentUser(token: string): void {
     console.log(token);
-    const { role, email, userName } = this.getDecodedToken(token);
-    const user = new User('', [role], email, userName);
+    const { sub: id, role, email, name } = this.getDecodedToken(token);
+    const user = new User(id, role, email, name);
     this.#currentUserSource.next(user);
     console.log(user);
     this.setToken(token);

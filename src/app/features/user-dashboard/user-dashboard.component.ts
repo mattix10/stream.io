@@ -52,7 +52,6 @@ export class UserDashboardComponent implements OnInit {
     if (!this.isAdmin) {
       this.#userService.updateMe('', { password, email });
       return;
-    } else {
     }
   }
 

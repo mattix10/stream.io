@@ -38,7 +38,7 @@ export class UserDataComponent implements OnInit {
   roles = Object.values(Role);
 
   get isContentCreator(): boolean {
-    return this.user.roles[0] === Role.CONTENT_CREATOR;
+    return this.user.role === Role.CONTENT_CREATOR;
   }
 
   ngOnInit(): void {
@@ -65,7 +65,7 @@ export class UserDataComponent implements OnInit {
     const { role, ...formValue } = this.userDataForm.value;
 
     let updatedUserData = formValue;
-
+    this.isEditMode = false;
     if (this.isAdminEditMode) updatedUserData = this.userDataForm.value;
 
     this.userDataChanged.emit(updatedUserData as UserData);

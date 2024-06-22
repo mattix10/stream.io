@@ -14,7 +14,11 @@
     <label class="label" for="password">Hasło*</label>
     <input type="password" class="input" formControlName="password" />
   </div>
-  <button type="submit" class="button">Zarejestruj</button>
+  <button type="submit" class="button">
+    @if (isLoading) {
+    <app-spinner [diameter]="18"></app-spinner>
+    } @else { Zarejestruj }
+  </button>
 </form>
 <div class="link-info">
   Masz już konto? Zaloguj się

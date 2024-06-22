@@ -15,11 +15,12 @@ import {
   registrationSuccess,
 } from '../constants/toastr-messages';
 import { isLoading } from '../models/loading';
+import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-registration-end-user',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SpinnerComponent],
   templateUrl: './registration-end-user.component.html',
   styleUrl: './../shared/shared-form.component.scss',
 })

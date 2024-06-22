@@ -16,7 +16,11 @@
     <label class="label" for="password">Hasło*</label>
     <input type="password" class="input" formControlName="password" required />
   </div>
-  <button type="submit" class="button">Zaloguj</button>
+  <button type="submit" class="button">
+    @if (isLoading) {
+    <app-spinner [diameter]="18"></app-spinner>
+    } @else { Zaloguj }
+  </button>
 </form>
 <div class="link-info">
   Nie masz konta? Zarejestruj się
