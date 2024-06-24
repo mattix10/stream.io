@@ -2,6 +2,6 @@
   <h1 class="header-primary">Użytkownicy</h1>
   <app-user-table
     [users]="users"
-    (deleteUserChanged)="onDeleteUser($event)"
+    (userStatusChanged)="onUserStatusChanged($event)"
   ></app-user-table>
 </div>

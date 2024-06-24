@@ -6,16 +6,13 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 import { BaseRegistrationRequest } from '../models/base-registration-request';
 import { catchError, EMPTY, finalize, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import {
-  errorMessage,
-  registrationSuccess,
-} from '../constants/toastr-messages';
+import { registrationSuccess } from '../constants/toastr-messages';
 import { isLoading } from '../models/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { UserService } from 'src/app/core/services/user-service/user-service.service';
 
 @Component({
   selector: 'app-registration-end-user',
@@ -39,7 +36,7 @@ export class RegistrationEndUserComponent implements isLoading {
   isLoading: boolean = false;
 
   readonly #router = inject(Router);
-  readonly #authService = inject(AuthService);
+  readonly #userService = inject(UserService);
   readonly #toastrService = inject(ToastrService);
 
   onSubmit(): void {
@@ -47,12 +44,14 @@ export class RegistrationEndUserComponent implements isLoading {
 
     this.isLoading = true;
 
-    this.#authService
+    this.#userService
       .registerEndUser(this.form.value as unknown as BaseRegistrationRequest)
       .pipe(
         tap(() => this.navigateToSignIn()),
-        catchError(() => {
-          this.#toastrService.error(errorMessage);
+        catchError((error) => {
+          this.#toastrService.error(
+            `${error.error?.message} Rejestracja nie powiodła się.`
+          );
           return EMPTY;
         }),
         finalize(() => (this.isLoading = false))

@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
@@ -25,8 +25,22 @@ export class HttpService {
     return this.#httpClient.put<T>(this.createUrl(url, id), body);
   }
 
-  delete(url: string, id: string): Observable<void> {
-    return this.#httpClient.delete<void>(this.createUrl(url, id));
+  updateStatus(url: string): Observable<void> {
+    return this.#httpClient.post<void>(this.createUrl(url), undefined);
+  }
+
+  delete(url: string, id?: string, body?: any): Observable<void> {
+    console.log(body);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+
+    return this.#httpClient.delete<void>(this.createUrl(url, id), {
+      ...httpOptions,
+      body: JSON.stringify({ password: body }),
+    });
   }
 
   private createUrl(url: string, id?: string): string {

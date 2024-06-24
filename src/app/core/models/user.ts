@@ -7,6 +7,7 @@ export class User {
   userName: string = '';
   phoneNumber?: string;
   nip?: string;
+  isActive?: boolean;
 
   constructor(
     id: string = '',

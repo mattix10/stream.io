@@ -2,17 +2,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
-import {
-  catchError,
-  EMPTY,
-  forkJoin,
-  mergeMap,
-  Observable,
-  of,
-  switchMap,
-  tap,
-  zip,
-} from 'rxjs';
+import { catchError, EMPTY, Observable, switchMap, tap, zip } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { User } from 'src/app/core/models/user';
@@ -20,10 +10,9 @@ import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 import { UserDataComponent } from './components/user-data/user-data.component';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 import { HeadersComponent } from './components/headers/headers.component';
-import { UserData } from './models/user-data';
-import { ActivatedRoute, Params } from '@angular/router';
 import { UserMovieMetadata } from 'src/app/core/models/user-movie-metadata';
 import { ToastrService } from 'ngx-toastr';
+import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -34,6 +23,7 @@ import { ToastrService } from 'ngx-toastr';
     ExpansionPanelMovieComponent,
     UserDataComponent,
     HeadersComponent,
+    DeleteAccountComponent,
   ],
   templateUrl: './user-dashboard.component.html',
   styleUrl: './user-dashboard.component.scss',
@@ -41,7 +31,6 @@ import { ToastrService } from 'ngx-toastr';
 export class UserDashboardComponent implements OnInit {
   user: User | null = null;
   isEditMode: boolean = false;
-  isAdminUserEditMode: boolean = false;
   selectedMovieForEdit: UserMovieMetadata | null = null;
   movies?: UserMovieMetadata[];
   isContentCreator: boolean = false;
@@ -60,22 +49,8 @@ export class UserDashboardComponent implements OnInit {
     this.loadSelectedMovieForEdit();
   }
 
-  onUserDataChanged(userData: UserData): void {
-    let call: Observable<any> = of(null);
-
-    if (this.isContentCreator) {
-      call = this.#userService.updateContentCreator(userData);
-    }
-
-    if (this.isEndUser) {
-      call = this.#userService.updateEndUser(userData);
-    }
-
-    call
-      .pipe(switchMap(() => this.loadUser()))
-      .subscribe(() =>
-        this.#toastrService.success('Dane zostały zaktualizowane')
-      );
+  onUserDataChanged(): void {
+    this.loadUser().subscribe();
   }
 
   onEditModeChange(isEditMode: boolean): void {

@@ -50,10 +50,8 @@ h3 {
 }
 
 .divider {
+  border-bottom: 1px solid grey;
   margin: 25px 0;
-  background-color: grey;
-  content: "";
-  height: 1px;
 }
 
 .button {

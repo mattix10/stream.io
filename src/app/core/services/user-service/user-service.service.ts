@@ -1,17 +1,37 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from '../../models/user';
 import { HttpService } from '../http-service/http.service';
 import { UserData } from '../../../features/user-dashboard/models/user-data';
 import { BaseUpdateUserRequest } from '../../models/base-update-user-request';
 import { UpdateContentCreatorRequest } from '../../models/update-content-creator-request';
 import { Response } from '../../models/response';
+import { BaseRegistrationRequest } from 'src/app/features/auth/models/base-registration-request';
+import { RegistrationContentCreatorRequest } from 'src/app/features/auth/models/registration-content-creator-request';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  #httpService = inject(HttpService);
+  readonly #httpService = inject(HttpService);
+
+  registerEndUser(
+    formValue: BaseRegistrationRequest
+  ): Observable<BaseRegistrationRequest> {
+    return this.#httpService.create<BaseRegistrationRequest>(
+      `users/end-user`,
+      formValue
+    );
+  }
+
+  registerContentCreator(
+    registrationForm: RegistrationContentCreatorRequest
+  ): Observable<RegistrationContentCreatorRequest> {
+    return this.#httpService.create<RegistrationContentCreatorRequest>(
+      `users/content-creator`,
+      registrationForm
+    );
+  }
 
   getUser(): Observable<Response<User>> {
     return this.#httpService.getItem<Response<User>>('users/user');
@@ -29,11 +49,15 @@ export class UserService {
     return this.#httpService.update<UserData>('users/content-creator', user);
   }
 
+  updateUserStatus(username: string): Observable<void> {
+    return this.#httpService.updateStatus(`users/${username}/status`);
+  }
+
   getUsers(): Observable<any> {
     return this.#httpService.getItems('users');
   }
 
-  deleteUser(id: string): Observable<any> {
-    return this.#httpService.delete('users', id);
+  deleteUser(password: string): Observable<any> {
+    return this.#httpService.delete('users', undefined, password);
   }
 }

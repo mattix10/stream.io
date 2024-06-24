@@ -2,31 +2,32 @@
   <tr>
     <th>Id</th>
     <th>E-mail</th>
+    <th>Nazwa użytkownika</th>
     <th>Numer telefonu</th>
+    <th>NIP</th>
     <th>Rola</th>
-    <th class="management-header">Edytuj</th>
-    <th class="management-header">Usuń</th>
+    <th class="management-header">Aktywny</th>
   </tr>
-  <ng-container *ngIf="users">
-    @for (user of users; track user) {
-    <tr>
-      <td>{{ user.id }}</td>
-      <td>{{ user.email }}</td>
-      <td>{{ user.phoneNumber }}</td>
-      <td>{{ user.role }}</td>
-      <td class="management-cell">
-        <img
-          src="./../../../../assets/icons/edit.svg"
-          (click)="onEditUser(user.id)"
-        />
-      </td>
-      <td class="management-cell">
-        <img
-          src="./../../../../assets/icons/delete.svg"
-          (click)="onDeleteUser(user.id)"
-        />
-      </td>
-    </tr>
-    }
-  </ng-container>
+  @if(users.length) { @for (user of users; track user) {
+  <tr>
+    <td>{{ user.id }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.userName }}</td>
+    <td>{{ user.phoneNumber ? user.phoneNumber : "-" }}</td>
+    <td>{{ user.nip ? user.nip : "-" }}</td>
+    <td>{{ user.role }}</td>
+    <td class="management-cell">
+      <ng-toggle
+        [value]="user.isActive"
+        [color]="{
+          unchecked: '#BD362F',
+          checked: '#51A351'
+        }"
+        [width]="55"
+        [labels]="{ checked: 'Tak', unchecked: 'Nie' }"
+        (change)="onUserStatusChange(user)"
+      ></ng-toggle>
+    </td>
+  </tr>
+  } }
 </table>

@@ -1,3 +1,5 @@
+@use "./variables" as var;
+
 .header {
   display: flex;
   align-items: center;
@@ -22,7 +24,8 @@
   width: 40%;
 
   &-delete {
-    background-color: red;
+    background-color: var.$color-error;
+    color: white;
   }
 }
 

@@ -7,8 +7,7 @@ import { UserResponse } from '../../models/user-response';
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
 import { Role } from '../../models/roles.enum';
-import { RegistrationContentCreatorRequest } from 'src/app/features/auth/models/registration-content-creator-request';
-import { BaseRegistrationRequest } from 'src/app/features/auth/models/base-registration-request';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -46,19 +45,7 @@ export class AuthService {
   logout(): void {
     this.removeToken();
     this.removeCurrentUser();
-  }
-
-  registerEndUser(formValue: BaseRegistrationRequest): Observable<boolean> {
-    return this.#httpClient.post<boolean>(`${this.authUrl}end-user`, formValue);
-  }
-
-  registerContentCreator(
-    registrationForm: RegistrationContentCreatorRequest
-  ): Observable<void> {
-    return this.#httpClient.post<void>(
-      `${this.authUrl}content-creator`,
-      registrationForm
-    );
+    this.#router.navigateByUrl('/');
   }
 
   isAdmin = (): Observable<boolean> =>

@@ -1,16 +1,9 @@
 <div class="user-dashboard dashboard container">
-  <h1 class="header-primary">
-    {{
-      isAdminUserEditMode ? "Konto użytkownika " + user?.userName : "Moje konto"
-    }}
-  </h1>
+  <h1 class="header-primary">Moje konto</h1>
 
   @if (user) {
-  <app-user-data
-    [user]="user"
-    [isAdminEditMode]="isAdminUserEditMode"
-    (userDataChanged)="onUserDataChanged($event)"
-  />
+  <app-user-data [user]="user" (userDataChanged)="onUserDataChanged()" />
+  <app-delete-account />
   }
 
   <div class="divider"></div>

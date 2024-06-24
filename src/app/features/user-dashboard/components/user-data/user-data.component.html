@@ -1,5 +1,5 @@
 <div class="header">
-  <h2 class="header-second">Dane</h2>
+  <h2 class="header-data">Dane</h2>
   @if (isEditMode) {
   <img
     src="./../../../../../assets/icons/close.svg"
@@ -23,6 +23,11 @@
     <div class="form-field">
       <div class="label">E-mail:</div>
       <input type="email" class="input" formControlName="email" />
+    </div>
+
+    <div class="form-field">
+      <div class="label">Nazwa użytkownika:</div>
+      <input type="email" class="input" formControlName="userName" />
     </div>
 
     <div class="form-field">
@@ -56,16 +61,9 @@
 
     <div class="form-field">
       <div class="label">Rola:</div>
-      <select
-        type="text"
-        class="input"
-        formControlName="role"
-        [class.disabled]="!isAdminEditMode"
-      >
-        <!-- TODO: napraw wyświetlanie ról w trybie edycji - obecnie zawsze wyświetla się "USER"-->
-        <option *ngFor="let role of roles" [selected]="'user.roles[0]'">
-          {{ role }}
-        </option>
+      <select type="text" class="input disabled" formControlName="role">
+        <option [selected]="user.role">{{ user.role }}</option>
+        <!-- Czy musimy wyświetlac to pole?-->
       </select>
     </div>
   </form>
@@ -81,6 +79,10 @@
   <div class="form-field">
     <div class="label">E-mail:</div>
     <div class="user-data-item">{{ user.email }}</div>
+  </div>
+  <div class="form-field">
+    <div class="label">Nazwa użytkownika:</div>
+    <div class="user-data-item">{{ user.userName }}</div>
   </div>
   <div class="form-field">
     <div class="label">Hasło:</div>

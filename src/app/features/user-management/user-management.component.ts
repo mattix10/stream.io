@@ -3,32 +3,46 @@ import { UserTableComponent } from './user-table/user-table.component';
 import { User } from 'src/app/core/models/user';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
 import { AsyncPipe } from '@angular/common';
-import { mergeMap, tap } from 'rxjs';
+import { catchError, EMPTY, mergeMap, Observable, tap } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-management',
   standalone: true,
   imports: [AsyncPipe, UserTableComponent],
   templateUrl: './user-management.component.html',
-  styleUrl: './user-management.component.scss',
 })
 export class UserManagementComponent implements OnInit {
   users: User[] = [];
 
+  readonly #toastrService = inject(ToastrService);
   readonly #userService = inject(UserService);
 
   ngOnInit(): void {
     this.getUserList().subscribe();
   }
 
-  onDeleteUser(id: string): void {
+  onUserStatusChanged(username: string): void {
     this.#userService
-      .deleteUser(id)
-      .pipe(mergeMap(() => this.getUserList()))
+      .updateUserStatus(username)
+      .pipe(
+        catchError(() => {
+          this.#toastrService.error(
+            `Aktualizacja statusu użytkownika "${username}" nie powiodła się.`
+          );
+          return EMPTY;
+        }),
+        mergeMap(() => {
+          this.#toastrService.success(
+            `Status użytkownika "${username}" został zaktualizowany.`
+          );
+          return this.getUserList();
+        })
+      )
       .subscribe();
   }
 
-  private getUserList() {
+  private getUserList(): Observable<any> {
     return this.#userService
       .getUsers()
       .pipe(tap(({ result }) => (this.users = result.users)));
