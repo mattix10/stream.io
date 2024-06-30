@@ -3,7 +3,7 @@ import { Movie } from '../core/models/movie';
 export const movie: Movie = {
   id: '1',
   title: 'Django',
-  imgUrl: './../../../../assets/images/django.jpg',
+  imageUrl: './../../../../assets/images/django.jpg',
   userId: '1',
   description: `Zdobywca Oskara®
   Jamie Foxx, wciela się w tytułową rolę niewolnika w filmie "Django",

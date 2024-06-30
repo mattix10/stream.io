@@ -20,7 +20,7 @@ export class MovieComponent implements OnInit {
   movieMetadata!: MovieMetadata;
   isLoggedIn$: Observable<boolean> = of(false);
   movieLink: string = '';
-  movieSlug: string = '';
+  uuid: string = '';
 
   readonly #movieService = inject(MoviesService);
   readonly #activatedRoute = inject(ActivatedRoute);
@@ -40,7 +40,7 @@ export class MovieComponent implements OnInit {
   }
 
   private getMovieDetails(): void {
-    this.getMovieSlug()
+    this.getMovieuuid()
       .pipe(
         mergeMap(() =>
           this.isLoggedIn$.pipe(
@@ -61,12 +61,12 @@ export class MovieComponent implements OnInit {
       .subscribe();
   }
 
-  private getMovieSlug(): Observable<ParamMap> {
+  private getMovieuuid(): Observable<ParamMap> {
     return this.#activatedRoute.paramMap.pipe(
       tap((params: ParamMap) => {
-        this.movieSlug = params.has('slug') ? params.get('slug')! : '';
+        this.uuid = params.has('uuid') ? params.get('uuid')! : '';
 
-        if (!this.movieSlug) return;
+        if (!this.uuid) return;
 
         const navigation = this.#router.getCurrentNavigation();
 
@@ -89,19 +89,19 @@ export class MovieComponent implements OnInit {
 
   private getMovieMetadata(): Observable<MovieMetadata> {
     return this.#movieService
-      .getMovieMetadata(this.movieSlug)
+      .getMovieMetadata(this.uuid)
       .pipe(tap((metadata) => (this.movieMetadata = metadata)));
   }
 
   private getMovieLink(): Observable<string> {
     return this.#movieService
-      .getMovieLink(this.movieSlug)
+      .getMovieLink(this.uuid)
       .pipe(tap((movieLink) => (this.movieLink = movieLink)));
   }
 
   private getComments(): Observable<MovieComment[]> {
     return this.#movieService
-      .getComments(this.movieSlug)
+      .getComments(this.uuid)
       .pipe(tap((comments) => (this.comments = comments)));
   }
 }

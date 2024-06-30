@@ -5,6 +5,7 @@ import { UserService } from 'src/app/core/services/user-service/user-service.ser
 import { AsyncPipe } from '@angular/common';
 import { catchError, EMPTY, mergeMap, Observable, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { UserStatusEvent } from '../user-dashboard/models/user-status-event';
 
 @Component({
   selector: 'app-user-management',
@@ -22,19 +23,19 @@ export class UserManagementComponent implements OnInit {
     this.getUserList().subscribe();
   }
 
-  onUserStatusChanged(username: string): void {
+  onUserStatusChanged({ isActive, userName }: UserStatusEvent): void {
     this.#userService
-      .updateUserStatus(username)
+      .updateUserStatus(userName, { isActive })
       .pipe(
         catchError(() => {
           this.#toastrService.error(
-            `Aktualizacja statusu użytkownika "${username}" nie powiodła się.`
+            `Aktualizacja statusu użytkownika "${userName}" nie powiodła się.`
           );
           return EMPTY;
         }),
         mergeMap(() => {
           this.#toastrService.success(
-            `Status użytkownika "${username}" został zaktualizowany.`
+            `Status użytkownika "${userName}" został zaktualizowany.`
           );
           return this.getUserList();
         })

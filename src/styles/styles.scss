@@ -47,6 +47,7 @@ h2 {
 
 h3 {
   font-size: 16px;
+  margin-bottom: 12px;
 }
 
 .divider {
@@ -62,6 +63,10 @@ h3 {
   border: none;
   width: 100%;
   font-family: "Mitr-Medium";
+}
+
+button.disabled {
+  background-color: var.$color-grey;
 }
 
 /* Styl dla całego paska przewijania */

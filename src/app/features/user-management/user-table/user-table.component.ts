@@ -2,6 +2,7 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgToggleModule } from 'ng-toggle-button';
 import { User } from 'src/app/core/models/user';
+import { UserStatusEvent } from '../../user-dashboard/models/user-status-event';
 @Component({
   selector: 'app-user-table',
   standalone: true,
@@ -12,9 +13,10 @@ import { User } from 'src/app/core/models/user';
 export class UserTableComponent {
   @Input({ required: true }) users: User[] = [];
 
-  @Output() userStatusChanged = new EventEmitter<string>();
+  @Output() userStatusChanged = new EventEmitter<UserStatusEvent>();
 
-  onUserStatusChange({ userName }: User): void {
-    this.userStatusChanged.emit(userName);
+  onUserStatusChange(isActive: boolean, { userName }: User): void {
+    console.log(event);
+    this.userStatusChanged.emit({ isActive, userName });
   }
 }

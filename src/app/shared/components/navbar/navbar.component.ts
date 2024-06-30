@@ -58,9 +58,11 @@ export class NavbarComponent implements OnInit {
   }
 
   private getCurrentUser(): void {
-    this.user$ = this.#authService.currentUser$.pipe(
-      tap((user) => console.log(user))
-    );
+    // TODO: Fix console.log
+    this.user$ = this.#authService.currentUser$;
+    // .pipe(
+    //   tap((user) => console.log(user))
+    // );
   }
 
   private checkIsUserAdmin(): void {

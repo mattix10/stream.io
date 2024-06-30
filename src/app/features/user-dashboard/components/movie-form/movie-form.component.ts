@@ -8,6 +8,7 @@ import {
   mergeMap,
   Observable,
   of,
+  Subject,
   switchMap,
 } from 'rxjs';
 import { FileUploadService } from 'src/app/features/user-dashboard/services/file-upload-service/file-upload.service';
@@ -18,6 +19,8 @@ import { UserMovieMetadata } from 'src/app/core/models/user-movie-metadata';
 import { ToastrService } from 'ngx-toastr';
 import { isLoading } from 'src/app/features/auth/models/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { LicenseRulesFormComponent } from '../license-rules-form/license-rules-form.component';
+import { LicenseRule } from 'src/app/core/models/license-rule';
 
 @Component({
   selector: 'app-movie-form',
@@ -26,6 +29,7 @@ import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.comp
     ReactiveFormsModule,
     DragAndDropUploadFileComponent,
     SpinnerComponent,
+    LicenseRulesFormComponent,
   ],
   templateUrl: './movie-form.component.html',
   providers: [MovieMetadataService, FileUploadService],
@@ -46,6 +50,8 @@ export class MovieFormComponent implements isLoading {
       });
     }
   }
+
+  submit = new Subject<void>();
 
   movieForm = new FormGroup({
     title: new FormControl(''),
@@ -78,7 +84,12 @@ export class MovieFormComponent implements isLoading {
     this.movieForm.controls.movie.patchValue(null);
   }
 
+  onRulesChanged(licenseRules: LicenseRule[]): void {
+    console.log('licenseRules');
+  }
+
   onSubmit(): void {
+    this.submit.next();
     console.log(this.movieForm);
     if (this.movieForm.invalid) return;
 
@@ -116,6 +127,8 @@ export class MovieFormComponent implements isLoading {
   }
 
   private uploadMovie(): Observable<null> {
+    console.log('here1');
+    console.log('here2');
     if (!this.movieForm.get('movie')) return of(null);
 
     return this.#fileUploadService.getLinkForUploadMovie().pipe(

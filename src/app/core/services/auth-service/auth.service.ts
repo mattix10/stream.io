@@ -64,11 +64,9 @@ export class AuthService {
     );
 
   setCurrentUser(token: string): void {
-    console.log(token);
     const { sub: id, role, email, name } = this.getDecodedToken(token);
     const user = new User(id, role, email, name);
     this.currentUserSource.next(user);
-    console.log(user);
     this.setToken(token);
   }
 

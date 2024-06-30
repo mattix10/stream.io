@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
+import { UpdateUserStatusRequest } from '../../models/requests/update-user-status-request';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +26,8 @@ export class HttpService {
     return this.#httpClient.put<T>(this.createUrl(url, id), body);
   }
 
-  updateStatus(url: string): Observable<void> {
-    return this.#httpClient.post<void>(this.createUrl(url), undefined);
+  updateStatus(url: string, body: UpdateUserStatusRequest): Observable<void> {
+    return this.#httpClient.patch<void>(this.createUrl(url), body);
   }
 
   delete(url: string, id?: string, body?: any): Observable<void> {

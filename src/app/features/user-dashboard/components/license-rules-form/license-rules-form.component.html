@@ -1,0 +1,74 @@
+<div class="license-rules-header">
+  <h3 class="title">Reguły licencji:</h3>
+  <button
+    class="add-button button"
+    type="button"
+    (click)="addRule()"
+    [disabled]="rules.controls.length === 6"
+    [class.disabled]="rules.controls.length === 6"
+  >
+    + Dodaj regułę
+  </button>
+</div>
+<form class="license-rules-form" [formGroup]="licenseRulesForm">
+  <ng-container formArrayName="rules">
+    @for (rule of rules.controls; let index = $index; track rule; let first =
+    $first ) {
+    <div [formGroupName]="index">
+      <div class="divider"></div>
+      <div class="license-rule-header">
+        <h4>Licencja numer {{ index + 1 }}:</h4>
+        @if(rules.controls.length !== 1) {
+        <img
+          class="icon"
+          src="./../../../../../assets/icons/delete.svg"
+          (click)="removeRule(index)"
+          title="Usuń regułę"
+        />
+        }
+      </div>
+      <div class="wrapper">
+        <div class="form-field">
+          <label class="label" for="Price">Cena (zł)</label>
+          <input class="input" id="price" rows="5" formControlName="price" />
+        </div>
+        <div class="form-field">
+          <div class="label">Rodzaj licencji:</div>
+          <select
+            type="text"
+            class="input"
+            formControlName="type"
+            (change)="
+              loadAvailableLicenseDurationLabels();
+              loadAvailableLicenseTypeLabels();
+              manageDurationField($event.target, index)
+            "
+          >
+            @for (option of licenseTypeOptions; track option) {
+            <option [value]="+option.value" [disabled]="option.disabled">
+              {{ option.label }}
+            </option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- @if (rule.type) { -->
+      {{ rule.value | json }}
+      @if (rule.value.type == licenseType.Rent) {
+      <div class="form-field">
+        <div class="label">Czas trwania:</div>
+        <select type="text" class="input" formControlName="duration">
+          @for (option of licenseDurationOptions; track option) {
+          <option [value]="+option.value" [disabled]="option.disabled">
+            {{ option.label }}
+          </option>
+          }
+        </select>
+      </div>
+      }
+    </div>
+    }
+    <!-- } -->
+  </ng-container>
+</form>

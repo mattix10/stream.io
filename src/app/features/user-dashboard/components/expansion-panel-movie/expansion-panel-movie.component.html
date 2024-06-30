@@ -1,7 +1,7 @@
 @for (movie of movieList; track movie) {
 <div class="expansion-panel">
   <div class="header">
-    <div class="title" (click)="toggleMovie(movie.slug)">
+    <div class="title" (click)="toggleMovie(movie.uuid)">
       <img
         class="expand-arrow"
         [class.arrow-up]="movie.isExpanded"
@@ -14,13 +14,13 @@
         class="edit-icon"
         src="./../../../../../assets/icons/edit.svg"
         title="Edytuj"
-        (click)="editMovie(movie.slug)"
+        (click)="editMovie(movie.uuid)"
       />
       <img
         class="delete-icon"
         src="./../../../../../assets/icons/delete.svg"
         title="Usuń"
-        (click)="deleteMovie(movie.slug)"
+        (click)="deleteMovie(movie.uuid)"
       />
     </div>
   </div>

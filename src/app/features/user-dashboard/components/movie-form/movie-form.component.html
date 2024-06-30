@@ -1,4 +1,5 @@
 <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
+  <h3>Metadane</h3>
   <div class="form-field">
     <label class="label" for="title">Tytuł</label>
     <input class="input" id="title" formControlName="title" />
@@ -13,6 +14,13 @@
       rows="5"
     ></textarea>
   </div>
+
+  <app-license-rules-form
+    [submit]="submit"
+    (rulesChanged)="onRulesChanged($event)"
+  ></app-license-rules-form>
+
+  <h3>Content</h3>
 
   <app-drag-and-drop-upload-file
     [fileType]="fileType.Image"

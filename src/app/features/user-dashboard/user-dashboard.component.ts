@@ -58,11 +58,11 @@ export class UserDashboardComponent implements OnInit {
     if (!this.isEditMode) this.#moviesService.selectedMovieForEdit$.next(null);
   }
 
-  onRemoveMovieChanged(movieSlug: string): void {
-    if (!movieSlug) return;
+  onRemoveMovieChanged(uuid: string): void {
+    if (!uuid) return;
 
     this.#moviesService
-      .deleteMovie(movieSlug)
+      .deleteMovie(uuid)
       .pipe(
         switchMap(() => this.#moviesService.getMovies<UserMovieMetadata>()),
         tap((movies) => (this.movies = movies))

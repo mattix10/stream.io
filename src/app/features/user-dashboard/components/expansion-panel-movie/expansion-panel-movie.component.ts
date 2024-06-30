@@ -32,20 +32,20 @@ export class ExpansionPanelMovieComponent implements OnInit {
     this.addExpandedtoMovieList();
   }
 
-  toggleMovie(slug: string): void {
+  toggleMovie(uuid: string): void {
     this.movieList = this.movieList.map((movie) =>
-      movie.slug === slug ? { ...movie, isExpanded: !movie.isExpanded } : movie
+      movie.uuid === uuid ? { ...movie, isExpanded: !movie.isExpanded } : movie
     );
   }
 
-  editMovie(slug: string): void {
-    const movie = this.movieList.find((movie) => movie.slug === slug);
+  editMovie(uuid: string): void {
+    const movie = this.movieList.find((movie) => movie.uuid === uuid);
     if (!movie) return;
     this.#moviesService.selectedMovieForEdit$.next(movie);
   }
 
-  deleteMovie(movieSlug: string): void {
-    this.removeMovieChanged.emit(movieSlug);
+  deleteMovie(uuid: string): void {
+    this.removeMovieChanged.emit(uuid);
   }
 
   private addExpandedtoMovieList(): void {

@@ -8,6 +8,7 @@ import { UpdateContentCreatorRequest } from '../../models/update-content-creator
 import { Response } from '../../models/response';
 import { BaseRegistrationRequest } from 'src/app/features/auth/models/base-registration-request';
 import { RegistrationContentCreatorRequest } from 'src/app/features/auth/models/registration-content-creator-request';
+import { UpdateUserStatusRequest } from '../../models/requests/update-user-status-request';
 
 @Injectable({
   providedIn: 'root',
@@ -49,8 +50,14 @@ export class UserService {
     return this.#httpService.update<UserData>('users/content-creator', user);
   }
 
-  updateUserStatus(username: string): Observable<void> {
-    return this.#httpService.updateStatus(`users/${username}/status`);
+  updateUserStatus(
+    username: string,
+    userStatus: UpdateUserStatusRequest
+  ): Observable<void> {
+    return this.#httpService.updateStatus(
+      `users/${username}/status`,
+      userStatus
+    );
   }
 
   getUsers(): Observable<any> {

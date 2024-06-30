@@ -16,7 +16,7 @@ export class MovieMetadataComponent {
   readonly #router = inject(Router);
 
   protected navigateToMovieDetails(): void {
-    this.#router.navigate(['/movie', this.movieMetadata.slug], {
+    this.#router.navigate(['/movie', this.movieMetadata.uuid], {
       state: { movieMetadata: this.movieMetadata },
     });
   }

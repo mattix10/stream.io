@@ -24,7 +24,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'movie/:slug',
+    path: 'movie/:uuid',
     loadComponent: () =>
       import('./features/movie/movie.component').then(
         (mod) => mod.MovieComponent

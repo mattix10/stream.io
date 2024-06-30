@@ -1,0 +1,37 @@
+@use "./variables" as var;
+
+.license-rules-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    display: block;
+    color: var.$color-grey;
+    margin-bottom: 0;
+  }
+
+  .add-button {
+    height: 30px;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.license-rule-header {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.wrapper {
+  display: inline-flex;
+  width: 100%;
+  justify-content: space-between;
+
+  .form-field {
+    width: 45%;
+  }
+}

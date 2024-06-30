@@ -6,7 +6,7 @@
       <div class="comment">
         <h3 class="username">{{ comment?.userName }}</h3>
         <div class="description">
-          {{ comment?.comment }}
+          {{ comment?.body }}
         </div>
       </div>
       }
@@ -37,7 +37,7 @@
         class="button"
         (click)="onAddComment(comment.value)"
         [disabled]="!(isLoggedIn$ | async)"
-        [class.button-disabled]="!(isLoggedIn$ | async)"
+        [class.disabled]="!(isLoggedIn$ | async)"
       >
         Dodaj komentarz
       </button>

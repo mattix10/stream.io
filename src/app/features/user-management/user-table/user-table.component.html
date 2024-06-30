@@ -25,7 +25,7 @@
         }"
         [width]="55"
         [labels]="{ checked: 'Tak', unchecked: 'Nie' }"
-        (change)="onUserStatusChange(user)"
+        (change)="onUserStatusChange($event.target.checked, user)"
       ></ng-toggle>
     </td>
   </tr>
