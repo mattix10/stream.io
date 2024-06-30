@@ -1,5 +1,10 @@
 import { Component, inject, Input } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {
   catchError,
   combineLatest,
@@ -13,14 +18,15 @@ import {
 } from 'rxjs';
 import { FileUploadService } from 'src/app/features/user-dashboard/services/file-upload-service/file-upload.service';
 import { MovieMetadataService } from 'src/app/features/user-dashboard/services/movie-metadata-service/movie-metadata.service';
-import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
-import { FileType } from '../../models/file-type';
-import { UserMovieMetadata } from 'src/app/core/models/user-movie-metadata';
 import { ToastrService } from 'ngx-toastr';
 import { isLoading } from 'src/app/features/auth/models/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { LicenseRulesFormComponent } from '../license-rules-form/license-rules-form.component';
 import { LicenseRule } from 'src/app/core/models/license-rule';
+import { UploadContentMetadataRequest } from 'src/app/core/models/requests/upload-movie-metadata-request';
+import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
+import { LicenseRulesFormComponent } from '../license-rules-form/license-rules-form.component';
+import { FileType } from '../../models/file-type';
+import { UserContentMetadata } from 'src/app/core/models/user-content-metadata-response';
 
 @Component({
   selector: 'app-movie-form',
@@ -40,13 +46,13 @@ export class MovieFormComponent implements isLoading {
     if (!this._isEditMode) this.movieForm.reset();
   }
 
-  @Input() set movie(movie: UserMovieMetadata | null) {
-    if (movie) {
+  @Input() set contentMetadata(contentMetadata: UserContentMetadata | null) {
+    if (contentMetadata) {
       this.movieForm.patchValue({
-        title: movie.title,
-        description: movie.description,
-        image: this.createUserFilename(movie.title, FileType.Image),
-        movie: this.createUserFilename(movie.title, FileType.Movie),
+        title: contentMetadata.title,
+        description: contentMetadata.description,
+        image: this.createUserFilename(contentMetadata.title, FileType.Image),
+        movie: this.createUserFilename(contentMetadata.title, FileType.Movie),
       });
     }
   }
@@ -54,13 +60,15 @@ export class MovieFormComponent implements isLoading {
   submit = new Subject<void>();
 
   movieForm = new FormGroup({
-    title: new FormControl(''),
-    description: new FormControl(''),
+    title: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
     image: new FormControl(),
     movie: new FormControl(),
   });
+  licenseRules: LicenseRule[] = [];
 
   isLoading: boolean = false;
+  private contentId: string = '';
   _isEditMode = false;
 
   readonly fileType = FileType;
@@ -85,23 +93,33 @@ export class MovieFormComponent implements isLoading {
   }
 
   onRulesChanged(licenseRules: LicenseRule[]): void {
-    console.log('licenseRules');
+    this.licenseRules = licenseRules;
   }
 
   onSubmit(): void {
     this.submit.next();
+
+    // if (this.movieForm.invalid) return;
+
     console.log(this.movieForm);
-    if (this.movieForm.invalid) return;
 
     this.isLoading = true;
 
     if (this.isEditMode) {
       // TODO: Implement editing
     } else {
-      this.uploadMovieMetadata(this.movieForm.value)
+      const contentMetadataRequest: UploadContentMetadataRequest = {
+        title: this.movieForm.value.title as string,
+        description: this.movieForm.value.description as string,
+        licenseRules: this.licenseRules,
+      };
+
+      this.uploadContentMetadata(contentMetadataRequest)
         .pipe(
-          switchMap((isSuccess: boolean) => {
-            if (isSuccess) {
+          switchMap(({ contentId }: { contentId: string }) => {
+            if (contentId) {
+              this.contentId = contentId;
+
               this.#toastrService.success('Metadane zostały wgrane pomyślnie.');
 
               return combineLatest([this.uploadMovie(), this.uploadImage()]);
@@ -127,11 +145,9 @@ export class MovieFormComponent implements isLoading {
   }
 
   private uploadMovie(): Observable<null> {
-    console.log('here1');
-    console.log('here2');
     if (!this.movieForm.get('movie')) return of(null);
 
-    return this.#fileUploadService.getLinkForUploadMovie().pipe(
+    return this.#fileUploadService.getLinkForUploadMovie(this.contentId).pipe(
       mergeMap((link: string) =>
         this.#fileUploadService
           .upload(this.movieForm.controls.movie.value!, link)
@@ -151,7 +167,7 @@ export class MovieFormComponent implements isLoading {
   private uploadImage(): Observable<any> {
     if (!this.movieForm.get('image')) return of(null);
 
-    return this.#fileUploadService.getLinkForUploadImage().pipe(
+    return this.#fileUploadService.getLinkForUploadImage(this.contentId).pipe(
       mergeMap((link: string) =>
         this.#fileUploadService
           .upload(this.movieForm.controls.image.value!, link)
@@ -168,9 +184,11 @@ export class MovieFormComponent implements isLoading {
     );
   }
 
-  private uploadMovieMetadata({ title, description }: any): Observable<any> {
+  private uploadContentMetadata(
+    contentMetadataRequest: UploadContentMetadataRequest
+  ): Observable<any> {
     return this.#movieMetadataService
-      .uploadMovieMetadata(title, description)
+      .uploadContentMetadata(contentMetadataRequest)
       .pipe(
         catchError(() => {
           this.#toastrService.error('Wgrywanie metadanych nie powiodło się.');

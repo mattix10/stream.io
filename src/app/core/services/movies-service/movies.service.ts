@@ -11,13 +11,17 @@ import { getUserMoviesMetadataResponse } from 'mocks/get-user-movies-metadata';
 import { UserMoviesMetadataResponse } from '../../models/user-movies-metadata';
 import { AllMoviesMetadataResponse } from '../../models/all-movies-metadata-response';
 import { getAllMoviesMetadata } from 'mocks/get-all-movies-metadata';
-import { CreateMovieMetadataRequest } from '../../models/requests/create-movie-metadata-request';
+import { UploadContentMetadataRequest } from '../../models/requests/upload-movie-metadata-request';
+import {
+  UserContentMetadata,
+  UserContentMetadataResponse,
+} from '../../models/user-content-metadata-response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MoviesService {
-  selectedMovieForEdit$ = new BehaviorSubject<UserMovieMetadata | null>(null);
+  selectedMovieForEdit$ = new BehaviorSubject<UserContentMetadata | null>(null);
   readonly #httpService = inject(HttpService);
 
   getMovies<T>(params?: HttpParams): Observable<T[]> {
@@ -30,10 +34,10 @@ export class MoviesService {
     return of(movieItems[0]);
   }
 
-  getUserMoviesMetadataResponse(): Observable<UserMoviesMetadataResponse[]> {
+  getUserContentMetadataResponse(): Observable<UserContentMetadataResponse> {
     return of(getUserMoviesMetadataResponse);
 
-    return this.#httpService.getItems<UserMoviesMetadataResponse[]>('movies');
+    // return this.#httpService.getItems<UserContentMetadataResponse[]>('content/user');
   }
 
   getAllMoviesMetadata(
@@ -64,8 +68,8 @@ export class MoviesService {
     return this.#httpService.getItem<MovieMetadata>('movies', uuid);
   }
 
-  createMovieMetadata(movieMetadataRequest: CreateMovieMetadataRequest) {
-    return this.#httpService.create<CreateMovieMetadataRequest>(
+  createMovieMetadata(movieMetadataRequest: UploadContentMetadataRequest) {
+    return this.#httpService.create<UploadContentMetadataRequest>(
       'content',
       movieMetadataRequest
     );

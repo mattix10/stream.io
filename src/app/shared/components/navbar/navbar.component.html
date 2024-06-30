@@ -43,6 +43,13 @@
           <span class="list-title"> Moje konto </span>
         </li>
         <li
+          [routerLink]="'/user-movies'"
+          class="navigation-item"
+          *ngIf="user$ | async"
+        >
+          <span class="list-title"> Moje filmy </span>
+        </li>
+        <li
           [routerLink]="'/'"
           class="navigation-item"
           (click)="logout()"
@@ -91,6 +98,14 @@
       *ngIf="user$ | async"
     >
       <span class="list-title"> Moje konto </span>
+    </li>
+    <li
+      class="list-item"
+      (click)="toggleMobileVisibility()"
+      [routerLink]="'/user-movies'"
+      *ngIf="user$ | async"
+    >
+      <span class="list-title"> Moje filmy </span>
     </li>
     <li
       class="list-item"

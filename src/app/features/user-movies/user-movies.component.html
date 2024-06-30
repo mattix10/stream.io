@@ -1,14 +1,5 @@
-<div class="user-dashboard dashboard container">
-  <h1 class="header-primary">Moje konto</h1>
-
-  @if (user) {
-  <app-user-data [user]="user" (userDataChanged)="onUserDataChanged()" />
-  <app-delete-account />
-  }
-
-  <div class="divider"></div>
-
-  <!-- @if (isContentCreator) {
+<div class="user-movies dashboard container">
+  @if (isContentCreator$ | async) {
   <section class="movies-section">
     <div class="movie-form">
       <app-headers
@@ -16,12 +7,12 @@
         (editModeChanged)="onEditModeChange($event)"
       />
 
-      @if (isEditMode && !selectedMovieForEdit) {
+      @if (isEditMode && !selectedContentMetadataForEdit) {
       <p>Wybierz z listy film, który chcesz edytować.</p>
       } @else {
       <app-movie-form
         [isEditMode]="isEditMode"
-        [movie]="selectedMovieForEdit"
+        [contentMetadata]="selectedContentMetadataForEdit"
       />
       }
     </div>
@@ -29,15 +20,15 @@
     <div class="movie-list">
       <h2>Filmy</h2>
 
-      @if (movies) {
+      @if (contentMetadata) {
       <app-expansion-panel-movie
-        [movies]="movies"
+        [movies]="contentMetadata"
         (removeMovieChanged)="onRemoveMovieChanged($event)"
       />
       } @else {
       <div>Aktualnie brak dodanych filmów.</div>
       }
     </div>
-  </section> -->
-  <!-- } -->
+  </section>
+  }
 </div>

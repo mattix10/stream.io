@@ -16,6 +16,14 @@ const routes: Routes = [
       import('./features/user-dashboard/user-dashboard-routes'),
   },
   {
+    path: 'user-movies',
+    canMatch: [authGuard],
+    loadComponent: () =>
+      import('./features/user-movies/user-movies.component').then(
+        (mod) => mod.UserMoviesComponent
+      ),
+  },
+  {
     path: 'user-management',
     canMatch: [adminGuard],
     loadComponent: () =>

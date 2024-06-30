@@ -1,6 +1,4 @@
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { MovieFormComponent } from './components/movie-form/movie-form.component';
-import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
 import { catchError, EMPTY, Observable, switchMap, tap, zip } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -19,8 +17,6 @@ import { DeleteAccountComponent } from './components/delete-account/delete-accou
   standalone: true,
   imports: [
     CommonModule,
-    MovieFormComponent,
-    ExpansionPanelMovieComponent,
     UserDataComponent,
     HeadersComponent,
     DeleteAccountComponent,
@@ -45,8 +41,6 @@ export class UserDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserData();
-    this.loadUserMovies();
-    this.loadSelectedMovieForEdit();
   }
 
   onUserDataChanged(): void {
@@ -101,20 +95,5 @@ export class UserDashboardComponent implements OnInit {
         this.user = user;
       })
     );
-  }
-
-  private loadUserMovies(): void {
-    this.#moviesService
-      .getMovies<UserMovieMetadata>()
-      .subscribe((movies) => (this.movies = movies));
-  }
-
-  private loadSelectedMovieForEdit(): void {
-    this.#moviesService.selectedMovieForEdit$
-      .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe((selectedMovieForEdit) => {
-        this.isEditMode = !!selectedMovieForEdit;
-        this.selectedMovieForEdit = selectedMovieForEdit;
-      });
   }
 }

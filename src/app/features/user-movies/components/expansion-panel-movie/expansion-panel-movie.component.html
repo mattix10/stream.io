@@ -33,6 +33,22 @@
       </p>
     </div>
   </div>
+  <div class="content">
+    <div class="content-section">
+      <p class="content-header">Status obrazka:</p>
+      <p class="content-body" [appFileStatus]="movie.imageStatus">
+        {{ movie.imageStatus | fileStatus }}
+      </p>
+    </div>
+  </div>
+  <div class="content">
+    <div class="content-section">
+      <p class="content-header">Status filmu:</p>
+      <p class="content-body" [appFileStatus]="movie.movieStatus">
+        {{ movie.movieStatus | fileStatus }}
+      </p>
+    </div>
+  </div>
   }
 </div>
 }

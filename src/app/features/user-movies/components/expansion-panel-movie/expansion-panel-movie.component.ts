@@ -7,21 +7,23 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { UserMovieMetadata } from 'src/app/core/models/user-movie-metadata';
+import { UserContentMetadata } from 'src/app/core/models/user-content-metadata-response';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
+import { FileStatusDirective } from 'src/app/features/user-movies/directives/file-status.directive';
+import { FileStatusPipe } from 'src/app/features/user-movies/pipes/file-status.pipe';
 
-type MovieListItem = UserMovieMetadata & {
+type MovieListItem = UserContentMetadata & {
   isExpanded: boolean;
 };
 @Component({
   selector: 'app-expansion-panel-movie',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FileStatusPipe, FileStatusDirective],
   templateUrl: './expansion-panel-movie.component.html',
   styleUrl: './expansion-panel-movie.component.scss',
 })
 export class ExpansionPanelMovieComponent implements OnInit {
-  @Input() movies: UserMovieMetadata[] = [];
+  @Input() movies: UserContentMetadata[] = [];
   @Output() removeMovieChanged = new EventEmitter<string>();
 
   movieList: MovieListItem[] = [];
@@ -30,6 +32,7 @@ export class ExpansionPanelMovieComponent implements OnInit {
 
   ngOnInit(): void {
     this.addExpandedtoMovieList();
+    console.log(this.movies);
   }
 
   toggleMovie(uuid: string): void {

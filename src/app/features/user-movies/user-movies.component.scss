@@ -1,0 +1,9 @@
+.movies-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.movie-list,
+.movie-form {
+  width: 40%;
+}

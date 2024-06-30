@@ -2,19 +2,23 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { MovieMetadata } from '../../models/movie-metadata';
+import { UploadContentMetadataRequest } from 'src/app/core/models/requests/upload-movie-metadata-request';
 
 @Injectable()
 export class MovieMetadataService {
   #httpClient = inject(HttpClient);
 
-  uploadMovieMetadata(title: string, description: string): Observable<boolean> {
+  uploadContentMetadata(
+    contentMetadataRequest: UploadContentMetadataRequest
+  ): Observable<{ contentId: string }> {
+    console.log(contentMetadataRequest);
     // return throwError(() => new Error('error'));
-    return of(true);
+    return of({ contentId: 'ttt' });
 
-    // return this.#httpClient.post<boolean>(`${environment.API_URL}`, {
-    //   title,
-    //   description,
-    // }).pipe();
+    // return this.#httpClient
+    //   .post<boolean>(`${environment.API_URL}`, {
+    //     contentMetadataRequest,
+    //   })
+    //   .pipe();
   }
 }

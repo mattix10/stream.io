@@ -7,7 +7,6 @@
 
   .title {
     display: block;
-    color: var.$color-grey;
     margin-bottom: 0;
   }
 
@@ -19,7 +18,35 @@
     justify-content: center;
   }
 }
+.rule-button {
+  // background-color: white;
+  color: white;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.add-rule {
+  background-color: transparent;
+  color: white;
+  height: 30px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var.$color-primary;
+
+  .icon {
+    margin-right: 5px;
+  }
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
 .license-rule-header {
   margin-bottom: 24px;
   display: flex;
