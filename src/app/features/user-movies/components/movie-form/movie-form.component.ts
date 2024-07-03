@@ -25,8 +25,8 @@ import { UploadContentMetadataRequest } from 'src/app/core/models/requests/uploa
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
 import { LicenseRulesFormComponent } from '../license-rules-form/license-rules-form.component';
 import { FileType } from '../../models/file-type';
-import { UserContentMetadata } from 'src/app/core/models/user-content-metadata-response';
 import { FileUploadService } from '../../services/file-upload-service/file-upload.service';
+import { UserContentMetadata } from 'src/app/core/models/responses/user-content-metadata-response';
 
 @Component({
   selector: 'app-movie-form',

@@ -7,13 +7,13 @@ import { movieItems } from 'src/app/mocks/movie-items';
 import { MovieComment } from '../../models/movie-comment';
 import { comments } from 'src/app/mocks/comments';
 import { getUserMoviesMetadataResponse } from 'mocks/get-user-movies-metadata';
-import { AllMoviesMetadataResponse } from '../../models/all-movies-metadata-response';
+import { AllMoviesMetadataResponse } from '../../models/responses/all-movies-metadata-response';
 import { getAllMoviesMetadata } from 'mocks/get-all-movies-metadata';
 import { UploadContentMetadataRequest } from '../../models/requests/upload-movie-metadata-request';
 import {
   UserContentMetadata,
   UserContentMetadataResponse,
-} from '../../models/user-content-metadata-response';
+} from '../../models/responses/user-content-metadata-response';
 
 @Injectable({
   providedIn: 'root',
@@ -22,9 +22,9 @@ export class MoviesService {
   selectedMovieForEdit$ = new BehaviorSubject<UserContentMetadata | null>(null);
   readonly #httpService = inject(HttpService);
 
-  getMovies<T>(params?: HttpParams): Observable<T[]> {
+  getMovies<T>(params?: HttpParams): Observable<AllMoviesMetadataResponse> {
     // return this.httpService.getItems<MovieMetadata[]>('movies', params);
-    return of(movieItems as T[]);
+    return of(getAllMoviesMetadata);
   }
 
   getMovieMetadata(uuid: string): Observable<MovieMetadata> {
@@ -36,13 +36,6 @@ export class MoviesService {
     return of(getUserMoviesMetadataResponse);
 
     // return this.#httpService.getItems<UserContentMetadataResponse[]>('content/user');
-  }
-
-  getAllMoviesMetadata(
-    params?: HttpParams
-  ): Observable<AllMoviesMetadataResponse> {
-    // return this.#httpService.getItems<MovieMetadata[]>('movies', params);
-    return of(getAllMoviesMetadata);
   }
 
   /**

@@ -3,7 +3,7 @@ export interface AllMoviesMetadataResponse {
   count: number;
 }
 
-interface ContentMetadata {
+export interface ContentMetadata {
   uuid: string;
   title: string;
   duration: number;

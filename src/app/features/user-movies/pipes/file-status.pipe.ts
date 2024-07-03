@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FileStatus } from 'src/app/core/models/file-status';
+import { FileStatus } from '../models/file-status';
 
 @Pipe({
   name: 'fileStatus',

@@ -1,5 +1,5 @@
 import { Directive, ElementRef, inject, Input } from '@angular/core';
-import { FileStatus } from 'src/app/core/models/file-status';
+import { FileStatus } from '../models/file-status';
 
 @Directive({
   selector: '[appFileStatus]',

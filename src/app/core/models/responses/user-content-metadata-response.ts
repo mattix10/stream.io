@@ -1,6 +1,6 @@
-import { BaseMovieMetadata } from './base-movie-metadata';
-import { FileStatus } from './file-status';
-import { LicenseRule } from './license-rule';
+import { FileStatus } from 'src/app/features/user-movies/models/file-status';
+import { BaseMovieMetadata } from '../base-movie-metadata';
+import { LicenseRule } from '../license-rule';
 
 export interface UserContentMetadataResponse {
   result: UserContentMetadata[];

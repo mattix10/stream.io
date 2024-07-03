@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { MovieMetadata } from 'src/app/core/models/movie-metadata';
+import { ContentMetadata } from 'src/app/core/models/responses/all-movies-metadata-response';
 
 @Component({
   selector: 'app-movie-item',
@@ -11,7 +11,7 @@ import { MovieMetadata } from 'src/app/core/models/movie-metadata';
   styleUrl: './movie-item.component.scss',
 })
 export class MovieMetadataComponent {
-  @Input() movieMetadata!: MovieMetadata;
+  @Input() movieMetadata!: ContentMetadata;
 
   readonly #router = inject(Router);
 

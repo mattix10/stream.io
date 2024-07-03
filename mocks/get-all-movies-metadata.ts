@@ -1,4 +1,4 @@
-import { AllMoviesMetadataResponse } from 'src/app/core/models/all-movies-metadata-response';
+import { AllMoviesMetadataResponse } from 'src/app/core/models/responses/all-movies-metadata-response';
 
 export const getAllMoviesMetadata: AllMoviesMetadataResponse = {
   result: [
@@ -6,7 +6,7 @@ export const getAllMoviesMetadata: AllMoviesMetadataResponse = {
       uuid: 'string',
       title: 'string',
       duration: 0,
-      imageUrl: 'string',
+      imageUrl: './../../../../assets/images/django.jpg',
     },
   ],
   count: 0,

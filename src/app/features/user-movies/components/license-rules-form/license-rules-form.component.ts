@@ -19,12 +19,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { Subject } from 'rxjs';
-import {
-  licenseDurationOptions,
-  LicenseRule,
-  LicenseType,
-  licenseTypeOptions,
-} from 'src/app/core/models/license-rule';
+import { LicenseRule } from 'src/app/core/models/license-rule';
+import { licenseTypeOptions } from '../../models/license-type-options';
+import { licenseDurationOptions } from '../../models/license-duration-options';
+import { LicenseType } from 'src/app/core/models/license-type.enum';
 
 @Component({
   selector: 'app-license-rules-form',

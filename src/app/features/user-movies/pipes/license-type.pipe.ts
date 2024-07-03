@@ -1,8 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {
-  LicenseType,
-  licenseTypeValueLabels,
-} from 'src/app/core/models/license-rule';
+import { licenseTypeValueLabels } from '../models/license-type-value-labels';
+import { LicenseType } from 'src/app/core/models/license-type.enum';
 
 @Pipe({
   name: 'licenseType',

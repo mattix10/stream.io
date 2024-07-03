@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from './../../../../environment/environment';
 import { map, Observable, ReplaySubject } from 'rxjs';
 import { Response } from '../../models/response';
-import { UserResponse } from '../../models/user-response';
+import { UserResponse } from '../../models/responses/user-response';
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
 import { Role } from '../../models/roles.enum';
@@ -64,7 +64,12 @@ export class AuthService {
     );
 
   setCurrentUser(token: string): void {
+    console.log(token);
     const { sub: id, role, email, name } = this.getDecodedToken(token);
+    console.log(id);
+    console.log(role);
+    console.log(email);
+    console.log(name);
     const user = new User(id, role, email, name);
     this.currentUserSource.next(user);
     this.setToken(token);
@@ -95,6 +100,7 @@ export class AuthService {
   }
 
   private setToken(token: string) {
+    console.log(token);
     localStorage.setItem('token', token);
   }
 

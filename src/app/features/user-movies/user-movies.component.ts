@@ -3,15 +3,16 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 import { HeadersComponent } from './components/headers/headers.component';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
-import {
-  UserContentMetadata,
-  UserContentMetadataResponse,
-} from 'src/app/core/models/user-content-metadata-response';
+
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, EMPTY, Observable, of, switchMap, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import {
+  UserContentMetadata,
+  UserContentMetadataResponse,
+} from 'src/app/core/models/responses/user-content-metadata-response';
 
 @Component({
   selector: 'app-user-movies',

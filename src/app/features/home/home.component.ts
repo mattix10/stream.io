@@ -4,6 +4,10 @@ import { MoviesService } from 'src/app/core/services/movies-service/movies.servi
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MovieMetadata } from 'src/app/core/models/movie-metadata';
+import {
+  AllMoviesMetadataResponse,
+  ContentMetadata,
+} from 'src/app/core/models/responses/all-movies-metadata-response';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -12,7 +16,7 @@ import { MovieMetadata } from 'src/app/core/models/movie-metadata';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  movieMetadataList: MovieMetadata[] = [];
+  movieMetadataList: ContentMetadata[] = [];
 
   readonly #movieService = inject(MoviesService);
 
@@ -23,8 +27,8 @@ export class HomeComponent implements OnInit {
   private getMovies(): void {
     this.#movieService
       .getMovies<MovieMetadata>()
-      .subscribe(
-        (movieItems: MovieMetadata[]) => (this.movieMetadataList = movieItems)
-      );
+      .subscribe(({ result }: AllMoviesMetadataResponse) => {
+        this.movieMetadataList = result;
+      });
   }
 }

@@ -9,13 +9,13 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { UserContentMetadata } from 'src/app/core/models/user-content-metadata-response';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 import { FileStatusDirective } from 'src/app/features/user-movies/directives/file-status.directive';
 import { FileStatusPipe } from 'src/app/features/user-movies/pipes/file-status.pipe';
 import '@angular/common/locales/global/pl';
 import { LicenseTypePipe } from '../../pipes/license-type.pipe';
 import { LicenseDurationPipe } from '../../pipes/license-duration.pipe';
+import { UserContentMetadata } from 'src/app/core/models/responses/user-content-metadata-response';
 
 type MovieListItem = UserContentMetadata & {
   isExpanded: boolean;

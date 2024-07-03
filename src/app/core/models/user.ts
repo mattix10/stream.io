@@ -11,7 +11,7 @@ export class User {
 
   constructor(
     id: string = '',
-    role: Role | string = '',
+    role: Role = Role.Unknown,
     email: string = '',
     userName: string = '',
     phoneNumber?: string,
