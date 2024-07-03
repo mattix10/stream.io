@@ -23,6 +23,7 @@
       @if (contentMetadata) {
       <app-expansion-panel-movie
         [movies]="contentMetadata"
+        [isEditMode]="isEditMode"
         (removeMovieChanged)="onRemoveMovieChanged($event)"
       />
       } @else {

@@ -1,3 +1,4 @@
+import { LicenseDuration, LicenseType } from 'src/app/core/models/license-rule';
 import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 
 export const getMovieMetadata: MovieMetadata = {
@@ -8,8 +9,8 @@ export const getMovieMetadata: MovieMetadata = {
   licenseRules: [
     {
       price: 1,
-      type: 0,
-      duration: 0,
+      type: LicenseType.Buy,
+      duration: LicenseDuration.Month,
     },
   ],
   comments: [

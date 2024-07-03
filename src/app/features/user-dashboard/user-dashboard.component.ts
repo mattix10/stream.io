@@ -1,42 +1,25 @@
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { UserService } from 'src/app/core/services/user-service/user-service.service';
-import { catchError, EMPTY, Observable, switchMap, tap, zip } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, EMPTY, Observable, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { User } from 'src/app/core/models/user';
-import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 import { UserDataComponent } from './components/user-data/user-data.component';
-import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
-import { HeadersComponent } from './components/headers/headers.component';
-import { UserMovieMetadata } from 'src/app/core/models/user-movie-metadata';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
 
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [
-    CommonModule,
-    UserDataComponent,
-    HeadersComponent,
-    DeleteAccountComponent,
-  ],
+  imports: [CommonModule, UserDataComponent, DeleteAccountComponent],
   templateUrl: './user-dashboard.component.html',
   styleUrl: './user-dashboard.component.scss',
 })
 export class UserDashboardComponent implements OnInit {
   user: User | null = null;
   isEditMode: boolean = false;
-  selectedMovieForEdit: UserMovieMetadata | null = null;
-  movies?: UserMovieMetadata[];
   isContentCreator: boolean = false;
-  isEndUser: boolean = false;
-  isAdmin: boolean = false;
 
   readonly #userService = inject(UserService);
-  readonly #authService = inject(AuthService);
-  readonly #destroyRef = inject(DestroyRef);
-  readonly #moviesService = inject(MoviesService);
   readonly #toastrService = inject(ToastrService);
 
   ngOnInit(): void {
@@ -44,45 +27,11 @@ export class UserDashboardComponent implements OnInit {
   }
 
   onUserDataChanged(): void {
-    this.loadUser().subscribe();
-  }
-
-  onEditModeChange(isEditMode: boolean): void {
-    this.isEditMode = isEditMode;
-    if (!this.isEditMode) this.#moviesService.selectedMovieForEdit$.next(null);
-  }
-
-  onRemoveMovieChanged(uuid: string): void {
-    if (!uuid) return;
-
-    this.#moviesService
-      .deleteMovie(uuid)
-      .pipe(
-        switchMap(() => this.#moviesService.getMovies<UserMovieMetadata>()),
-        tap((movies) => (this.movies = movies))
-      )
-      .subscribe();
-    // TODO: loading
-    // TODO: Catch error toastr
+    this.loadUserData();
   }
 
   private loadUserData(): void {
-    this.loadUser()
-      .pipe(switchMap(() => this.checkUserRole()))
-      .subscribe();
-  }
-
-  private checkUserRole(): Observable<any> {
-    return zip([
-      this.#authService.isContentCreator(),
-      this.#authService.isEndUser(),
-    ]).pipe(
-      tap(([isContentCreator, isEndUser]) => {
-        this.isContentCreator = isContentCreator;
-        this.isEndUser = isEndUser;
-      }),
-      takeUntilDestroyed(this.#destroyRef)
-    );
+    this.loadUser().subscribe();
   }
 
   private loadUser(): Observable<any> {

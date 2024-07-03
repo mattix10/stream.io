@@ -17,13 +17,13 @@ export class FileStatusDirective {
 
     switch (fileStatus) {
       case FileStatus.Failed:
-        color = 'red';
+        color = '#bd362f';
         break;
       case FileStatus.InProgress:
         color = 'white';
         break;
       case FileStatus.Success:
-        color = 'green';
+        color = '#51a351';
         break;
     }
 

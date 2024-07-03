@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -16,8 +16,7 @@ import {
   Subject,
   switchMap,
 } from 'rxjs';
-import { FileUploadService } from 'src/app/features/user-dashboard/services/file-upload-service/file-upload.service';
-import { MovieMetadataService } from 'src/app/features/user-dashboard/services/movie-metadata-service/movie-metadata.service';
+import { MovieMetadataService } from 'src/app/features/user-movies/services/movie-metadata-service/movie-metadata.service';
 import { ToastrService } from 'ngx-toastr';
 import { isLoading } from 'src/app/features/auth/models/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
@@ -27,6 +26,7 @@ import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/dra
 import { LicenseRulesFormComponent } from '../license-rules-form/license-rules-form.component';
 import { FileType } from '../../models/file-type';
 import { UserContentMetadata } from 'src/app/core/models/user-content-metadata-response';
+import { FileUploadService } from '../../services/file-upload-service/file-upload.service';
 
 @Component({
   selector: 'app-movie-form',
@@ -40,7 +40,7 @@ import { UserContentMetadata } from 'src/app/core/models/user-content-metadata-r
   templateUrl: './movie-form.component.html',
   providers: [MovieMetadataService, FileUploadService],
 })
-export class MovieFormComponent implements isLoading {
+export class MovieFormComponent implements OnInit, isLoading {
   @Input({ required: true }) set isEditMode(isEditMode: boolean) {
     this._isEditMode = isEditMode;
     if (!this._isEditMode) this.movieForm.reset();
@@ -48,6 +48,8 @@ export class MovieFormComponent implements isLoading {
 
   @Input() set contentMetadata(contentMetadata: UserContentMetadata | null) {
     if (contentMetadata) {
+      this.licenseRules = contentMetadata.licenseRules;
+      console.log('licenseRules: ', this.licenseRules);
       this.movieForm.patchValue({
         title: contentMetadata.title,
         description: contentMetadata.description,
@@ -75,6 +77,10 @@ export class MovieFormComponent implements isLoading {
   readonly #fileUploadService = inject(FileUploadService);
   readonly #movieMetadataService = inject(MovieMetadataService);
   readonly #toastrService = inject(ToastrService);
+
+  ngOnInit(): void {
+    console.log(this.isEditMode);
+  }
 
   onUploadImage(file: File): void {
     this.movieForm.controls.image.patchValue(file);

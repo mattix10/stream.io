@@ -17,18 +17,28 @@ export enum LicenseDuration {
   Month,
 }
 
-export const licenseTypeOptions = [
-  { value: LicenseType.Buy, label: 'Kupno', disabled: false },
-  { value: LicenseType.Rent, label: 'Wypożyczenie', disabled: false },
+export const licenseTypeValueLabels = [
+  { value: LicenseType.Buy, label: 'Kupno' },
+  { value: LicenseType.Rent, label: 'Wypożyczenie' },
 ];
 
-export const licenseDurationOptions = [
+export const licenseDurationLabels = [
   { value: LicenseDuration.Day, label: 'Dzień' },
   { value: LicenseDuration.TwoDays, label: 'Dwa dni' },
   { value: LicenseDuration.ThreeDays, label: 'Trzy dni' },
   { value: LicenseDuration.Week, label: 'Tydzień' },
   { value: LicenseDuration.Month, label: 'Miesiąc' },
-].map((obj) => ({ ...obj, disabled: false }));
+];
+
+export const licenseTypeOptions = licenseTypeValueLabels.map((obj) => ({
+  ...obj,
+  disabled: false,
+}));
+
+export const licenseDurationOptions = licenseDurationLabels.map((obj) => ({
+  ...obj,
+  disabled: false,
+}));
 
 export type DurationLabel = {
   1: string;

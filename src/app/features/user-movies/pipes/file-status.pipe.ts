@@ -11,9 +11,9 @@ export class FileStatusPipe implements PipeTransform {
       case FileStatus.Failed:
         return 'Wgrywanie pliku nie powiodło się.';
       case FileStatus.InProgress:
-        return 'Wgrywanie pliku w trakcie.';
+        return 'Trwa wgrywanie pliku.';
       case FileStatus.Success:
-        return 'Plik został wgrany.';
+        return 'Plik został wgrany pomyślnie.';
     }
   }
 }

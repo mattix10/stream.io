@@ -61,4 +61,10 @@
 
 .description {
   color: gray;
+  margin-bottom: 6px;
+
+  &.license {
+    display: flex;
+    justify-content: space-between;
+  }
 }

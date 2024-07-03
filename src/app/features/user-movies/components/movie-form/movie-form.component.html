@@ -17,6 +17,8 @@
 
   <app-license-rules-form
     [submit]="submit"
+    [isEditMode]="_isEditMode"
+    [licenseRules]="licenseRules"
     (rulesChanged)="onRulesChanged($event)"
   ></app-license-rules-form>
 

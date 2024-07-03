@@ -7,12 +7,22 @@ export const getUserMoviesMetadataResponse: UserContentMetadataResponse = {
       title: 'title',
       description: 'description',
       imageStatus: 0,
-      movieStatus: 0,
+      movieStatus: 2,
       licenseRules: [
         {
           price: 0,
           type: 1,
           duration: 1,
+        },
+        {
+          price: 10,
+          type: 2,
+          duration: 1,
+        },
+        {
+          price: 110,
+          type: 2,
+          duration: 3,
         },
       ],
     },

@@ -34,6 +34,13 @@ import {
   styleUrl: './license-rules-form.component.scss',
 })
 export class LicenseRulesFormComponent implements OnInit {
+  @Input() isEditMode: boolean = false;
+
+  @Input() set licenseRules(licenseRules: LicenseRule[]) {
+    this.rules.clear();
+    this.fillRulesForm(licenseRules);
+  }
+
   @Input({ required: true }) set submit(submit: Subject<void>) {
     submit
       .pipe(takeUntilDestroyed(this.#destroyRef))
@@ -59,7 +66,7 @@ export class LicenseRulesFormComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.addRule();
+    if (!this.isEditMode) this.addRule();
     this.rulesListener();
   }
 
@@ -86,7 +93,6 @@ export class LicenseRulesFormComponent implements OnInit {
     this.rules.push(rule);
     this.displayAvailableLicenseTypeLabels();
     this.displayAvailableLicenseDurationLabels();
-    console.log('this.licenseRulesForm.value: ', this.licenseRulesForm.value);
   }
 
   removeRule(index: number): void {
@@ -96,12 +102,13 @@ export class LicenseRulesFormComponent implements OnInit {
   }
 
   protected displayAvailableLicenseTypeLabels(): void {
+    const maxRentLicenseNumber = 5;
     const usedRentLicensedTypes = this.rules
       .getRawValue()
       .map(({ type }) => +type)
       .filter((type) => type === LicenseType.Rent);
 
-    if (usedRentLicensedTypes.length === 5) {
+    if (usedRentLicensedTypes.length === maxRentLicenseNumber) {
       this.licenseTypeOptions = this.licenseTypeOptions.map((option) => {
         let disabled = option.value === LicenseType.Rent;
         return { ...option, disabled };
@@ -144,6 +151,22 @@ export class LicenseRulesFormComponent implements OnInit {
     }
   }
 
+  private fillRulesForm(licenseRules: LicenseRule[]): void {
+    if (!this.isEditMode) return;
+
+    licenseRules.forEach(({ price, type, duration }) => {
+      const validator = type === LicenseType.Rent ? Validators.required : null;
+
+      const rule = this.#formBuilder.group({
+        price: new FormControl(price, Validators.required),
+        type: new FormControl(type, Validators.required),
+        duration: new FormControl(duration, validator),
+      });
+
+      this.rules.push(rule);
+    });
+  }
+
   private onSubmitChange(): void {
     const licenseRules = this.rules.value.map((rule: LicenseRule) =>
       rule.type == LicenseType.Buy ? { ...rule, duration: null } : rule
@@ -153,9 +176,11 @@ export class LicenseRulesFormComponent implements OnInit {
   }
 
   private rulesListener(): void {
-    this.rules.valueChanges.subscribe((rule) => {
-      this.displayAvailableLicenseDurationLabels();
-    });
+    this.rules.valueChanges
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe(() => {
+        this.displayAvailableLicenseDurationLabels();
+      });
   }
 
   private haveRulesContainBuyLicenseType = (): boolean =>

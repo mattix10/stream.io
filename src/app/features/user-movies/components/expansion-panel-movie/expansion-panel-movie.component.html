@@ -20,7 +20,7 @@
         class="delete-icon"
         src="./../../../../../assets/icons/delete.svg"
         title="Usuń"
-        (click)="deleteMovie(movie.uuid)"
+        (click)="deleteMovie(movie)"
       />
     </div>
   </div>
@@ -32,16 +32,34 @@
         {{ movie.description }}
       </p>
     </div>
-  </div>
-  <div class="content">
+
+    @for (rule of movie.licenseRules; track rule; let i = $index) {
     <div class="content-section">
-      <p class="content-header">Status obrazka:</p>
+      <p class="content-header">Licencja nr {{ i + 1 }}:</p>
+      <div class="content-body description license">
+        <p>Typ:</p>
+        <p>{{ rule.type | licenseType }}</p>
+      </div>
+      <div class="content-body description license">
+        <p>Cena:</p>
+        <p>{{ rule.price | currency }}</p>
+      </div>
+
+      @if(rule.type === 2) {
+      <div class="content-body description license">
+        <p>Czas trwania:</p>
+        <p>{{ rule.duration | licenseDuration }}</p>
+      </div>
+      }
+    </div>
+    }
+
+    <div class="content-section">
+      <p class="content-header">Status zdjęcia:</p>
       <p class="content-body" [appFileStatus]="movie.imageStatus">
         {{ movie.imageStatus | fileStatus }}
       </p>
     </div>
-  </div>
-  <div class="content">
     <div class="content-section">
       <p class="content-header">Status filmu:</p>
       <p class="content-body" [appFileStatus]="movie.movieStatus">
