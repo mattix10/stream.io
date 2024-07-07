@@ -5,7 +5,7 @@ import { MovieComment } from 'src/app/core/models/movie-comment';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
-import { mergeMap, Observable, of, tap } from 'rxjs';
+import { mergeMap, Observable, tap } from 'rxjs';
 import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 
 @Component({
@@ -18,7 +18,6 @@ import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 export class MovieComponent implements OnInit {
   comments: MovieComment[] = [];
   movieMetadata!: MovieMetadata;
-  isLoggedIn$: Observable<boolean> = of(false);
   movieLink: string = '';
   uuid: string = '';
 
@@ -26,16 +25,16 @@ export class MovieComponent implements OnInit {
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
   readonly #router = inject(Router);
+  isLoggedIn$ = this.#authService.isLoggedIn$;
 
   ngOnInit(): void {
-    this.isLoggedIn$ = this.#authService.isLoggedIn$;
     this.getMovieDetails();
   }
 
   onCommentChanged(comment: string): void {
     this.#movieService
       .postComment(comment)
-      .pipe(mergeMap(() => this.getComments()))
+      .pipe(mergeMap(() => this.getMovieMetadata()))
       .subscribe();
   }
 
@@ -47,7 +46,7 @@ export class MovieComponent implements OnInit {
             tap((isLoggedIn) => {
               if (isLoggedIn) {
                 if (this.movieMetadata) {
-                  this.getMovieLinkAndComments();
+                  this.getMovieLink().subscribe();
                 } else {
                   this.getAllMovieData();
                 }
@@ -64,7 +63,10 @@ export class MovieComponent implements OnInit {
   private getMovieuuid(): Observable<ParamMap> {
     return this.#activatedRoute.paramMap.pipe(
       tap((params: ParamMap) => {
+        console.log(params);
+        console.log(params.get('uuid')!);
         this.uuid = params.has('uuid') ? params.get('uuid')! : '';
+        console.log(this.uuid);
 
         if (!this.uuid) return;
 
@@ -77,31 +79,21 @@ export class MovieComponent implements OnInit {
     );
   }
 
-  private getMovieLinkAndComments(): void {
-    this.getComments().subscribe();
+  private getAllMovieData(): void {
+    this.getMovieMetadata().subscribe((data) => console.log(data));
     this.getMovieLink().subscribe();
   }
 
-  private getAllMovieData(): void {
-    this.getMovieMetadata().subscribe();
-    this.getMovieLinkAndComments();
-  }
-
   private getMovieMetadata(): Observable<MovieMetadata> {
-    return this.#movieService
-      .getMovieMetadata(this.uuid)
-      .pipe(tap((metadata) => (this.movieMetadata = metadata)));
+    return this.#movieService.getMovieMetadata(this.uuid).pipe(
+      tap((data) => console.log(data)),
+      tap((metadata) => (this.movieMetadata = metadata))
+    );
   }
 
   private getMovieLink(): Observable<string> {
     return this.#movieService
       .getMovieLink(this.uuid)
       .pipe(tap((movieLink) => (this.movieLink = movieLink)));
-  }
-
-  private getComments(): Observable<MovieComment[]> {
-    return this.#movieService
-      .getComments(this.uuid)
-      .pipe(tap((comments) => (this.comments = comments)));
   }
 }

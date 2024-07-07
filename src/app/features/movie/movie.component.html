@@ -30,7 +30,7 @@
     </div>
     <div class="comments-wrapper">
       <app-comments
-        [comments]="comments"
+        [comments]="movieMetadata.comments"
         class="comments comments-desktop"
         (commentChanged)="onCommentChanged($event)"
       ></app-comments>

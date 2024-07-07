@@ -1,13 +1,28 @@
 import { MovieMetadata } from '../core/models/movie-metadata';
 
 export const movieItems: MovieMetadata[] = [
-  // {
-  //   uuid: '1',
-  //   title: 'The Shawshank Redemption',
-  //   imageUrl: './../../../../assets/images/obraz.jpg',
-  //   description:
-  //     'Opowieść o nadziei i przyjaźni w więzieniu, gdzie dwaj osadzeni nawiązują niezwykłą więź, rozpoczynając podróż ku odkupieniu.',
-  // },
+  {
+    uuid: '1',
+    title: 'The Shawshank Redemption',
+    imageUrl: './../../../../assets/images/obraz.jpg',
+    description:
+      'Opowieść o nadziei i przyjaźni w więzieniu, gdzie dwaj osadzeni nawiązują niezwykłą więź, rozpoczynając podróż ku odkupieniu.',
+    licenseRules: [],
+    comments: [
+      {
+        userName: 'user123',
+        body: 'Very good movie. I really love it!',
+        creationTime: '2023-03-09',
+      },
+      {
+        userName: 'user',
+        body: 'Very good movie. I really love it!',
+        creationTime: '2023-03-09',
+      },
+    ],
+    duration: 192,
+  },
+
   // {
   //   uuid: '1',
   //   title: 'Django Unchained',
