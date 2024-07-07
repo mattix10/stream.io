@@ -7,12 +7,18 @@ import { ChangePasswordRequest } from 'src/app/core/models/requests/change-passw
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 import { UserService } from 'src/app/core/services/user-service/user.service';
 import { isLoading } from 'src/app/features/auth/models/loading';
+import { EditHeaderComponent } from 'src/app/shared/components/edit-header/edit-header.component';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [SpinnerComponent, ReactiveFormsModule],
+  imports: [
+    SpinnerComponent,
+    ReactiveFormsModule,
+    EditHeaderComponent,
+    EditHeaderComponent,
+  ],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss',
 })

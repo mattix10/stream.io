@@ -22,11 +22,18 @@ import { isLoading } from 'src/app/features/auth/models/loading';
 import { catchError, EMPTY, finalize, Observable, of, switchMap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/core/services/user-service/user.service';
+import { EditHeaderComponent } from 'src/app/shared/components/edit-header/edit-header.component';
 
 @Component({
   selector: 'app-user-data',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, SpinnerComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SpinnerComponent,
+    EditHeaderComponent,
+  ],
   templateUrl: './user-data.component.html',
   styleUrl: './user-data.component.scss',
 })

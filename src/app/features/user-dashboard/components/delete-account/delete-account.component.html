@@ -1,23 +1,7 @@
 <div class="divider"></div>
 
-<div class="header">
-  <h2 class="header-data">Zarządzaj kontem</h2>
-  @if (isEditMode) {
-  <img
-    src="./../../../../../assets/icons/close.svg"
-    (click)="onEdit()"
-    title="Zamknij tryb edycji"
-    class="icon"
-  />
-  } @else {
-  <img
-    src="./../../../../../assets/icons/edit.svg"
-    (click)="onEdit()"
-    title="Edytuj"
-    class="icon"
-  />
-  }
-</div>
+<app-edit-header header="Usuń konto" (editChanged)="isEditMode = $event" />
+
 @if(isEditMode) {
 <div class="user-data-item">
   <div class="form-field">
@@ -29,6 +13,6 @@
 <button class="button button-delete" (click)="onDelete()">
   @if (isLoading) {
   <app-spinner [diameter]="18"></app-spinner>
-  } @else { Usuń konto }
+  } @else { Tak, chcę usunąć konto }
 </button>
 }

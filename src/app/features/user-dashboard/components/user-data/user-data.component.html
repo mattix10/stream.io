@@ -1,21 +1,4 @@
-<div class="header">
-  <h2 class="header-data">Dane</h2>
-  @if (isEditMode) {
-  <img
-    src="./../../../../../assets/icons/close.svg"
-    (click)="onEdit()"
-    title="Zamknij tryb edycji"
-    class="icon"
-  />
-  } @else {
-  <img
-    src="./../../../../../assets/icons/edit.svg"
-    (click)="onEdit()"
-    title="Edytuj"
-    class="icon"
-  />
-  }
-</div>
+<app-edit-header header="Dane" (editChanged)="isEditMode = $event" />
 
 @if (isEditMode) {
 <div class="user-data-item">

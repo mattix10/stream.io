@@ -1,14 +1,3 @@
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-
-  &-data {
-    margin-bottom: 0;
-  }
-}
-
 .user-data-item {
   width: 40%;
 
@@ -20,10 +9,6 @@
 .button {
   margin-top: 12px;
   width: 40%;
-
-  &-delete {
-    background-color: red;
-  }
 }
 
 .block {
