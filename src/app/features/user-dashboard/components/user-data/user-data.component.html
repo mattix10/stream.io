@@ -30,11 +30,6 @@
       <input type="email" class="input" formControlName="userName" />
     </div>
 
-    <div class="form-field">
-      <div class="label">Hasło:</div>
-      <input type="password" class="input" formControlName="password" />
-    </div>
-
     @if (isContentCreator) {
     <div class="form-field">
       <label class="label" for="phoneNumber">Numer telefonu</label>
@@ -83,10 +78,6 @@
   <div class="form-field">
     <div class="label">Nazwa użytkownika:</div>
     <div class="user-data-item">{{ user.userName }}</div>
-  </div>
-  <div class="form-field">
-    <div class="label">Hasło:</div>
-    <div class="user-data-item">********</div>
   </div>
 
   @if(isContentCreator) {

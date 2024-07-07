@@ -9,6 +9,7 @@ import { Response } from '../../models/response';
 import { BaseRegistrationRequest } from 'src/app/features/auth/models/base-registration-request';
 import { RegistrationContentCreatorRequest } from 'src/app/features/auth/models/registration-content-creator-request';
 import { UpdateUserStatusRequest } from '../../models/requests/update-user-status-request';
+import { ChangePasswordRequest } from '../../models/requests/change-password-request';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,10 @@ export class UserService {
     return this.#httpService.getItem<Response<User>>('users/user');
   }
 
+  getUsers(): Observable<any> {
+    return this.#httpService.getItems('users');
+  }
+
   updateEndUser(
     user: BaseUpdateUserRequest
   ): Observable<BaseUpdateUserRequest> {
@@ -60,8 +65,13 @@ export class UserService {
     );
   }
 
-  getUsers(): Observable<any> {
-    return this.#httpService.getItems('users');
+  changePassword(
+    changePasswordRequest: ChangePasswordRequest
+  ): Observable<ChangePasswordRequest> {
+    return this.#httpService.updateEntity<ChangePasswordRequest>(
+      'users/password',
+      changePasswordRequest
+    );
   }
 
   deleteUser(password: string): Observable<any> {

@@ -1,16 +1,22 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { UserService } from 'src/app/core/services/user-service/user-service.service';
 import { catchError, EMPTY, Observable, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { User } from 'src/app/core/models/user';
 import { UserDataComponent } from './components/user-data/user-data.component';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { UserService } from 'src/app/core/services/user-service/user.service';
 
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [CommonModule, UserDataComponent, DeleteAccountComponent],
+  imports: [
+    CommonModule,
+    UserDataComponent,
+    DeleteAccountComponent,
+    ChangePasswordComponent,
+  ],
   templateUrl: './user-dashboard.component.html',
   styleUrl: './user-dashboard.component.scss',
 })

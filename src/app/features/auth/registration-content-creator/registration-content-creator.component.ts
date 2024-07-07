@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { registrationSuccess } from '../constants/toastr-messages';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { isLoading } from '../models/loading';
-import { UserService } from 'src/app/core/services/user-service/user-service.service';
+import { UserService } from 'src/app/core/services/user-service/user.service';
 
 @Component({
   selector: 'app-registration-content-creator',

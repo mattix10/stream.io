@@ -3,6 +3,7 @@
 
   @if (user) {
   <app-user-data [user]="user" (userDataChanged)="onUserDataChanged()" />
+  <app-change-password />
   <app-delete-account />
   }
 

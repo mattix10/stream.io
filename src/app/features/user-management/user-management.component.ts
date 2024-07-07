@@ -1,11 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { UserTableComponent } from './user-table/user-table.component';
 import { User } from 'src/app/core/models/user';
-import { UserService } from 'src/app/core/services/user-service/user-service.service';
 import { AsyncPipe } from '@angular/common';
 import { catchError, EMPTY, mergeMap, Observable, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserStatusEvent } from '../user-dashboard/models/user-status-event';
+import { UserService } from 'src/app/core/services/user-service/user.service';
 
 @Component({
   selector: 'app-user-management',

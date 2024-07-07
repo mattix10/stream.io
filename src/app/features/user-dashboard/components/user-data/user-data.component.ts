@@ -20,8 +20,8 @@ import { Role } from 'src/app/core/models/roles.enum';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { isLoading } from 'src/app/features/auth/models/loading';
 import { catchError, EMPTY, finalize, Observable, of, switchMap } from 'rxjs';
-import { UserService } from 'src/app/core/services/user-service/user-service.service';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/core/services/user-service/user.service';
 
 @Component({
   selector: 'app-user-data',
@@ -40,7 +40,6 @@ export class UserDataComponent implements OnInit, isLoading {
   userDataForm = new FormGroup({
     email: new FormControl('', Validators.email),
     userName: new FormControl(''),
-    password: new FormControl(''),
     role: new FormControl(''),
     phoneNumber: new FormControl('', [
       Validators.maxLength(9),
