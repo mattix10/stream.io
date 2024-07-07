@@ -8,6 +8,8 @@ import {
   AllMoviesMetadataResponse,
   ContentMetadata,
 } from 'src/app/core/models/responses/all-movies-metadata-response';
+import { tap } from 'rxjs';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -27,8 +29,12 @@ export class HomeComponent implements OnInit {
   private getMovies(): void {
     this.#movieService
       .getMovies<MovieMetadata>()
-      .subscribe(({ result }: AllMoviesMetadataResponse) => {
-        this.movieMetadataList = result;
-      });
+      .pipe(
+        tap(
+          ({ result }: AllMoviesMetadataResponse) =>
+            (this.movieMetadataList = result)
+        )
+      )
+      .subscribe();
   }
 }

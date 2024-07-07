@@ -5,7 +5,7 @@ export const getAllMoviesMetadata: AllMoviesMetadataResponse = {
     {
       uuid: 'string',
       title: 'string',
-      duration: 0,
+      duration: 10,
       imageUrl: './../../../../assets/images/django.jpg',
     },
   ],

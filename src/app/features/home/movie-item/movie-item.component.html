@@ -3,6 +3,9 @@
   <div class="image-container">
     <img class="image" [src]="movieMetadata.imageUrl" alt="Zdjęcie filmu" />
   </div>
-  <div class="title">{{ movieMetadata.title }}</div>
+  <div class="title-wrapper">
+    <div class="title">{{ movieMetadata.title }}</div>
+    <div class="duration">{{ movieMetadata.duration }} m</div>
+  </div>
 </div>
 }
