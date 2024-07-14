@@ -22,7 +22,7 @@ export class HttpService {
     return this.#httpClient.post<T>(this.createUrl(url), body);
   }
 
-  update<T>(url: string, body: T, id?: string): Observable<T> {
+  update<T, K>(url: string, body: K, id?: string): Observable<T> {
     return this.#httpClient.put<T>(this.createUrl(url, id), body);
   }
 
@@ -34,7 +34,11 @@ export class HttpService {
     return this.#httpClient.patch<void>(this.createUrl(url), body);
   }
 
-  delete(url: string, id?: string, body?: any): Observable<void> {
+  delete(
+    url: string,
+    id?: string,
+    body?: Record<string, string>
+  ): Observable<void> {
     console.log(body);
     const httpOptions = {
       headers: new HttpHeaders({
@@ -44,7 +48,7 @@ export class HttpService {
 
     return this.#httpClient.delete<void>(this.createUrl(url, id), {
       ...httpOptions,
-      body: JSON.stringify({ password: body }),
+      body: JSON.stringify(body),
     });
   }
 

@@ -59,9 +59,10 @@ export class UserMoviesComponent implements OnInit {
     uuid,
     title,
   }: UserContentMetadata): Observable<void | Observable<never>> {
-    return this.#contentService.deleteMovie(uuid).pipe(
+    return this.#contentService.deleteContent(uuid).pipe(
       catchError((err: string) => {
         this.#toastrService.error(`Nie udało się usunąć filmu "${title}".`);
+        console.error(err);
         return of(EMPTY);
       })
     );

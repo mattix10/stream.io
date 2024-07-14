@@ -42,16 +42,15 @@ export class UserService {
     return this.#httpService.getItems(this.#entity);
   }
 
-  updateEndUser(
-    user: BaseUpdateUserRequest
-  ): Observable<BaseUpdateUserRequest> {
-    return this.#httpService.update<UserData>(`${this.#entity}/end-user`, user);
+  updateEndUser(user: BaseUpdateUserRequest): Observable<void> {
+    return this.#httpService.update<void, UserData>(
+      `${this.#entity}/end-user`,
+      user
+    );
   }
 
-  updateContentCreator(
-    user: UpdateContentCreatorRequest
-  ): Observable<UpdateContentCreatorRequest> {
-    return this.#httpService.update<UserData>(
+  updateContentCreator(user: UpdateContentCreatorRequest): Observable<void> {
+    return this.#httpService.update<void, UserData>(
       `${this.#entity}/content-creator`,
       user
     );
@@ -76,7 +75,7 @@ export class UserService {
     );
   }
 
-  deleteUser(password: string): Observable<any> {
-    return this.#httpService.delete(this.#entity, undefined, password);
+  deleteUser(password: string): Observable<void> {
+    return this.#httpService.delete(this.#entity, undefined, { password });
   }
 }

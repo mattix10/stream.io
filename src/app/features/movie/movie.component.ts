@@ -93,7 +93,7 @@ export class MovieComponent implements OnInit, isLoading {
   private getMovieMetadata(): Observable<MovieMetadata> {
     this.isLoading = true;
 
-    return this.#movieService.getContentMetadata(this.uuid).pipe(
+    return this.#movieService.getContent(this.uuid).pipe(
       tap((metadata) => (this.movieMetadata = metadata)),
       catchError((err) => {
         this.#toastrService.error('Nie udało się załadować metadanych');

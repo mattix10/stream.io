@@ -194,7 +194,7 @@ export class MovieFormComponent implements OnInit, isLoading {
     contentMetadataRequest: UploadContentMetadataRequest
   ): Observable<any> {
     return this.#contentService
-      .createContentMetadata(contentMetadataRequest)
+      .updateContent(contentMetadataRequest, this.contentMetadata!.uuid)
       .pipe(
         catchError(() => {
           this.#toastrService.error('Wgrywanie metadanych nie powiodło się.');
