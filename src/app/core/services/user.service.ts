@@ -16,10 +16,11 @@ import { Response } from '../models/response';
 })
 export class UserService {
   readonly #httpService = inject(HttpService);
+  readonly #entity = 'users';
 
   registerEndUser(formValue: BaseRegistrationRequest): Observable<void> {
     return this.#httpService.create<void, BaseRegistrationRequest>(
-      `users/end-user`,
+      `${this.#entity}/end-user`,
       formValue
     );
   }
@@ -28,29 +29,32 @@ export class UserService {
     registrationForm: RegistrationContentCreatorRequest
   ): Observable<void> {
     return this.#httpService.create<void, RegistrationContentCreatorRequest>(
-      `users/content-creator`,
+      `${this.#entity}/content-creator`,
       registrationForm
     );
   }
 
   getUser(): Observable<Response<User>> {
-    return this.#httpService.getItem<Response<User>>('users/user');
+    return this.#httpService.getItem<Response<User>>(`${this.#entity}/user`);
   }
 
   getUsers(): Observable<any> {
-    return this.#httpService.getItems('users');
+    return this.#httpService.getItems(this.#entity);
   }
 
   updateEndUser(
     user: BaseUpdateUserRequest
   ): Observable<BaseUpdateUserRequest> {
-    return this.#httpService.update<UserData>('users/end-user', user);
+    return this.#httpService.update<UserData>(`${this.#entity}/end-user`, user);
   }
 
   updateContentCreator(
     user: UpdateContentCreatorRequest
   ): Observable<UpdateContentCreatorRequest> {
-    return this.#httpService.update<UserData>('users/content-creator', user);
+    return this.#httpService.update<UserData>(
+      `${this.#entity}/content-creator`,
+      user
+    );
   }
 
   updateUserStatus(
@@ -58,7 +62,7 @@ export class UserService {
     userStatus: UpdateUserStatusRequest
   ): Observable<void> {
     return this.#httpService.updateStatus(
-      `users/${username}/status`,
+      `${this.#entity}/${username}/status`,
       userStatus
     );
   }
@@ -67,12 +71,12 @@ export class UserService {
     changePasswordRequest: ChangePasswordRequest
   ): Observable<ChangePasswordRequest> {
     return this.#httpService.updateEntity<ChangePasswordRequest>(
-      'users/password',
+      `${this.#entity}/password`,
       changePasswordRequest
     );
   }
 
   deleteUser(password: string): Observable<any> {
-    return this.#httpService.delete('users', undefined, password);
+    return this.#httpService.delete(this.#entity, undefined, password);
   }
 }
