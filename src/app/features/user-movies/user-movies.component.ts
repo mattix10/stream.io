@@ -72,7 +72,9 @@ export class UserMoviesComponent implements OnInit {
     UserContentMetadataResponse | Observable<never>
   > {
     return this.#contentService.getUserContentMetadataResponse().pipe(
-      tap(({ result }) => (this.contentMetadata = result)),
+      tap(
+        ({ result }) => (this.contentMetadata = result.contentCreatorContents)
+      ),
       catchError((err: string) => {
         this.#toastrService.error(
           `Nie udało się pobrać filmów użytkownika. ${err} `
