@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { CommentsComponent } from './components/comment/comments.component';
 import { MovieComment } from 'src/app/core/models/movie-comment';
-import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
+import { ContentService } from 'src/app/core/services/content.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth-service/auth.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { mergeMap, Observable, tap } from 'rxjs';
 import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 
@@ -21,7 +21,7 @@ export class MovieComponent implements OnInit {
   movieLink: string = '';
   uuid: string = '';
 
-  readonly #movieService = inject(MoviesService);
+  readonly #movieService = inject(ContentService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
   readonly #router = inject(Router);

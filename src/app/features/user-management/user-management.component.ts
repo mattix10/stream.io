@@ -5,7 +5,7 @@ import { AsyncPipe } from '@angular/common';
 import { catchError, EMPTY, mergeMap, Observable, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserStatusEvent } from '../user-dashboard/models/user-status-event';
-import { UserService } from 'src/app/core/services/user-service/user.service';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-user-management',

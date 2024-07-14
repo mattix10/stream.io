@@ -1,15 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../../models/user';
-import { HttpService } from '../http-service/http.service';
-import { UserData } from '../../../features/user-dashboard/models/user-data';
-import { BaseUpdateUserRequest } from '../../models/requests/base-update-user-request';
-import { UpdateContentCreatorRequest } from '../../models/requests/update-content-creator-request';
-import { Response } from '../../models/response';
 import { BaseRegistrationRequest } from 'src/app/features/auth/models/base-registration-request';
 import { RegistrationContentCreatorRequest } from 'src/app/features/auth/models/registration-content-creator-request';
-import { UpdateUserStatusRequest } from '../../models/requests/update-user-status-request';
-import { ChangePasswordRequest } from '../../models/requests/change-password-request';
+import { UserData } from 'src/app/features/user-dashboard/models/user-data';
+import { BaseUpdateUserRequest } from '../models/requests/base-update-user-request';
+import { ChangePasswordRequest } from '../models/requests/change-password-request';
+import { UpdateContentCreatorRequest } from '../models/requests/update-content-creator-request';
+import { UpdateUserStatusRequest } from '../models/requests/update-user-status-request';
+import { User } from '../models/user';
+import { HttpService } from './http.service';
+import { Response } from '../models/response';
 
 @Injectable({
   providedIn: 'root',

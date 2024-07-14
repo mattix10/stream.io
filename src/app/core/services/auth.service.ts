@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from './../../../../environment/environment';
-import { map, Observable, ReplaySubject } from 'rxjs';
-import { Response } from '../../models/response';
-import { UserResponse } from '../../models/responses/user-response';
-import { User } from '../../models/user';
 import { Router } from '@angular/router';
-import { Role } from '../../models/roles.enum';
+import { ReplaySubject, Observable, map } from 'rxjs';
+import { environment } from 'src/environment/environment';
+import { UserResponse } from '../models/responses/user-response';
+import { Role } from '../models/roles.enum';
+import { User } from '../models/user';
+import { Response } from '../models/response';
 
 @Injectable({
   providedIn: 'root',

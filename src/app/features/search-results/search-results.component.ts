@@ -2,7 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 import { mergeMap } from 'rxjs';
-import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
+import { ContentService } from 'src/app/core/services/content.service';
 import { MovieMetadataComponent } from '../home/movie-item/movie-item.component';
 import { CommonModule } from '@angular/common';
 import { MovieMetadata } from 'src/app/core/models/movie-metadata';
@@ -19,7 +19,7 @@ export class SearchResultsComponent implements OnInit {
   searchValue: string = '';
 
   readonly #searchParamName = 'search';
-  readonly #moviesService = inject(MoviesService);
+  readonly #contentService = inject(ContentService);
   readonly #activatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class SearchResultsComponent implements OnInit {
             this.#searchParamName,
             this.searchValue
           );
-          return this.#moviesService.getMovies(param);
+          return this.#contentService.getMovies(param);
         })
       )
       .subscribe();

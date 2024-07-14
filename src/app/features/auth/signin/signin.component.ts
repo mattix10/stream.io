@@ -8,7 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, EMPTY, finalize, tap } from 'rxjs';
-import { AuthService } from 'src/app/core/services/auth-service/auth.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { LoginRequest } from '../models/login-request';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { isLoading } from '../models/loading';

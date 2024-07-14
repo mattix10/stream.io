@@ -10,7 +10,7 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { MovieComment } from 'src/app/core/models/movie-comment';
-import { AuthService } from 'src/app/core/services/auth-service/auth.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-comments',

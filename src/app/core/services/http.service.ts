@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { UpdateUserStatusRequest } from '../../models/requests/update-user-status-request';
+import { UpdateUserStatusRequest } from '../models/requests/update-user-status-request';
 
 @Injectable({
   providedIn: 'root',

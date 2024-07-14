@@ -1,23 +1,23 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpService } from '../http-service/http.service';
-import { MovieMetadata } from '../../models/movie-metadata';
+import { HttpService } from './http.service';
+import { MovieMetadata } from '../models/movie-metadata';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
-import { MovieComment } from '../../models/movie-comment';
+import { MovieComment } from '../models/movie-comment';
 import { getUserMoviesMetadataResponse } from 'mocks/get-user-movies-metadata';
-import { AllMoviesMetadataResponse } from '../../models/responses/all-movies-metadata-response';
+import { AllMoviesMetadataResponse } from '../models/responses/all-movies-metadata-response';
 import { getAllMoviesMetadata } from 'mocks/get-all-movies-metadata';
-import { UploadContentMetadataRequest } from '../../models/requests/upload-movie-metadata-request';
+import { UploadContentMetadataRequest } from '../models/requests/upload-movie-metadata-request';
 import {
   UserContentMetadata,
   UserContentMetadataResponse,
-} from '../../models/responses/user-content-metadata-response';
+} from '../models/responses/user-content-metadata-response';
 import { movieItems } from 'mocks/movie-items';
 
 @Injectable({
   providedIn: 'root',
 })
-export class MoviesService {
+export class ContentService {
   selectedMovieForEdit$ = new BehaviorSubject<UserContentMetadata | null>(null);
   readonly #httpService = inject(HttpService);
 

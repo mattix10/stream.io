@@ -6,7 +6,7 @@ import { UserDataComponent } from './components/user-data/user-data.component';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
-import { UserService } from 'src/app/core/services/user-service/user.service';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-user-dashboard',

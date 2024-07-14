@@ -21,7 +21,7 @@ import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.comp
 import { isLoading } from 'src/app/features/auth/models/loading';
 import { catchError, EMPTY, finalize, Observable, of, switchMap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { UserService } from 'src/app/core/services/user-service/user.service';
+import { UserService } from 'src/app/core/services/user.service';
 import { EditHeaderComponent } from 'src/app/shared/components/edit-header/edit-header.component';
 
 @Component({

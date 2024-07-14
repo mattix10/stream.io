@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, tap } from 'rxjs';
-import { AuthService } from 'src/app/core/services/auth-service/auth.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoginRequest } from './models/login-request';
 

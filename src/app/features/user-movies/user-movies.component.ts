@@ -1,8 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 import { HeadersComponent } from './components/headers/headers.component';
-import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
@@ -13,6 +11,8 @@ import {
   UserContentMetadata,
   UserContentMetadataResponse,
 } from 'src/app/core/models/responses/user-content-metadata-response';
+import { ContentService } from 'src/app/core/services/content.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-user-movies',
@@ -28,7 +28,7 @@ import {
 })
 export class UserMoviesComponent implements OnInit {
   #authService = inject(AuthService);
-  #moviesService = inject(MoviesService);
+  #contentService = inject(ContentService);
   #destroyRef = inject(DestroyRef);
   #toastrService = inject(ToastrService);
 
@@ -46,7 +46,7 @@ export class UserMoviesComponent implements OnInit {
 
   onEditModeChange(isEditMode: boolean): void {
     this.isEditMode = isEditMode;
-    if (!this.isEditMode) this.#moviesService.selectedMovieForEdit$.next(null);
+    if (!this.isEditMode) this.#contentService.selectedMovieForEdit$.next(null);
   }
 
   onRemoveMovieChanged(movie: UserContentMetadata): void {
@@ -59,7 +59,7 @@ export class UserMoviesComponent implements OnInit {
     uuid,
     title,
   }: UserContentMetadata): Observable<void | Observable<never>> {
-    return this.#moviesService.deleteMovie(uuid).pipe(
+    return this.#contentService.deleteMovie(uuid).pipe(
       catchError((err: string) => {
         this.#toastrService.error(`Nie udało się usunąć filmu "${title}".`);
         return of(EMPTY);
@@ -70,7 +70,7 @@ export class UserMoviesComponent implements OnInit {
   private getUserContentMetadata(): Observable<
     UserContentMetadataResponse | Observable<never>
   > {
-    return this.#moviesService.getUserContentMetadataResponse().pipe(
+    return this.#contentService.getUserContentMetadataResponse().pipe(
       tap(({ result }) => (this.contentMetadata = result)),
       catchError((err: string) => {
         this.#toastrService.error(
@@ -82,7 +82,7 @@ export class UserMoviesComponent implements OnInit {
   }
 
   private loadSelectedMovieForEdit(): void {
-    this.#moviesService.selectedMovieForEdit$
+    this.#contentService.selectedMovieForEdit$
       .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe((selectedMovieForEdit) => {
         this.isEditMode = !!selectedMovieForEdit;

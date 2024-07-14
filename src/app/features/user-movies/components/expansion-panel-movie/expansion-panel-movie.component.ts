@@ -9,7 +9,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
+import { ContentService } from 'src/app/core/services/content.service';
 import { FileStatusDirective } from 'src/app/features/user-movies/directives/file-status.directive';
 import { FileStatusPipe } from 'src/app/features/user-movies/pipes/file-status.pipe';
 import '@angular/common/locales/global/pl';
@@ -51,7 +51,7 @@ export class ExpansionPanelMovieComponent implements OnInit {
 
   movieList: MovieListItem[] = [];
 
-  readonly #moviesService = inject(MoviesService);
+  readonly #contentService = inject(ContentService);
 
   ngOnInit(): void {
     this.addExpandedtoMovieList();
@@ -68,7 +68,7 @@ export class ExpansionPanelMovieComponent implements OnInit {
     const movie = this.movieList.find((movie) => movie.uuid === uuid);
     console.log(movie);
     if (!movie) return;
-    this.#moviesService.selectedMovieForEdit$.next(movie);
+    this.#contentService.selectedMovieForEdit$.next(movie);
   }
 
   deleteMovie(movie: UserContentMetadata): void {
