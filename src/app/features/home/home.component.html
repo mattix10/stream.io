@@ -1,11 +1,22 @@
 <div class="dashboard container home">
-  @if (movieMetadataList.length) {
+  @if (isLoading) {
+  <div class="spinner-wrapper">
+    <app-spinner
+      [diameter]="60"
+      [borderSize]="40"
+      text="Trwa ładowanie"
+    ></app-spinner>
+  </div>
+
+  } @if (movieMetadataList.length) {
   <div class="movie-items-container">
+    @for (movieMetadata of movieMetadataList; track movieMetadata) {
     <app-movie-item
       class="movie-item"
-      *ngFor="let movieMetadata of movieMetadataList"
       [movieMetadata]="movieMetadata"
     ></app-movie-item>
+    }
   </div>
-  }
+  } @if( movieMetadataList.length === 0 && !isLoading ) { Brak filmów do
+  wyświetlenia. }
 </div>

@@ -8,6 +8,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TokenInterceptorService } from './core/interceptors/token-interceptor';
+import { ToastrModule } from 'ngx-toastr';
 
 function getNonce(): string {
   const metaTag = document.querySelector('meta[name="CSP-NONCE"]');
@@ -23,6 +24,7 @@ function getNonce(): string {
     NavbarComponent,
     HttpClientModule,
     ReactiveFormsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     {

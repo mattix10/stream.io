@@ -21,8 +21,11 @@ export class MoviesService {
   selectedMovieForEdit$ = new BehaviorSubject<UserContentMetadata | null>(null);
   readonly #httpService = inject(HttpService);
 
-  getMovies<T>(params?: HttpParams): Observable<AllMoviesMetadataResponse> {
-    // return this.httpService.getItems<MovieMetadata[]>('movies', params);
+  getMovies(params?: HttpParams): Observable<AllMoviesMetadataResponse> {
+    return this.#httpService.getItems<AllMoviesMetadataResponse>(
+      'content/all',
+      params
+    );
     return of(getAllMoviesMetadata);
   }
 

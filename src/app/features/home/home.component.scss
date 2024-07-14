@@ -1,5 +1,12 @@
 @use "variables" as var;
 
+.spinner-wrapper {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  height: 60vh;
+}
+
 .movie-items-container {
   display: flex;
   flex-wrap: wrap;

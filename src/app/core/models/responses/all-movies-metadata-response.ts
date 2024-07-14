@@ -1,5 +1,5 @@
 export interface AllMoviesMetadataResponse {
-  result: ContentMetadata[];
+  contents: ContentMetadata[];
   count: number;
 }
 

@@ -3,37 +3,55 @@ import { MovieMetadataComponent } from './movie-item/movie-item.component';
 import { MoviesService } from 'src/app/core/services/movies-service/movies.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 import {
   AllMoviesMetadataResponse,
   ContentMetadata,
 } from 'src/app/core/models/responses/all-movies-metadata-response';
-import { tap } from 'rxjs';
+import { catchError, EMPTY, finalize, tap } from 'rxjs';
+import { isLoading } from '../auth/models/loading';
+import { ToastrService } from 'ngx-toastr';
+import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, MovieMetadataComponent, RouterModule],
+  imports: [
+    CommonModule,
+    MovieMetadataComponent,
+    RouterModule,
+    SpinnerComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, isLoading {
   movieMetadataList: ContentMetadata[] = [];
+  isLoading: boolean = false;
 
   readonly #movieService = inject(MoviesService);
+  readonly #toastrService = inject(ToastrService);
 
   ngOnInit(): void {
     this.getMovies();
   }
 
   private getMovies(): void {
+    this.isLoading = true;
     this.#movieService
-      .getMovies<MovieMetadata>()
+      .getMovies()
       .pipe(
         tap(
-          ({ result }: AllMoviesMetadataResponse) =>
-            (this.movieMetadataList = result)
-        )
+          ({ contents }: AllMoviesMetadataResponse) =>
+            (this.movieMetadataList = contents)
+        ),
+        catchError((err) => {
+          this.#toastrService.error(
+            'Wystąpił błąd. Nie udało się załadować filmów.'
+          );
+          console.error(err);
+          return EMPTY;
+        }),
+        finalize(() => (this.isLoading = false))
       )
       .subscribe();
   }

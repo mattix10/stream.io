@@ -10,4 +10,5 @@ import { Component, Input } from '@angular/core';
 export class SpinnerComponent {
   @Input() diameter: number = 100;
   @Input() borderSize: number = 3;
+  @Input() text: string = '';
 }
