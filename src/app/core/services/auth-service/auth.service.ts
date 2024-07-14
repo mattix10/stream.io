@@ -24,11 +24,16 @@ export class AuthService {
 
   constructor() {
     const token = this.getToken();
-    token
-      ? this.isTokenExpired()
-        ? this.removeToken()
-        : this.setCurrentUser(token)
-      : null;
+
+    if (token) {
+      if (this.isTokenExpired()) {
+        this.removeToken();
+        this.removeCurrentUser();
+      }
+      this.setCurrentUser(token);
+    } else {
+      this.removeCurrentUser();
+    }
   }
 
   login(form: { password: string; email: string }): Observable<void> {

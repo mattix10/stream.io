@@ -42,7 +42,7 @@ export class MovieComponent implements OnInit {
     this.getMovieuuid()
       .pipe(
         mergeMap(() =>
-          this.isLoggedIn$.pipe(
+          this.#authService.isLoggedIn$.pipe(
             tap((isLoggedIn) => {
               if (isLoggedIn) {
                 if (this.movieMetadata) {
