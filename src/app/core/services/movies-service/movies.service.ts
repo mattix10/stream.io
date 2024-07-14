@@ -3,9 +3,7 @@ import { HttpService } from '../http-service/http.service';
 import { MovieMetadata } from '../../models/movie-metadata';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
-import { movieItems } from 'src/app/mocks/movie-items';
 import { MovieComment } from '../../models/movie-comment';
-import { comments } from 'src/app/mocks/comments';
 import { getUserMoviesMetadataResponse } from 'mocks/get-user-movies-metadata';
 import { AllMoviesMetadataResponse } from '../../models/responses/all-movies-metadata-response';
 import { getAllMoviesMetadata } from 'mocks/get-all-movies-metadata';
@@ -14,6 +12,7 @@ import {
   UserContentMetadata,
   UserContentMetadataResponse,
 } from '../../models/responses/user-content-metadata-response';
+import { movieItems } from 'mocks/movie-items';
 
 @Injectable({
   providedIn: 'root',
@@ -49,12 +48,6 @@ export class MoviesService {
     // return this.httpService.getItem<string>('movieLink', uuid);
   }
 
-  getComments(uuid: string): Observable<MovieComment[]> {
-    // const params = new HttpParams().set('uuid', 12);
-    // return this.#httpService.getItems('comments', params);
-    return of(comments);
-  }
-
   createMovie(uuid: string): Observable<MovieMetadata> {
     return this.#httpService.getItem<MovieMetadata>('movies', uuid);
   }
@@ -75,6 +68,6 @@ export class MoviesService {
   }
 
   postComment(comment: string): Observable<string> {
-    return this.#httpService.create<string>('comments', comment);
+    return this.#httpService.create<string>('comment', comment);
   }
 }
