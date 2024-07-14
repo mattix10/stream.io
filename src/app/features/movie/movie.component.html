@@ -2,11 +2,7 @@
 <div class="movie-container dashboard container">
   <div class="movie-content">
     <div class="display">
-      <video
-        controls
-        class="video"
-        *ngIf="isLoggedIn$ | async; else noAccessInfo"
-      >
+      <video controls class="video" *ngIf="(isLoggedIn$ | async) && movieLink">
         <source
           [src]="
             'https://cdn.flowplayer.com/a30bd6bc-f98b-47bc-abf5-97633d4faea0/v-de3f6ca7-2db3-4689-8160-0f574a5996ad.mp4'
@@ -16,27 +12,28 @@
         Your browser does not support the video tag.
       </video>
 
-      <ng-template #noAccessInfo>
-        <div class="no-access-wrapper">
-          <img [src]="movieMetadata.imageUrl" class="no-access-image" />
-          <div class="no-access-bar">
-            <img src="./../../../assets/icons/info.svg" class="info-icon" />
-            <p class="no-access-title">
-              Musisz być zalogowany, aby móc oglądać ten film.
-            </p>
-          </div>
+      @if(!(isLoggedIn$ | async)) {
+      <div class="no-access-wrapper">
+        <img [src]="movieMetadata.imageUrl" class="no-access-image" />
+        <div class="no-access-bar">
+          <img src="./../../../assets/icons/info.svg" class="info-icon" />
+          <p class="no-access-title">
+            Musisz być zalogowany, aby móc oglądać ten film.
+          </p>
         </div>
-      </ng-template>
+      </div>
+      }
     </div>
     <div class="comments-wrapper">
+      @if (movieMetadata) {
       <app-comments
         [comments]="movieMetadata.comments"
         class="comments comments-desktop"
         (commentChanged)="onCommentChanged($event)"
       ></app-comments>
+      }
     </div>
   </div>
-
   <div class="movie-metadata">
     <h1>{{ movieMetadata.title }}</h1>
     <p class="description">{{ movieMetadata.description }}</p>
@@ -47,4 +44,10 @@
     (commentChanged)="onCommentChanged($event)"
   ></app-comments>
 </div>
+} @if(isLoading) {
+<div class="spinner-wrapper">
+  <app-spinner [diameter]="60" text="Trwa ładowanie danych" />
+</div>
+} @if(!isLoading && !movieMetadata) {
+<div class="spinner-wrapper">Brak zawartości do wyświetlenia</div>
 }

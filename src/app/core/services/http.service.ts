@@ -18,7 +18,7 @@ export class HttpService {
     return this.#httpClient.get<T>(this.createUrl(url, id));
   }
 
-  create<T>(url: string, body: T): Observable<T> {
+  create<T, K>(url: string, body: K): Observable<T> {
     return this.#httpClient.post<T>(this.createUrl(url), body);
   }
 

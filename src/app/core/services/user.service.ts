@@ -17,10 +17,8 @@ import { Response } from '../models/response';
 export class UserService {
   readonly #httpService = inject(HttpService);
 
-  registerEndUser(
-    formValue: BaseRegistrationRequest
-  ): Observable<BaseRegistrationRequest> {
-    return this.#httpService.create<BaseRegistrationRequest>(
+  registerEndUser(formValue: BaseRegistrationRequest): Observable<void> {
+    return this.#httpService.create<void, BaseRegistrationRequest>(
       `users/end-user`,
       formValue
     );
@@ -28,8 +26,8 @@ export class UserService {
 
   registerContentCreator(
     registrationForm: RegistrationContentCreatorRequest
-  ): Observable<RegistrationContentCreatorRequest> {
-    return this.#httpService.create<RegistrationContentCreatorRequest>(
+  ): Observable<void> {
+    return this.#httpService.create<void, RegistrationContentCreatorRequest>(
       `users/content-creator`,
       registrationForm
     );

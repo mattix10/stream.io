@@ -16,7 +16,6 @@ import {
   Subject,
   switchMap,
 } from 'rxjs';
-import { MovieMetadataService } from 'src/app/features/user-movies/services/movie-metadata-service/movie-metadata.service';
 import { ToastrService } from 'ngx-toastr';
 import { isLoading } from 'src/app/features/auth/models/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
@@ -27,6 +26,7 @@ import { LicenseRulesFormComponent } from '../license-rules-form/license-rules-f
 import { FileType } from '../../models/file-type';
 import { FileUploadService } from '../../services/file-upload-service/file-upload.service';
 import { UserContentMetadata } from 'src/app/core/models/responses/user-content-metadata-response';
+import { ContentService } from 'src/app/core/services/content.service';
 
 @Component({
   selector: 'app-movie-form',
@@ -38,7 +38,7 @@ import { UserContentMetadata } from 'src/app/core/models/responses/user-content-
     LicenseRulesFormComponent,
   ],
   templateUrl: './movie-form.component.html',
-  providers: [MovieMetadataService, FileUploadService],
+  providers: [FileUploadService],
 })
 export class MovieFormComponent implements OnInit, isLoading {
   @Input({ required: true }) set isEditMode(isEditMode: boolean) {
@@ -75,7 +75,7 @@ export class MovieFormComponent implements OnInit, isLoading {
 
   readonly fileType = FileType;
   readonly #fileUploadService = inject(FileUploadService);
-  readonly #movieMetadataService = inject(MovieMetadataService);
+  readonly #contentService = inject(ContentService);
   readonly #toastrService = inject(ToastrService);
 
   ngOnInit(): void {
@@ -193,8 +193,8 @@ export class MovieFormComponent implements OnInit, isLoading {
   private uploadContentMetadata(
     contentMetadataRequest: UploadContentMetadataRequest
   ): Observable<any> {
-    return this.#movieMetadataService
-      .uploadContentMetadata(contentMetadataRequest)
+    return this.#contentService
+      .createContentMetadata(contentMetadataRequest)
       .pipe(
         catchError(() => {
           this.#toastrService.error('Wgrywanie metadanych nie powiodło się.');

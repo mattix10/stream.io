@@ -13,6 +13,8 @@ import {
   UserContentMetadataResponse,
 } from '../models/responses/user-content-metadata-response';
 import { movieItems } from 'mocks/movie-items';
+import { UploadContentMetadataResponse } from '../models/responses/upload-content-metadata-response';
+import { CreateCommentRequest } from '../models/requests/create-comment-request';
 
 @Injectable({
   providedIn: 'root',
@@ -20,24 +22,57 @@ import { movieItems } from 'mocks/movie-items';
 export class ContentService {
   selectedMovieForEdit$ = new BehaviorSubject<UserContentMetadata | null>(null);
   readonly #httpService = inject(HttpService);
+  readonly #entity = 'content';
 
   getMovies(params?: HttpParams): Observable<AllMoviesMetadataResponse> {
-    return this.#httpService.getItems<AllMoviesMetadataResponse>(
-      'content/all',
-      params
-    );
+    // return this.#httpService.getItems<AllMoviesMetadataResponse>(
+    //   `${this.#entity}/all`,
+    //   params
+    // );
     return of(getAllMoviesMetadata);
   }
 
-  getMovieMetadata(uuid: string): Observable<MovieMetadata> {
-    // return this.#httpService.getItem<MovieMetadata>(`movies`, uuid);
+  getContentMetadata(uuid: string): Observable<MovieMetadata> {
+    // return this.#httpService.getItem<MovieMetadata>(`${this.#entity}`, uuid);
     return of(movieItems[0]);
+  }
+
+  createContentMetadata(
+    contentMetadataRequest: UploadContentMetadataRequest
+  ): Observable<UploadContentMetadataResponse> {
+    console.log(contentMetadataRequest);
+    // return throwError(() => new Error('error'));
+    return this.#httpService.create<
+      UploadContentMetadataResponse,
+      UploadContentMetadataRequest
+    >(`${this.#entity}`, contentMetadataRequest);
+    return of({ contentId: 'ttt' });
+
+    // return this.#httpClient
+    //   .post<boolean>(`${environment.API_URL}`, {
+    //     contentMetadataRequest,
+    //   })
+    //   .pipe();
+  }
+
+  updateContentMetadata(
+    contentMetadataRequest: UploadContentMetadataRequest
+  ): Observable<{ contentId: string }> {
+    console.log(contentMetadataRequest);
+    // return throwError(() => new Error('error'));
+    return of({ contentId: 'ttt' });
+
+    // return this.#httpClient
+    //   .put<boolean>(`${environment.API_URL}`, {
+    //     contentMetadataRequest,
+    //   })
+    //   .pipe();
   }
 
   getUserContentMetadataResponse(): Observable<UserContentMetadataResponse> {
     return of(getUserMoviesMetadataResponse);
 
-    // return this.#httpService.getItems<UserContentMetadataResponse[]>('content/user');
+    // return this.#httpService.getItems<UserContentMetadataResponse[]>(`${this.#entity}/user`);
   }
 
   /**
@@ -55,12 +90,12 @@ export class ContentService {
     return this.#httpService.getItem<MovieMetadata>('movies', uuid);
   }
 
-  createMovieMetadata(movieMetadataRequest: UploadContentMetadataRequest) {
-    return this.#httpService.create<UploadContentMetadataRequest>(
-      'content',
-      movieMetadataRequest
-    );
-  }
+  // createMovieMetadata(movieMetadataRequest: UploadContentMetadataRequest) {
+  //   return this.#httpService.create<UploadContentMetadataRequest>(
+  //     'content',
+  //     movieMetadataRequest
+  //   );
+  // }
 
   updateMovie(body: MovieMetadata, uuid: string): Observable<MovieMetadata> {
     return this.#httpService.update('movies', body, uuid);
@@ -70,7 +105,10 @@ export class ContentService {
     return this.#httpService.delete('movies', uuid);
   }
 
-  postComment(comment: string): Observable<string> {
-    return this.#httpService.create<string>('comment', comment);
+  createComment(commentRequest: CreateCommentRequest): Observable<void> {
+    return this.#httpService.create<void, CreateCommentRequest>(
+      'comment',
+      commentRequest
+    );
   }
 }

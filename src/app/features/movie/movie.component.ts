@@ -5,35 +5,42 @@ import { MovieComment } from 'src/app/core/models/movie-comment';
 import { ContentService } from 'src/app/core/services/content.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { mergeMap, Observable, tap } from 'rxjs';
+import { catchError, EMPTY, finalize, mergeMap, Observable, tap } from 'rxjs';
 import { MovieMetadata } from 'src/app/core/models/movie-metadata';
+import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { isLoading } from '../auth/models/loading';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-movie',
   standalone: true,
-  imports: [CommonModule, CommentsComponent],
+  imports: [CommonModule, CommentsComponent, SpinnerComponent],
   templateUrl: './movie.component.html',
   styleUrl: './movie.component.scss',
 })
-export class MovieComponent implements OnInit {
+export class MovieComponent implements OnInit, isLoading {
   comments: MovieComment[] = [];
-  movieMetadata!: MovieMetadata;
+  movieMetadata?: MovieMetadata;
   movieLink: string = '';
   uuid: string = '';
+  isLoading: boolean = false;
+  isLoadingMovieLink: boolean = false;
 
   readonly #movieService = inject(ContentService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
   readonly #router = inject(Router);
-  isLoggedIn$ = this.#authService.isLoggedIn$;
+  readonly #toastrService = inject(ToastrService);
+  readonly isLoggedIn$ = this.#authService.isLoggedIn$;
 
   ngOnInit(): void {
     this.getMovieDetails();
   }
 
-  onCommentChanged(comment: string): void {
+  onCommentChanged(body: string): void {
     this.#movieService
-      .postComment(comment)
+      // Ask about it: contentId or uuid?
+      .createComment({ body, contentId: this.uuid })
       .pipe(mergeMap(() => this.getMovieMetadata()))
       .subscribe();
   }
@@ -44,15 +51,14 @@ export class MovieComponent implements OnInit {
         mergeMap(() =>
           this.#authService.isLoggedIn$.pipe(
             tap((isLoggedIn) => {
-              if (isLoggedIn) {
-                if (this.movieMetadata) {
-                  this.getMovieLink().subscribe();
-                } else {
-                  this.getAllMovieData();
-                }
-              } else {
+              if (!isLoggedIn) {
                 this.getMovieMetadata().subscribe();
+                return;
               }
+
+              this.movieMetadata
+                ? this.getMovieLink().subscribe()
+                : this.getAllMovieData();
             })
           )
         )
@@ -85,15 +91,30 @@ export class MovieComponent implements OnInit {
   }
 
   private getMovieMetadata(): Observable<MovieMetadata> {
-    return this.#movieService.getMovieMetadata(this.uuid).pipe(
-      tap((data) => console.log(data)),
-      tap((metadata) => (this.movieMetadata = metadata))
+    this.isLoading = true;
+
+    return this.#movieService.getContentMetadata(this.uuid).pipe(
+      tap((metadata) => (this.movieMetadata = metadata)),
+      catchError((err) => {
+        this.#toastrService.error('Nie udało się załadować metadanych');
+        console.error(err);
+        return EMPTY;
+      }),
+      finalize(() => (this.isLoading = false))
     );
   }
 
   private getMovieLink(): Observable<string> {
-    return this.#movieService
-      .getMovieLink(this.uuid)
-      .pipe(tap((movieLink) => (this.movieLink = movieLink)));
+    this.isLoadingMovieLink = true;
+
+    return this.#movieService.getMovieLink(this.uuid).pipe(
+      tap((movieLink) => (this.movieLink = movieLink)),
+      catchError((err) => {
+        this.#toastrService.error('Nie udało się załadować filmu');
+        console.error(err);
+        return EMPTY;
+      }),
+      finalize(() => (this.isLoadingMovieLink = false))
+    );
   }
 }
