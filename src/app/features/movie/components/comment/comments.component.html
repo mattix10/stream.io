@@ -5,8 +5,8 @@
       @for (comment of comments; track comment) {
       <div class="comment">
         <h3 class="username">{{ comment?.userName }}</h3>
-        <div class="description">
-          {{ comment?.body }}
+        <div class="description" [innerHTML]="comment.body">
+          <!-- {{ comment?.body }} -->
         </div>
       </div>
       }

@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { MovieComment } from 'src/app/core/models/movie-comment';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
@@ -22,12 +23,17 @@ export class CommentsComponent implements OnInit {
   @Input() comments?: MovieComment[];
 
   @Output() commentChanged = new EventEmitter<string>();
+  domSanitizer = inject(DomSanitizer);
 
   isLoggedIn$: Observable<boolean> = of(false);
 
   readonly #authService = inject(AuthService);
 
   ngOnInit(): void {
+    this.comments = this.comments?.map((com) => ({
+      ...com,
+      body: this.domSanitizer.bypassSecurityTrustHtml(com.body) as string,
+    }));
     this.#authService.isLoggedIn$.subscribe((data) => console.log(data));
     this.isLoggedIn$ = this.#authService.isLoggedIn$;
   }

