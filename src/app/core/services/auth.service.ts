@@ -17,7 +17,7 @@ export class AuthService {
   isLoggedIn$: Observable<boolean> = this.currentUser$.pipe(
     map((user) => !!user?.userName)
   );
-  authUrl = environment.API_URL + 'auth/';
+  authUrl = environment.API_URL + 'user/';
 
   readonly #httpClient = inject(HttpClient);
   readonly #router = inject(Router);
@@ -38,7 +38,7 @@ export class AuthService {
 
   login(form: { password: string; email: string }): Observable<void> {
     return this.#httpClient
-      .post<Response<UserResponse>>(`${this.authUrl}login`, form)
+      .post<Response<UserResponse>>(`${this.authUrl}sign-in`, form)
       .pipe(
         map(({ result: { token } }) => {
           this.setCurrentUser(token);

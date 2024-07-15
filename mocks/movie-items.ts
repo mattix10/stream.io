@@ -9,7 +9,7 @@ export const movieItems: MovieMetadata[] = [
     description:
       'Opowieść o nadziei i przyjaźni w więzieniu, gdzie dwaj osadzeni nawiązują niezwykłą więź, rozpoczynając podróż ku odkupieniu.',
     licenseRules: [],
-    comments: maliciousComments,
+    contentComments: maliciousComments,
     duration: 192,
   },
 

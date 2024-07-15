@@ -7,9 +7,8 @@ import {
   AllMoviesMetadataResponse,
   ContentMetadata,
 } from 'src/app/core/models/responses/all-movies-metadata-response';
-import { catchError, EMPTY, finalize, tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 import { isLoading } from '../auth/models/loading';
-import { ToastrService } from 'ngx-toastr';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({
@@ -29,7 +28,6 @@ export class HomeComponent implements OnInit, isLoading {
   isLoading: boolean = false;
 
   readonly #movieService = inject(ContentService);
-  readonly #toastrService = inject(ToastrService);
 
   ngOnInit(): void {
     this.getMovies();
@@ -40,16 +38,8 @@ export class HomeComponent implements OnInit, isLoading {
     this.#movieService
       .getMovies()
       .pipe(
-        tap(
-          ({ contents }: AllMoviesMetadataResponse) =>
-            (this.movieMetadataList = contents)
-        ),
-        catchError((err) => {
-          this.#toastrService.error(
-            'Wystąpił błąd. Nie udało się załadować filmów.'
-          );
-          console.error(err);
-          return EMPTY;
+        tap(({ result }: AllMoviesMetadataResponse) => {
+          this.movieMetadataList = result.contents;
         }),
         finalize(() => (this.isLoading = false))
       )

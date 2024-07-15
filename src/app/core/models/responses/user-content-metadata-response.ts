@@ -13,6 +13,6 @@ export interface UserContentMetadataResult {
 }
 export interface UserContentMetadata extends BaseMovieMetadata {
   imageStatus: FileStatus;
-  movieStatus: FileStatus;
+  contentStatus: FileStatus;
   licenseRules: LicenseRule[];
 }

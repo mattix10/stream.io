@@ -5,8 +5,7 @@ import { HeadersComponent } from './components/headers/headers.component';
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, EMPTY, Observable, of, switchMap, tap } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
+import { Observable, switchMap, tap } from 'rxjs';
 import {
   UserContentMetadata,
   UserContentMetadataResponse,
@@ -27,10 +26,9 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrl: './user-movies.component.scss',
 })
 export class UserMoviesComponent implements OnInit {
-  #authService = inject(AuthService);
-  #contentService = inject(ContentService);
-  #destroyRef = inject(DestroyRef);
-  #toastrService = inject(ToastrService);
+  readonly #authService = inject(AuthService);
+  readonly #contentService = inject(ContentService);
+  readonly #destroyRef = inject(DestroyRef);
 
   isContentCreator$ = this.#authService.isContentCreator();
   isEndUser$ = this.#authService.isEndUser();
@@ -49,6 +47,10 @@ export class UserMoviesComponent implements OnInit {
     if (!this.isEditMode) this.#contentService.selectedMovieForEdit$.next(null);
   }
 
+  onSubmitForm(): void {
+    this.getUserContentMetadata().subscribe();
+  }
+
   onRemoveMovieChanged(movie: UserContentMetadata): void {
     this.deleteMovie(movie)
       .pipe(switchMap(() => this.getUserContentMetadata()))
@@ -59,37 +61,30 @@ export class UserMoviesComponent implements OnInit {
     uuid,
     title,
   }: UserContentMetadata): Observable<void | Observable<never>> {
-    return this.#contentService.deleteContent(uuid).pipe(
-      catchError((err: string) => {
-        this.#toastrService.error(`Nie udało się usunąć filmu "${title}".`);
-        console.error(err);
-        return of(EMPTY);
-      })
-    );
+    return this.#contentService.deleteContent(uuid);
   }
 
   private getUserContentMetadata(): Observable<
     UserContentMetadataResponse | Observable<never>
   > {
-    return this.#contentService.getUserContentMetadataResponse().pipe(
-      tap(
-        ({ result }) => (this.contentMetadata = result.contentCreatorContents)
-      ),
-      catchError((err: string) => {
-        this.#toastrService.error(
-          `Nie udało się pobrać filmów użytkownika. ${err} `
-        );
-        return of(EMPTY);
-      })
-    );
+    return this.#contentService
+      .getUserContentMetadataResponse()
+      .pipe(
+        tap(
+          ({ result }) => (this.contentMetadata = result.contentCreatorContents)
+        )
+      );
   }
 
   private loadSelectedMovieForEdit(): void {
     this.#contentService.selectedMovieForEdit$
-      .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe((selectedMovieForEdit) => {
-        this.isEditMode = !!selectedMovieForEdit;
-        this.selectedContentMetadataForEdit = selectedMovieForEdit;
-      });
+      .pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        tap((selectedMovieForEdit) => {
+          this.isEditMode = !!selectedMovieForEdit;
+          this.selectedContentMetadataForEdit = selectedMovieForEdit;
+        })
+      )
+      .subscribe();
   }
 }

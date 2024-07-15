@@ -1,5 +1,5 @@
 export enum FileStatus {
-  Failed = 0,
-  InProgress,
+  InProgress = 0,
   Success,
+  Failed,
 }

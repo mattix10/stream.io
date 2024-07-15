@@ -13,6 +13,7 @@
       <app-movie-form
         [isEditMode]="isEditMode"
         [contentMetadata]="selectedContentMetadataForEdit"
+        (submitFormChanged)="onSubmitForm()"
       />
       }
     </div>

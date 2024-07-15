@@ -10,6 +10,8 @@ import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { isLoading } from '../auth/models/loading';
 import { ToastrService } from 'ngx-toastr';
+import { MovieMetadataResponse } from 'src/app/core/models/responses/movie-metadata-response';
+import { MovieLinkResponse } from 'src/app/core/models/responses/movie-link-response';
 
 @Component({
   selector: 'app-movie',
@@ -35,6 +37,7 @@ export class MovieComponent implements OnInit, isLoading {
 
   ngOnInit(): void {
     this.getMovieDetails();
+    // this.getMovieLink().subscribe((data) => console.log(data));
   }
 
   onCommentChanged(body: string): void {
@@ -90,11 +93,11 @@ export class MovieComponent implements OnInit, isLoading {
     this.getMovieLink().subscribe();
   }
 
-  private getMovieMetadata(): Observable<MovieMetadata> {
+  private getMovieMetadata(): Observable<MovieMetadataResponse> {
     this.isLoading = true;
 
     return this.#movieService.getContent(this.uuid).pipe(
-      tap((metadata) => (this.movieMetadata = metadata)),
+      tap(({ result }) => (this.movieMetadata = result)),
       catchError((err) => {
         this.#toastrService.error('Nie udało się załadować metadanych');
         console.error(err);
@@ -104,11 +107,16 @@ export class MovieComponent implements OnInit, isLoading {
     );
   }
 
-  private getMovieLink(): Observable<string> {
+  private getMovieLink(): Observable<MovieLinkResponse> {
     this.isLoadingMovieLink = true;
-
+    console.log('here');
+    console.warn(this.uuid);
     return this.#movieService.getMovieLink(this.uuid).pipe(
-      tap((movieLink) => (this.movieLink = movieLink)),
+      // return this.#movieService
+      // .getMovieLink('f41bcc28-191e-4e2a-b7ae-7c32590e93ea')
+      // .pipe(
+      tap((data) => console.log('data: ', data)),
+      tap(({ result }) => (this.movieLink = result.url)),
       catchError((err) => {
         this.#toastrService.error('Nie udało się załadować filmu');
         console.error(err);

@@ -1,4 +1,9 @@
 export interface AllMoviesMetadataResponse {
+  result: MoviesMetadataResponse;
+  message: string;
+}
+
+interface MoviesMetadataResponse {
   contents: ContentMetadata[];
   count: number;
 }

@@ -6,5 +6,5 @@ export interface MovieMetadata extends BaseMovieMetadata {
   imageUrl: string;
   duration: number;
   licenseRules: LicenseRule[];
-  comments: MovieComment[];
+  contentComments: MovieComment[];
 }
