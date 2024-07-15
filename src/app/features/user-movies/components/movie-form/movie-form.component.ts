@@ -28,7 +28,6 @@ import { UserContentMetadata } from 'src/app/core/models/responses/user-content-
 import { ContentService } from 'src/app/core/services/content.service';
 import { UploadContentMetadataResponse } from 'src/app/core/models/responses/upload-content-metadata-response';
 import { LinkForUploadFileResponse } from 'src/app/core/models/responses/link-for-upload-file-response';
-import { LoggerService } from 'src/app/core/services/logger.service';
 
 @Component({
   selector: 'app-movie-form',
@@ -83,7 +82,6 @@ export class MovieFormComponent implements isLoading {
   readonly #fileUploadService = inject(FileUploadService);
   readonly #contentService = inject(ContentService);
   readonly #toastrService = inject(ToastrService);
-  readonly #loggerService = inject(LoggerService);
   #contentId: string = '';
 
   onUploadImage(file: File): void {
