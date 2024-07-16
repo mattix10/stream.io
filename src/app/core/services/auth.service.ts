@@ -69,12 +69,7 @@ export class AuthService {
     );
 
   setCurrentUser(token: string): void {
-    console.log(token);
     const { sub: id, role, email, name } = this.getDecodedToken(token);
-    console.log(id);
-    console.log(role);
-    console.log(email);
-    console.log(name);
     const user = new User(id, role, email, name);
     this.currentUserSource.next(user);
     this.setToken(token);
@@ -105,7 +100,6 @@ export class AuthService {
   }
 
   private setToken(token: string) {
-    console.log(token);
     localStorage.setItem('token', token);
   }
 

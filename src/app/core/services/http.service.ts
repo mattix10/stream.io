@@ -39,7 +39,6 @@ export class HttpService {
     id?: string,
     body?: Record<string, string>
   ): Observable<void> {
-    console.log(body);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

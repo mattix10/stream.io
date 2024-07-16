@@ -26,18 +26,18 @@
         class="comment-textarea"
         rows="5"
         [placeholder]="
-          (isLoggedIn$ | async)
+          isLoggedIn
             ? 'Wpisz tekst tutaj...'
             : 'Musisz być zalogowany, aby móc dodać komentarz.'
         "
-        [disabled]="!(isLoggedIn$ | async)"
-        [class.disabled]="!(isLoggedIn$ | async)"
+        [disabled]="!isLoggedIn"
+        [class.disabled]="!isLoggedIn"
       ></textarea>
       <button
         class="button"
         (click)="onAddComment(comment.value)"
-        [disabled]="!(isLoggedIn$ | async)"
-        [class.disabled]="!(isLoggedIn$ | async)"
+        [disabled]="!isLoggedIn"
+        [class.disabled]="!isLoggedIn"
       >
         Dodaj komentarz
       </button>

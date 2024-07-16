@@ -1,4 +1,4 @@
-<!-- @if (movieMetadata) { -->
+@if (movieMetadata) {
 <div class="movie-container dashboard container">
   <div class="movie-content">
     <div class="display">
@@ -9,7 +9,7 @@
 
       @if(!(isLoggedIn$ | async)) {
       <div class="no-access-wrapper">
-        <!-- <img [src]="movieMetadata.imageUrl" class="no-access-image" /> -->
+        <img [src]="movieMetadata.imageUrl" class="no-access-image" />
         <div class="no-access-bar">
           <img src="./../../../assets/icons/info.svg" class="info-icon" />
           <p class="no-access-title">
@@ -22,25 +22,19 @@
     <div class="comments-wrapper">
       @if (movieMetadata) {
       <app-comments
-        [comments]="movieMetadata.contentComments"
         class="comments comments-desktop"
+        [comments]="movieMetadata.contentComments"
         (commentChanged)="onCommentChanged($event)"
       ></app-comments>
       }
     </div>
   </div>
-  <!-- <div class="movie-metadata">
+  <div class="movie-metadata">
     <h1>{{ movieMetadata.title }}</h1>
     <p class="description">{{ movieMetadata.description }}</p>
-  </div> -->
-  <!-- <app-comments
-    [comments]="movieMetadata.contentComments"
-    class="comments comments-mobile"
-    (commentChanged)="onCommentChanged($event)"
-  ></app-comments> -->
+  </div>
 </div>
-<!-- }  -->
-@if(isLoading) {
+} @if(isLoading) {
 <div class="spinner-wrapper">
   <app-spinner [diameter]="60" text="Trwa ładowanie danych" />
 </div>

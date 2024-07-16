@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Observable, of } from 'rxjs';
+import { filter, Observable, of, tap } from 'rxjs';
 import { MovieComment } from 'src/app/core/models/movie-comment';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -27,7 +27,7 @@ export class CommentsComponent implements OnInit {
   @Output() commentChanged = new EventEmitter<string>();
   domSanitizer = inject(DomSanitizer);
 
-  isLoggedIn$: Observable<boolean> = of(false);
+  isLoggedIn = false;
 
   readonly #authService = inject(AuthService);
   readonly #destroyRef = inject(DestroyRef);
@@ -37,10 +37,13 @@ export class CommentsComponent implements OnInit {
       ...com,
       body: this.domSanitizer.bypassSecurityTrustHtml(com.body) as string,
     }));
-    this.#authService.isLoggedIn$
-      .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe((data) => console.log(data));
-    this.isLoggedIn$ = this.#authService.isLoggedIn$;
+    this.#authService.currentUser$
+      .pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        filter(Boolean),
+        tap((user) => (this.isLoggedIn = !!user))
+      )
+      .subscribe();
   }
 
   onAddComment(comment: string): void {

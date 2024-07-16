@@ -50,11 +50,9 @@ export class ContentService {
   createContent(
     contentMetadataRequest: UploadContentMetadataRequest
   ): Observable<UploadContentMetadataResponse> {
-    console.log(contentMetadataRequest);
-    // return throwError(() => new Error('error'));
     return this.#httpService
       .create<UploadContentMetadataResponse, UploadContentMetadataRequest>(
-        `${this.#entity}asdasd`,
+        `${this.#entity}`,
         contentMetadataRequest
       )
       .pipe(
@@ -66,7 +64,6 @@ export class ContentService {
     contentMetadataRequest: UploadContentMetadataRequest,
     contentId: string
   ): Observable<UploadContentMetadataResponse> {
-    console.log(contentMetadataRequest, contentId);
     return this.#httpService
       .update<UploadContentMetadataResponse, UploadContentMetadataRequest>(
         `${this.#entity}/${contentId}`,
@@ -109,9 +106,8 @@ export class ContentService {
   }
 
   createComment(commentRequest: CreateCommentRequest): Observable<void> {
-    return this.#httpService.create<void, CreateCommentRequest>(
-      'comment',
-      commentRequest
-    );
+    return this.#httpService
+      .create<void, CreateCommentRequest>('comment', commentRequest)
+      .pipe(this.#loggerService.error('Nie udało się dodać komentarza'));
   }
 }

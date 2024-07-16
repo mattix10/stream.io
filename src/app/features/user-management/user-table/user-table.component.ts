@@ -16,7 +16,6 @@ export class UserTableComponent {
   @Output() userStatusChanged = new EventEmitter<UserStatusEvent>();
 
   onUserStatusChange(isActive: boolean, { userName }: User): void {
-    console.log(event);
     this.userStatusChanged.emit({ isActive, userName });
   }
 }

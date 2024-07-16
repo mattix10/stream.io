@@ -1,5 +1,8 @@
 @use "./variables" as var;
 
+.movie-container {
+  max-width: 1300px;
+}
 .movie-content {
   display: flex;
   gap: 15px;

@@ -48,6 +48,7 @@ export class UserMoviesComponent implements OnInit {
   }
 
   onSubmitForm(): void {
+    console.warn('pobieranie danych');
     this.getUserContentMetadata().subscribe();
   }
 
@@ -67,13 +68,15 @@ export class UserMoviesComponent implements OnInit {
   private getUserContentMetadata(): Observable<
     UserContentMetadataResponse | Observable<never>
   > {
-    return this.#contentService
-      .getUserContentMetadataResponse()
-      .pipe(
-        tap(
-          ({ result }) => (this.contentMetadata = result.contentCreatorContents)
-        )
-      );
+    return this.#contentService.getUserContentMetadataResponse().pipe(
+      tap(({ result }) => {
+        console.log(
+          'result.contentCreatorContents: ',
+          result.contentCreatorContents
+        );
+        this.contentMetadata = [...result.contentCreatorContents];
+      })
+    );
   }
 
   private loadSelectedMovieForEdit(): void {

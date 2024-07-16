@@ -39,6 +39,12 @@ export class LicenseRulesFormComponent implements OnInit {
     this.fillRulesForm(licenseRules);
   }
 
+  @Input() set isUploadContentMetadataSuccess(
+    isUploadContentMetadataSuccess: boolean
+  ) {
+    if (isUploadContentMetadataSuccess) this.addRule();
+  }
+
   @Input({ required: true }) set submit(submit: Subject<void>) {
     submit
       .pipe(takeUntilDestroyed(this.#destroyRef))

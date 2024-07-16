@@ -16,6 +16,7 @@
   </div>
 
   <app-license-rules-form
+    [isUploadContentMetadataSuccess]="isUploadContentMetadataSuccess"
     [submit]="submit"
     [isEditMode]="_isEditMode"
     [licenseRules]="licenseRules"
@@ -25,6 +26,7 @@
   <h3>Content</h3>
 
   <app-drag-and-drop-upload-file
+    #uploadImageTemplate
     [fileType]="fileType.Image"
     [label]="'Zdjęcie'"
     (removeFileChanged)="onRemoveImage()"
@@ -32,6 +34,7 @@
   ></app-drag-and-drop-upload-file>
 
   <app-drag-and-drop-upload-file
+    #uploadMovieTemplate
     [fileType]="fileType.Movie"
     [label]="'Film'"
     (removeFileChanged)="onRemoveMovie()"

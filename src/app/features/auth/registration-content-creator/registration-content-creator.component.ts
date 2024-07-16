@@ -51,7 +51,6 @@ export class RegistrationContentCreatorComponent implements isLoading {
   });
 
   onSubmit(): void {
-    console.log(this.form);
     if (this.form.invalid) return;
     this.isLoading = true;
 

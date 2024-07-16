@@ -6,7 +6,6 @@ import {
   inject,
   Input,
   LOCALE_ID,
-  OnInit,
   Output,
 } from '@angular/core';
 import { ContentService } from 'src/app/core/services/content.service';
@@ -44,30 +43,27 @@ type MovieListItem = UserContentMetadata & {
     },
   ],
 })
-export class ExpansionPanelMovieComponent implements OnInit {
-  @Input() movies: UserContentMetadata[] = [];
+export class ExpansionPanelMovieComponent {
+  @Input() set movies(movies: UserContentMetadata[]) {
+    this.createMovieList(movies);
+  }
   @Input({ required: true }) isEditMode: boolean = false;
+
   @Output() removeMovieChanged = new EventEmitter<UserContentMetadata>();
 
   movieList: MovieListItem[] = [];
-
   readonly #contentService = inject(ContentService);
-
-  ngOnInit(): void {
-    this.addExpandedtoMovieList();
-  }
 
   toggleMovie(uuid: string): void {
     this.movieList = this.movieList.map((movie) =>
       movie.uuid === uuid ? { ...movie, isExpanded: !movie.isExpanded } : movie
     );
-    console.log(this.movieList);
   }
 
   editMovie(uuid: string): void {
     const movie = this.movieList.find((movie) => movie.uuid === uuid);
-    console.log(movie);
     if (!movie) return;
+
     this.#contentService.selectedMovieForEdit$.next(movie);
   }
 
@@ -75,8 +71,8 @@ export class ExpansionPanelMovieComponent implements OnInit {
     this.removeMovieChanged.emit(movie);
   }
 
-  private addExpandedtoMovieList(): void {
-    this.movieList = this.movies.map((movie) => ({
+  private createMovieList(movies: UserContentMetadata[]): void {
+    this.movieList = movies.map((movie) => ({
       ...movie,
       isExpanded: false,
     }));
