@@ -1,46 +1,46 @@
-<ng-container>
-  <div class="comments">
-    @if (comments?.length) {
-    <div class="comment-list">
-      @for (comment of comments; track comment) {
-      <div class="comment">
-        <h3 class="username">{{ comment?.userName }}</h3>
-        <div class="description" [innerHTML]="comment.body">
-          <!-- {{ comment?.body }} -->
-        </div>
-      </div>
-      }
-    </div>
-    } @else {
-    <ng-template #noComments>
-      <p class="no-comments">
-        Ten film nie ma aktualnie żadnych komentarzy. Wyraź swoją opinię jako
-        pierwszy.
-      </p>
-    </ng-template>
-    }
-
-    <div class="add-comment">
-      <textarea
-        #comment
-        class="comment-textarea"
-        rows="5"
-        [placeholder]="
-          isLoggedIn
-            ? 'Wpisz tekst tutaj...'
-            : 'Musisz być zalogowany, aby móc dodać komentarz.'
-        "
-        [disabled]="!isLoggedIn"
-        [class.disabled]="!isLoggedIn"
-      ></textarea>
-      <button
-        class="button"
-        (click)="onAddComment(comment.value)"
-        [disabled]="!isLoggedIn"
-        [class.disabled]="!isLoggedIn"
-      >
-        Dodaj komentarz
-      </button>
-    </div>
+<div class="comments">
+  <h2>Komentarze</h2>
+  <div class="add-comment">
+    <textarea
+      #comment
+      class="comment-textarea"
+      rows="2"
+      [placeholder]="
+        (isLoggedIn$ | async)
+          ? 'Wpisz tekst tutaj...'
+          : 'Musisz być zalogowany, aby móc dodać komentarz.'
+      "
+      [disabled]="!(isLoggedIn$ | async)"
+      [class.disabled]="!(isLoggedIn$ | async)"
+      (input)="autoResize(comment)"
+    ></textarea>
+    <button
+      class="button"
+      (click)="onAddComment(comment.value)"
+      [disabled]="!(isLoggedIn$ | async)"
+      [class.disabled]="!(isLoggedIn$ | async)"
+    >
+      Dodaj komentarz
+    </button>
   </div>
-</ng-container>
+  @if (comments?.length) {
+  <div class="comment-list">
+    @for (comment of comments; track comment) {
+    <div class="comment">
+      <div class="comment-header">
+        <h3 class="username">{{ comment?.userName }}</h3>
+        <span class="creation-time">{{ comment.creationTime | date }}</span>
+      </div>
+      <div class="description" [innerHTML]="comment.body">
+        <!-- {{ comment?.body }} -->
+      </div>
+    </div>
+    }
+  </div>
+  } @else {
+  <p class="no-comments">
+    Ten film nie ma aktualnie żadnych komentarzy. Wyraź swoją opinię jako
+    pierwszy.
+  </p>
+  }
+</div>

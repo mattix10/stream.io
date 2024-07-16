@@ -1,18 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpService } from './http.service';
-import { MovieMetadata } from '../models/movie-metadata';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
-import { MovieComment } from '../models/movie-comment';
-import { getUserMoviesMetadataResponse } from 'mocks/get-user-movies-metadata';
 import { AllMoviesMetadataResponse } from '../models/responses/all-movies-metadata-response';
-import { getAllMoviesMetadata } from 'mocks/get-all-movies-metadata';
 import { UploadContentMetadataRequest } from '../models/requests/upload-movie-metadata-request';
 import {
   UserContentMetadata,
   UserContentMetadataResponse,
 } from '../models/responses/user-content-metadata-response';
-import { movieItems } from 'mocks/movie-items';
 import { UploadContentMetadataResponse } from '../models/responses/upload-content-metadata-response';
 import { CreateCommentRequest } from '../models/requests/create-comment-request';
 import { MovieMetadataResponse } from '../models/responses/movie-metadata-response';
@@ -36,15 +31,12 @@ export class ContentService {
           'Wystąpił błąd. Nie udało się załadować filmów.'
         )
       );
-    // return of(getAllMoviesMetadata);
   }
 
   getContent(uuid: string): Observable<MovieMetadataResponse> {
-    return this.#httpService.getItem<MovieMetadataResponse>(
-      `${this.#entity}`,
-      uuid
-    );
-    // return of(movieItems[0]);
+    return this.#httpService
+      .getItem<MovieMetadataResponse>(`${this.#entity}`, uuid)
+      .pipe(this.#loggerService.error('Nie udało się załadować danych'));
   }
 
   createContent(
@@ -72,12 +64,9 @@ export class ContentService {
       .pipe(
         this.#loggerService.error('Wgrywanie metadanych nie powiodło się.')
       );
-    // return of({ contentId: 'ttt' });
   }
 
   getUserContentMetadataResponse(): Observable<UserContentMetadataResponse> {
-    // return of(getUserMoviesMetadataResponse);
-
     return this.#httpService
       .getItems<UserContentMetadataResponse>(`${this.#entity}/user`)
       .pipe(
@@ -92,9 +81,9 @@ export class ContentService {
    */
 
   getMovieLink(uuid: string): Observable<MovieLinkResponse> {
-    return this.#httpService.getItem(`uri/video/${uuid}`);
-    // return of('./../../../../assets/movies/lord_of_the_rings.mp4');
-    // return this.httpService.getItem<string>('movieLink', uuid);
+    return this.#httpService
+      .getItem(`uri/video/${uuid}`)
+      .pipe(this.#loggerService.error<any>('Nie udało się załadować filmu.'));
   }
 
   deleteContent(uuid: string): Observable<void> {

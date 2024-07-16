@@ -10,14 +10,12 @@ import { ContentMetadata } from 'src/app/core/models/responses/all-movies-metada
   templateUrl: './movie-item.component.html',
   styleUrl: './movie-item.component.scss',
 })
-export class MovieMetadataComponent {
+export class MovieItemComponent {
   @Input() movieMetadata!: ContentMetadata;
 
   readonly #router = inject(Router);
 
   protected navigateToMovieDetails(): void {
-    this.#router.navigate(['/movie', this.movieMetadata.uuid], {
-      state: { movieMetadata: this.movieMetadata },
-    });
+    this.#router.navigate(['/movie', this.movieMetadata.uuid]);
   }
 }

@@ -1,17 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommentsComponent } from './components/comment/comments.component';
 import { MovieComment } from 'src/app/core/models/movie-comment';
 import { ContentService } from 'src/app/core/services/content.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import {
-  catchError,
-  EMPTY,
   finalize,
   forkJoin,
   mergeMap,
   Observable,
+  Subject,
   switchMap,
   take,
   tap,
@@ -19,14 +18,28 @@ import {
 import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { isLoading } from '../auth/models/loading';
-import { ToastrService } from 'ngx-toastr';
 import { MovieMetadataResponse } from 'src/app/core/models/responses/movie-metadata-response';
 import { MovieLinkResponse } from 'src/app/core/models/responses/movie-link-response';
+import {
+  AllMoviesMetadataResponse,
+  ContentMetadata,
+} from 'src/app/core/models/responses/all-movies-metadata-response';
+import { HttpParams } from '@angular/common/http';
+import { MovieItemComponent } from '../home/movie-item/movie-item.component';
+import { VideoPlayerComponent } from './components/video-player/video-player.component';
+import { MovieMetadataComponent } from './components/movie-metadata/movie-metadata.component';
 
 @Component({
   selector: 'app-movie',
   standalone: true,
-  imports: [CommonModule, CommentsComponent, SpinnerComponent],
+  imports: [
+    CommonModule,
+    CommentsComponent,
+    SpinnerComponent,
+    MovieItemComponent,
+    VideoPlayerComponent,
+    MovieMetadataComponent,
+  ],
   templateUrl: './movie.component.html',
   styleUrl: './movie.component.scss',
 })
@@ -37,12 +50,13 @@ export class MovieComponent implements OnInit, isLoading {
   uuid: string = '';
   isLoading: boolean = false;
   isLoadingMovieLink: boolean = false;
+  isLoadingRecommendedMovies: boolean = false;
+  recommendedMovies: ContentMetadata[] = [];
+  submitComment = new Subject<void>();
 
   readonly #movieService = inject(ContentService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
-  readonly #router = inject(Router);
-  readonly #toastrService = inject(ToastrService);
   readonly isLoggedIn$ = this.#authService.isLoggedIn$.pipe(take(1));
 
   ngOnInit(): void {
@@ -51,9 +65,11 @@ export class MovieComponent implements OnInit, isLoading {
 
   onCommentChanged(body: string): void {
     this.#movieService
-      // Ask about it: contentId or uuid?
       .createComment({ body, contentId: this.uuid })
-      .pipe(mergeMap(() => this.getMovieMetadata()))
+      .pipe(
+        tap(() => this.submitComment.next()),
+        mergeMap(() => this.getMovieMetadata())
+      )
       .subscribe();
   }
 
@@ -63,11 +79,16 @@ export class MovieComponent implements OnInit, isLoading {
         mergeMap(() =>
           this.isLoggedIn$.pipe(
             switchMap((isLoggedIn) => {
-              return !isLoggedIn
-                ? this.getMovieMetadata()
-                : this.movieMetadata
-                ? this.getMovieLink()
-                : forkJoin([this.getMovieMetadata(), this.getMovieLink()]);
+              let calls: Observable<any>[] = [
+                this.getMovieMetadata(),
+                this.getRecommendedMovies(),
+              ];
+
+              if (isLoggedIn) {
+                calls.push(this.getMovieLink());
+              }
+
+              return forkJoin(calls);
             })
           )
         )
@@ -81,28 +102,15 @@ export class MovieComponent implements OnInit, isLoading {
         this.uuid = params.has('uuid') ? params.get('uuid')! : '';
 
         if (!this.uuid) return;
-
-        const navigation = this.#router.getCurrentNavigation();
-
-        if (navigation?.extras?.state) {
-          this.movieMetadata = navigation.extras.state['movieMetadata'];
-        }
       })
     );
   }
 
   private getMovieMetadata(): Observable<MovieMetadataResponse> {
     this.isLoading = true;
-    console.warn('pobieram');
+
     return this.#movieService.getContent(this.uuid).pipe(
       tap(({ result }) => (this.movieMetadata = result)),
-      tap((data) => console.log(this.movieMetadata)),
-
-      catchError((err) => {
-        this.#toastrService.error('Nie udało się załadować metadanych');
-        console.error(err);
-        return EMPTY;
-      }),
       finalize(() => (this.isLoading = false))
     );
   }
@@ -111,13 +119,27 @@ export class MovieComponent implements OnInit, isLoading {
     this.isLoadingMovieLink = true;
 
     return this.#movieService.getMovieLink(this.uuid).pipe(
-      tap(({ result }) => (this.movieLink = result.url)),
-      catchError((err) => {
-        this.#toastrService.error('Nie udało się załadować filmu');
-        console.error(err);
-        return EMPTY;
+      tap(({ result }) => {
+        this.movieLink = result.url;
       }),
-      finalize(() => (this.isLoadingMovieLink = false))
+      finalize(() => {
+        this.isLoadingMovieLink = false;
+      })
     );
+  }
+
+  private getRecommendedMovies(): Observable<AllMoviesMetadataResponse> {
+    this.isLoadingRecommendedMovies = true;
+
+    return this.#movieService
+      .getMovies(new HttpParams().set('limit', '10'))
+      .pipe(
+        tap(({ result }: AllMoviesMetadataResponse) => {
+          this.recommendedMovies = result.contents.filter(
+            (content) => content.uuid !== this.uuid
+          );
+        }),
+        finalize(() => (this.isLoadingRecommendedMovies = false))
+      );
   }
 }

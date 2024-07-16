@@ -1,5 +1,9 @@
 @use "./variables" as var;
 
+:host {
+  cursor: pointer;
+}
+
 .image-container {
   overflow: hidden;
   margin-bottom: 6px;

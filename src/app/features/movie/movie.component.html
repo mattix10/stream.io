@@ -1,43 +1,30 @@
 @if (movieMetadata) {
 <div class="movie-container dashboard container">
-  <div class="movie-content">
-    <div class="display">
-      <video controls class="video" *ngIf="(isLoggedIn$ | async) && movieLink">
-        <source [src]="movieLink" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
-      @if(!(isLoggedIn$ | async)) {
-      <div class="no-access-wrapper">
-        <img [src]="movieMetadata.imageUrl" class="no-access-image" />
-        <div class="no-access-bar">
-          <img src="./../../../assets/icons/info.svg" class="info-icon" />
-          <p class="no-access-title">
-            Musisz być zalogowany, aby móc oglądać ten film.
-          </p>
-        </div>
-      </div>
-      }
-    </div>
-    <div class="comments-wrapper">
-      @if (movieMetadata) {
+  <div class="content">
+    <div class="movie">
+      <app-video-player
+        [imageUrl]="movieMetadata.imageUrl"
+        [movieLink]="movieLink"
+      />
+      <app-movie-metadata [movieMetadata]="movieMetadata" />
       <app-comments
         class="comments comments-desktop"
+        [submitComment]="submitComment"
         [comments]="movieMetadata.contentComments"
         (commentChanged)="onCommentChanged($event)"
-      ></app-comments>
+      />
+    </div>
+    <div class="recommended-movies">
+      @for (movie of recommendedMovies; track movie) {
+      <app-movie-item [movieMetadata]="movie" class="movie-item" />
       }
     </div>
   </div>
-  <div class="movie-metadata">
-    <h1>{{ movieMetadata.title }}</h1>
-    <p class="description">{{ movieMetadata.description }}</p>
-  </div>
 </div>
-} @if(isLoading) {
+} @if (isLoading) {
 <div class="spinner-wrapper">
   <app-spinner [diameter]="60" text="Trwa ładowanie danych" />
 </div>
-} @if(!isLoading && !movieMetadata) {
+} @if (!isLoading && !movieMetadata) {
 <div class="spinner-wrapper">Brak zawartości do wyświetlenia</div>
 }

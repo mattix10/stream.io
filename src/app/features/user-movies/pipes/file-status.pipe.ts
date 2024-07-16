@@ -8,6 +8,8 @@ import { FileStatus } from '../models/file-status';
 export class FileStatusPipe implements PipeTransform {
   transform(value: FileStatus): string {
     switch (value) {
+      case FileStatus.NoFile:
+        return 'Brak pliku.';
       case FileStatus.Failed:
         return 'Wgrywanie pliku nie powiodło się.';
       case FileStatus.InProgress:

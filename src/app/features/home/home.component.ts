@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { MovieMetadataComponent } from './movie-item/movie-item.component';
+import { MovieItemComponent } from './movie-item/movie-item.component';
 import { ContentService } from 'src/app/core/services/content.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -14,12 +14,7 @@ import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.comp
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    CommonModule,
-    MovieMetadataComponent,
-    RouterModule,
-    SpinnerComponent,
-  ],
+  imports: [CommonModule, MovieItemComponent, RouterModule, SpinnerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -30,11 +25,12 @@ export class HomeComponent implements OnInit, isLoading {
   readonly #movieService = inject(ContentService);
 
   ngOnInit(): void {
-    this.getMovies();
+    this.loadMovies();
   }
 
-  private getMovies(): void {
+  private loadMovies(): void {
     this.isLoading = true;
+
     this.#movieService
       .getMovies()
       .pipe(

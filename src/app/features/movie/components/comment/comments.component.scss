@@ -7,7 +7,6 @@
 
 .comment-list {
   overflow-y: auto;
-  height: 430px;
   margin-bottom: 20px;
 }
 
@@ -18,25 +17,35 @@
   padding: 15px;
   border: 1px solid var.$color-grey-3;
   color: rgb(187, 186, 186);
+
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    .creation-time {
+      font-size: 14px;
+    }
+  }
 }
 
 .add-comment {
   display: flex;
   flex-direction: column;
-  height: 150px;
   border-radius: var.$border-radius-small;
-  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .comment-textarea {
   background-color: black;
-  font-size: 14px;
+  font-size: 16px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid var.$color-primary;
   background-color: var.$color-grey-2;
   color: white;
   resize: none;
+  margin: 10px 0;
 }
 
 textarea::placeholder {
@@ -45,21 +54,27 @@ textarea::placeholder {
 
 .username {
   color: white;
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 5px;
 }
 
 .description {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .no-comments {
   display: flex;
-  margin: 15px;
-  font-size: 12px;
-  text-align: center;
+  margin: 15px 0;
+  font-size: 16px;
 }
 
 textarea.disabled {
   border-color: var.$color-grey;
+}
+
+.button {
+  width: 200px;
+  display: flex;
+  align-self: flex-end;
+  justify-content: center;
 }

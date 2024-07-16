@@ -2,15 +2,17 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   DestroyRef,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
-import { filter, Observable, of, tap } from 'rxjs';
+import { Subject, take, tap } from 'rxjs';
 import { MovieComment } from 'src/app/core/models/movie-comment';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -24,30 +26,41 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class CommentsComponent implements OnInit {
   @Input() comments?: MovieComment[];
 
-  @Output() commentChanged = new EventEmitter<string>();
-  domSanitizer = inject(DomSanitizer);
+  @Input() set submitComment(submit: Subject<void>) {
+    submit
+      .pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        tap(() => {
+          this.comment!.nativeElement.value = '';
+          this.autoResize(this.comment!.nativeElement!);
+        })
+      )
+      .subscribe();
+  }
 
-  isLoggedIn = false;
+  @ViewChild('comment') comment?: ElementRef;
+  @Output() commentChanged = new EventEmitter<string>();
+
+  domSanitizer = inject(DomSanitizer);
 
   readonly #authService = inject(AuthService);
   readonly #destroyRef = inject(DestroyRef);
+  readonly isLoggedIn$ = this.#authService.isLoggedIn$.pipe(take(1));
 
   ngOnInit(): void {
     this.comments = this.comments?.map((com) => ({
       ...com,
       body: this.domSanitizer.bypassSecurityTrustHtml(com.body) as string,
     }));
-    this.#authService.currentUser$
-      .pipe(
-        takeUntilDestroyed(this.#destroyRef),
-        filter(Boolean),
-        tap((user) => (this.isLoggedIn = !!user))
-      )
-      .subscribe();
   }
 
   onAddComment(comment: string): void {
     if (!comment) return;
     this.commentChanged.emit(comment);
+  }
+
+  autoResize(textarea: HTMLTextAreaElement): void {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
   }
 }

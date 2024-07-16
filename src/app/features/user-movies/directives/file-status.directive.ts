@@ -16,6 +16,9 @@ export class FileStatusDirective {
     let color: string;
 
     switch (fileStatus) {
+      case FileStatus.NoFile:
+        color = 'white';
+        break;
       case FileStatus.Failed:
         color = '#bd362f';
         break;

@@ -1,0 +1,18 @@
+<div class="movie-content">
+  @if((isLoggedIn$ | async) && source) {
+  <video controls class="video" [src]="source">
+    <source type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+  } @if(!(isLoggedIn$ | async)) {
+  <div class="no-access-wrapper">
+    <img [src]="imageUrl" class="no-access-image" />
+    <div class="no-access-bar">
+      <img src="./../../../assets/icons/info.svg" class="info-icon" />
+      <p class="no-access-title">
+        Musisz być zalogowany, aby móc oglądać ten film.
+      </p>
+    </div>
+  </div>
+  }
+</div>
