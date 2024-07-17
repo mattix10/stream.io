@@ -15,6 +15,10 @@ import '@angular/common/locales/global/pl';
 import { LicenseTypePipe } from '../../pipes/license-type.pipe';
 import { LicenseDurationPipe } from '../../pipes/license-duration.pipe';
 import { UserContentMetadata } from 'src/app/core/models/responses/user-content-metadata-response';
+import { FileStatus } from '../../models/file-status';
+import { FileUploadService } from '../../services/file-upload-service/file-upload.service';
+import { Observable, switchMap, tap } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 type MovieListItem = UserContentMetadata & {
   isExpanded: boolean;
@@ -41,6 +45,7 @@ type MovieListItem = UserContentMetadata & {
       provide: DEFAULT_CURRENCY_CODE,
       useValue: 'zł',
     },
+    FileUploadService,
   ],
 })
 export class ExpansionPanelMovieComponent {
@@ -49,10 +54,12 @@ export class ExpansionPanelMovieComponent {
   }
   @Input({ required: true }) isEditMode: boolean = false;
 
-  @Output() removeMovieChanged = new EventEmitter<UserContentMetadata>();
+  @Output() removeMovieChanged = new EventEmitter<void>();
 
   movieList: MovieListItem[] = [];
   readonly #contentService = inject(ContentService);
+  readonly #fileUploadService = inject(FileUploadService);
+  readonly #toastrService = inject(ToastrService);
 
   toggleMovie(uuid: string): void {
     this.movieList = this.movieList.map((movie) =>
@@ -68,7 +75,73 @@ export class ExpansionPanelMovieComponent {
   }
 
   deleteMovie(movie: UserContentMetadata): void {
-    this.removeMovieChanged.emit(movie);
+    if (
+      movie.imageStatus === FileStatus.InProgress ||
+      movie.contentStatus === FileStatus.InProgress
+    ) {
+      this.#toastrService.info(
+        'Nie można usunąć zawartości, ponieważ pliki są w trakcie wgrywania.'
+      );
+      return;
+    }
+
+    if (movie.imageStatus === FileStatus.Success) {
+      this.#fileUploadService
+        .getImageLink(movie.uuid)
+        .pipe(
+          switchMap(({ result }) => {
+            return this.#fileUploadService.delete(result.url).pipe(
+              switchMap(() => {
+                if (movie.contentStatus === FileStatus.Success) {
+                  return this.removeVideoFile(movie).pipe(
+                    switchMap(() => this.removeMetadataContent(movie))
+                  );
+                }
+
+                return this.removeMetadataContent(movie);
+              })
+            );
+          })
+        )
+        .subscribe();
+      return;
+    }
+
+    if (movie.contentStatus === FileStatus.Success) {
+      this.removeVideoFile(movie)
+        .pipe(
+          switchMap(() => {
+            if (movie.imageStatus === FileStatus.Success) {
+              return this.removeVideoFile(movie).pipe(
+                switchMap(() => this.removeMetadataContent(movie))
+              );
+            }
+
+            return this.removeMetadataContent(movie);
+          })
+        )
+        .subscribe();
+      return;
+    }
+
+    this.removeMetadataContent(movie).subscribe();
+  }
+
+  private removeMetadataContent(movie: UserContentMetadata): Observable<void> {
+    return this.#contentService.deleteContent(movie.uuid).pipe(
+      tap(() => {
+        this.removeMovieChanged.emit();
+        this.#toastrService.success('Film został usunięty pomyślnie');
+      })
+    );
+  }
+
+  private removeVideoFile(movie: UserContentMetadata): Observable<any> {
+    return this.#fileUploadService
+      .getVideoLink(movie.uuid)
+      .pipe(
+        switchMap(({ result }) => this.#fileUploadService.delete(result.url))
+      );
   }
 
   private createMovieList(movies: UserContentMetadata[]): void {

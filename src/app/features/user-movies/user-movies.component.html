@@ -25,9 +25,9 @@
       <app-expansion-panel-movie
         [movies]="contentMetadata"
         [isEditMode]="isEditMode"
-        (removeMovieChanged)="onRemoveMovieChanged($event)"
+        (removeMovieChanged)="onRemoveMovieChanged()"
       />
-      } @else {
+      } @if (!contentMetadata?.length){
       <div>Aktualnie brak dodanych filmów.</div>
       }
     </div>

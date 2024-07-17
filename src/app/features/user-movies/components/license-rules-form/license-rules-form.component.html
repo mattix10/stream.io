@@ -17,7 +17,7 @@
     <div [formGroupName]="index">
       <div class="divider"></div>
       <div class="license-rule-header">
-        <h4>Licencja numer {{ index + 1 }}:</h4>
+        <h4>Reguła {{ index + 1 }}:</h4>
         @if(rules.controls.length !== 1) {
         <img
           class="icon"
@@ -51,7 +51,7 @@
             "
           >
             @for (option of licenseTypeOptions; track option) {
-            <option [value]="+option.value" [disabled]="option.disabled">
+            <option [value]="option.value" [disabled]="option.disabled">
               {{ option.label }}
             </option>
             }

@@ -55,17 +55,17 @@ export class AuthService {
 
   isAdmin = (): Observable<boolean> =>
     this.currentUser$.pipe(
-      map((user: User | null) => user?.role === Role.Admin)
+      map((user: User | null) => user?.userLevel === Role.Admin)
     );
 
   isContentCreator = (): Observable<boolean> =>
     this.currentUser$.pipe(
-      map((user: User | null) => user?.role === Role.ContentCreator)
+      map((user: User | null) => user?.userLevel === Role.ContentCreator)
     );
 
   isEndUser = (): Observable<boolean> =>
     this.currentUser$.pipe(
-      map((user: User | null) => user?.role === Role.EndUser)
+      map((user: User | null) => user?.userLevel === Role.EndUser)
     );
 
   setCurrentUser(token: string): void {

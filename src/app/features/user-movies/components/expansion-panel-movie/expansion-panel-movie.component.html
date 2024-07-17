@@ -45,7 +45,7 @@
         <p>{{ rule.price | currency }}</p>
       </div>
 
-      @if(rule.type === 2) {
+      @if(rule.type === 'Rent') {
       <div class="content-body description license">
         <p>Czas trwania:</p>
         <p>{{ rule.duration | licenseDuration }}</p>

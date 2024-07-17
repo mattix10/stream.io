@@ -61,11 +61,11 @@ export class UserDataComponent implements OnInit, isLoading {
   roles = Object.values(Role);
 
   get isContentCreator(): boolean {
-    return this.user.role === Role.ContentCreator;
+    return this.user.userLevel === Role.ContentCreator;
   }
 
   get isEndUser(): boolean {
-    return this.user.role === Role.EndUser;
+    return this.user.userLevel === Role.EndUser;
   }
 
   readonly #userService = inject(UserService);
@@ -124,7 +124,7 @@ export class UserDataComponent implements OnInit, isLoading {
     this.userDataForm.patchValue({
       email: this.user.email,
       userName: this.user.userName,
-      role: this.user.role,
+      role: this.user.userLevel,
     });
 
     if (this.isContentCreator) {

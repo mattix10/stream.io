@@ -109,7 +109,7 @@ export class LicenseRulesFormComponent implements OnInit {
     const maxRentLicenseNumber = 5;
     const usedRentLicensedTypes = this.rules
       .getRawValue()
-      .map(({ type }) => +type)
+      .map(({ type }) => type)
       .filter((type) => type === LicenseType.Rent);
 
     if (usedRentLicensedTypes.length === maxRentLicenseNumber) {
@@ -190,7 +190,7 @@ export class LicenseRulesFormComponent implements OnInit {
   private haveRulesContainBuyLicenseType = (): boolean =>
     this.rules
       .getRawValue()
-      .map(({ type }) => +type)
+      .map(({ type }) => type)
       .includes(LicenseType.Buy);
 
   private getFirstAvailableDurationOption = () =>

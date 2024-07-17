@@ -19,22 +19,28 @@ export class FileUploadService {
       .post(`${uploadLink}`, formData, {
         responseType: 'text',
       })
-      .pipe(this.#loggerService.error('Pobieranie linku nie powiodło się.'));
+      .pipe(this.#loggerService.error('Wgrywanie pliku nie powiodło się.'));
   }
 
-  getLinkForUploadMovie(
-    contentId: string
-  ): Observable<LinkForUploadFileResponse> {
+  delete(linkForDelete: string): any {
+    return this.#httpClient.delete(linkForDelete, {
+      responseType: 'text',
+    });
+  }
+
+  getVideoLink(contentId: string): Observable<LinkForUploadFileResponse> {
     return this.getLinkForUpload(FileType.Movie, contentId).pipe(
-      this.#loggerService.error('Wgrywanie filmu nie powiodło się.')
+      this.#loggerService.error(
+        'Pobieranie linku dla uploadu wideo nie powiodło się.'
+      )
     );
   }
 
-  getLinkForUploadImage(
-    contentId: string
-  ): Observable<LinkForUploadFileResponse> {
+  getImageLink(contentId: string): Observable<LinkForUploadFileResponse> {
     return this.getLinkForUpload(FileType.Image, contentId).pipe(
-      this.#loggerService.error('Wgrywanie obrazu nie powiodło się.')
+      this.#loggerService.error(
+        'Pobieranie linku dla uplaodu obrazu nie powiodło się.'
+      )
     );
   }
 

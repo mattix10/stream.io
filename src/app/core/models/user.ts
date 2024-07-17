@@ -3,7 +3,7 @@ import { Role } from './roles.enum';
 export class User {
   id: string = '';
   email: string = '';
-  role: Role | string = '';
+  userLevel: Role | string = '';
   userName: string = '';
   phoneNumber?: string;
   nip?: string;
@@ -18,7 +18,7 @@ export class User {
     nip?: string
   ) {
     this.id = id;
-    this.role = role;
+    this.userLevel = role;
     this.email = email;
     this.userName = userName;
     this.phoneNumber = phoneNumber;

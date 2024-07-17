@@ -18,6 +18,7 @@ import {
   forkJoin,
   mergeMap,
   Observable,
+  of,
   Subject,
   switchMap,
   tap,
@@ -35,6 +36,7 @@ import { UserContentMetadata } from 'src/app/core/models/responses/user-content-
 import { ContentService } from 'src/app/core/services/content.service';
 import { UploadContentMetadataResponse } from 'src/app/core/models/responses/upload-content-metadata-response';
 import { LinkForUploadFileResponse } from 'src/app/core/models/responses/link-for-upload-file-response';
+import { FileStatus } from '../../models/file-status';
 
 @Component({
   selector: 'app-movie-form',
@@ -66,6 +68,9 @@ export class MovieFormComponent implements isLoading {
       this.movieForm.controls['movie'].updateValueAndValidity();
       this.movieForm.reset();
     }
+
+    this.uploadImageTemplate?.removeFile();
+    this.uploadMovieTemplate?.removeFile();
   }
 
   @Input() set contentMetadata(contentMetadata: UserContentMetadata | null) {
@@ -82,8 +87,9 @@ export class MovieFormComponent implements isLoading {
       image: null,
       movie: null,
     });
-    this.uploadImageTemplate.removeFile();
-    this.uploadMovieTemplate.removeFile();
+
+    this.uploadImageTemplate?.removeFile();
+    this.uploadMovieTemplate?.removeFile();
   }
 
   @Output() submitFormChanged = new EventEmitter();
@@ -113,6 +119,7 @@ export class MovieFormComponent implements isLoading {
   readonly #fileUploadService = inject(FileUploadService);
   readonly #contentService = inject(ContentService);
   readonly #toastrService = inject(ToastrService);
+
   #contentId: string = '';
   #contentMetadata?: UserContentMetadata;
 
@@ -120,7 +127,7 @@ export class MovieFormComponent implements isLoading {
     this.movieForm.controls.image.patchValue(file);
   }
 
-  onUploadMovie(file: File): void {
+  onUploadVideo(file: File): void {
     this.movieForm.controls.movie.patchValue(file);
   }
 
@@ -148,11 +155,95 @@ export class MovieFormComponent implements isLoading {
       description: this.movieForm.value.description as string,
       licenseRules: this.licenseRules,
     };
-    const call = this._isEditMode
-      ? this.updateContentMetadata(contentMetadataRequest)
-      : this.createContentMetadata(contentMetadataRequest);
 
-    call
+    if (this._isEditMode) {
+      const imageValue = this.movieForm.get('image')?.value;
+      const movieValue = this.movieForm.get('movie')?.value;
+
+      if (
+        (this.#contentMetadata!.contentStatus === FileStatus.InProgress &&
+          movieValue) ||
+        (this.#contentMetadata!.imageStatus === FileStatus.InProgress &&
+          imageValue)
+      ) {
+        this.#toastrService.error(
+          'Nie można edytować, ponieważ pliki są w trakcie wgrywania'
+        );
+        return;
+      }
+
+      // this.updateContentMetadata(contentMetadataRequest)
+      // of(['1'])
+      //   .pipe(
+      //     switchMap(() => {
+      console.log('here');
+      let calls = [];
+      console.log(this.#contentMetadata!);
+      if (
+        this.#contentMetadata!.imageStatus === FileStatus.Success &&
+        imageValue
+      ) {
+        const imageCall = this.#fileUploadService
+          .getImageLink(this.#contentId)
+          .pipe(
+            switchMap(({ result }) => {
+              return this.#fileUploadService
+                .delete(result.url)
+                .pipe(switchMap(() => this.uploadImage()));
+            })
+          );
+        calls.push(imageCall);
+      }
+
+      if (
+        this.#contentMetadata!.contentStatus === FileStatus.Success &&
+        movieValue
+      ) {
+        const videoCall = this.#fileUploadService
+          .getVideoLink(this.#contentId)
+          .pipe(
+            switchMap(({ result }) => {
+              return this.#fileUploadService
+                .delete(result.url)
+                .pipe(switchMap(() => this.uploadVideo()));
+            })
+          );
+
+        calls.push(videoCall);
+      }
+
+      if (imageValue) {
+        calls.push(this.uploadImage());
+      }
+
+      if (movieValue) {
+        calls.push(this.uploadVideo());
+      }
+
+      calls.push(this.updateContentMetadata(contentMetadataRequest));
+
+      forkJoin(calls).subscribe();
+      // .pipe(
+      //   switchMap(() => this.updateContentMetadata(contentMetadataRequest)),
+      //   tap(() => {
+      //     this.isLoading = false;
+      //     this.#toastrService.success('Edycja zakończyłą się pomyślnie.');
+      //   })
+      // )
+      // .subscribe();
+      // })
+      // tap(() => {
+      //   this.isLoading = false;
+      //   this.#toastrService.success('Edycja zakończyłą się pomyślnie.');
+      //   })
+      // )
+      // .subscribe();
+      return;
+    }
+    this.addMovie(contentMetadataRequest);
+  }
+  addMovie(contentMetadataRequest: any) {
+    this.createContentMetadata(contentMetadataRequest)
       .pipe(
         switchMap(({ result }) => {
           this.isUploadContentMetadataSuccess = true;
@@ -164,15 +255,11 @@ export class MovieFormComponent implements isLoading {
           }
 
           if (this.isFormContainOnlyMetadata()) {
-            console.log(
-              'isFormContainOnlyMetadata: ',
-              this.isFormContainOnlyMetadata()
-            );
             this.movieForm.reset();
             return EMPTY;
           }
 
-          return forkJoin([this.uploadImage(), this.uploadMovie()]);
+          return forkJoin([this.uploadImage(), this.uploadVideo()]);
         }),
         tap((results) => {
           if (results) {
@@ -180,7 +267,7 @@ export class MovieFormComponent implements isLoading {
 
             if (uploadMovieResult) {
               this.uploadMovieTemplate.removeFile();
-              this.#toastrService.success('Film został wgrany pomyślnie');
+              this.#toastrService.success('Wideo zostało wgrane pomyślnie');
             }
             if (uploadImageResult) {
               this.uploadImageTemplate.removeFile();
@@ -195,20 +282,19 @@ export class MovieFormComponent implements isLoading {
       )
       .subscribe();
   }
-
   private isFormContainOnlyMetadata(): boolean {
     return (
       !this.movieForm.get('image')?.value && !this.movieForm.get('movie')?.value
     );
   }
 
-  private uploadMovie(): Observable<LinkForUploadFileResponse> {
+  private uploadVideo(): Observable<LinkForUploadFileResponse> {
     const movieFile = this.movieForm.get('movie')?.value;
 
     if (!movieFile) return EMPTY;
 
     return this.#fileUploadService
-      .getLinkForUploadMovie(this.#contentId)
+      .getVideoLink(this.#contentId)
       .pipe(
         mergeMap(({ result }: LinkForUploadFileResponse) =>
           this.#fileUploadService.upload(movieFile, result.url)
@@ -222,7 +308,7 @@ export class MovieFormComponent implements isLoading {
     if (!imageFile) return EMPTY;
 
     return this.#fileUploadService
-      .getLinkForUploadImage(this.#contentId)
+      .getImageLink(this.#contentId)
       .pipe(
         mergeMap(({ result }: LinkForUploadFileResponse) =>
           this.#fileUploadService.upload(imageFile, result.url)

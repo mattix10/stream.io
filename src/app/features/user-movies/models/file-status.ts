@@ -1,6 +1,6 @@
 export enum FileStatus {
-  NoFile = 0,
-  InProgress,
-  Success,
-  Failed,
+  NoFile = 'NoFile',
+  InProgress = 'InProgress',
+  Success = 'Success',
+  Failed = 'Failed',
 }

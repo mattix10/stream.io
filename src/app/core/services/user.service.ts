@@ -16,7 +16,7 @@ import { Response } from '../models/response';
 })
 export class UserService {
   readonly #httpService = inject(HttpService);
-  readonly #entity = 'users';
+  readonly #entity = 'user';
 
   registerEndUser(formValue: BaseRegistrationRequest): Observable<void> {
     return this.#httpService.create<void, BaseRegistrationRequest>(
@@ -35,7 +35,7 @@ export class UserService {
   }
 
   getUser(): Observable<Response<User>> {
-    return this.#httpService.getItem<Response<User>>(`${this.#entity}/user`);
+    return this.#httpService.getItem<Response<User>>(`${this.#entity}`);
   }
 
   getUsers(): Observable<any> {

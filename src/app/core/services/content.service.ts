@@ -74,12 +74,6 @@ export class ContentService {
       );
   }
 
-  /**
-   * Returns link to watch movie
-   * @param {string} uuid
-   * @returns {Observable<string>}
-   */
-
   getMovieLink(uuid: string): Observable<MovieLinkResponse> {
     return this.#httpService
       .getItem(`uri/video/${uuid}`)
@@ -88,9 +82,7 @@ export class ContentService {
 
   deleteContent(uuid: string): Observable<void> {
     return this.#httpService
-      .delete(this.#entity, undefined, {
-        contentId: uuid,
-      })
+      .delete(`${this.#entity}/${uuid}`)
       .pipe(this.#loggerService.error('Nie udało się usunąć filmu.'));
   }
 

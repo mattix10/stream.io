@@ -15,7 +15,7 @@
     <td>{{ user.userName }}</td>
     <td>{{ user.phoneNumber ? user.phoneNumber : "-" }}</td>
     <td>{{ user.nip ? user.nip : "-" }}</td>
-    <td>{{ user.role }}</td>
+    <td>{{ user.userLevel }}</td>
     <td class="management-cell">
       <ng-toggle
         [value]="user.isActive"

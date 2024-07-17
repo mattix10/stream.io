@@ -52,10 +52,8 @@ export class UserMoviesComponent implements OnInit {
     this.getUserContentMetadata().subscribe();
   }
 
-  onRemoveMovieChanged(movie: UserContentMetadata): void {
-    this.deleteMovie(movie)
-      .pipe(switchMap(() => this.getUserContentMetadata()))
-      .subscribe();
+  onRemoveMovieChanged(): void {
+    this.getUserContentMetadata().subscribe();
   }
 
   private deleteMovie({

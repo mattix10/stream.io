@@ -15,7 +15,7 @@
 
     @if (isContentCreator) {
     <div class="form-field">
-      <label class="label" for="phoneNumber">Numer telefonu</label>
+      <label class="label" for="phoneNumber">Numer telefonu:</label>
       <input
         type="number"
         class="input"
@@ -26,7 +26,7 @@
     </div>
 
     <div class="form-field">
-      <label class="label" for="nip">NIP</label>
+      <label class="label" for="nip">NIP:</label>
       <input
         type="number"
         class="input"
@@ -40,7 +40,7 @@
     <div class="form-field">
       <div class="label">Rola:</div>
       <select type="text" class="input disabled" formControlName="role">
-        <option [selected]="user.role">{{ user.role }}</option>
+        <option [selected]="user.userLevel">{{ user.userLevel }}</option>
         <!-- Czy musimy wyświetlac to pole?-->
       </select>
     </div>
@@ -79,7 +79,7 @@
   <div class="form-field">
     <div class="label">Rola:</div>
     <div class="user-data-item">
-      {{ user.role }}
+      {{ user.userLevel }}
     </div>
   </div>
 </div>

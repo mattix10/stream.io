@@ -1,4 +1,4 @@
 export enum LicenseType {
-  Buy = 1,
-  Rent,
+  Buy = 'Buy',
+  Rent = 'Rent',
 }
