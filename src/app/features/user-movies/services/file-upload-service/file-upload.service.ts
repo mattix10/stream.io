@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { FileType } from '../../../user-movies/models/file-type';
 import { LinkForUploadFileResponse } from 'src/app/core/models/responses/link-for-upload-file-response';
+import { Response } from 'src/app/core/models/response';
 import { LoggerService } from 'src/app/core/services/logger.service';
 
 @Injectable()
@@ -11,14 +12,12 @@ export class FileUploadService {
   #httpClient = inject(HttpClient);
   #loggerService = inject(LoggerService);
 
-  upload(file: File, uploadLink: string): Observable<any> {
+  upload<T>(file: File, uploadLink: string): Observable<Response<T>> {
     const formData: FormData = new FormData();
     formData.append('file', file);
 
     return this.#httpClient
-      .post(`${uploadLink}`, formData, {
-        responseType: 'text',
-      })
+      .post<Response<T>>(`${uploadLink}`, formData)
       .pipe(this.#loggerService.error('Wgrywanie pliku nie powiodło się.'));
   }
 
@@ -28,16 +27,26 @@ export class FileUploadService {
     });
   }
 
-  getVideoLink(contentId: string): Observable<LinkForUploadFileResponse> {
-    return this.getLinkForUpload(FileType.Movie, contentId).pipe(
+  getVideoLink(): Observable<LinkForUploadFileResponse> {
+    return this.getLinkForUpload(FileType.Movie).pipe(
       this.#loggerService.error(
         'Pobieranie linku dla uploadu wideo nie powiodło się.'
       )
     );
   }
 
-  getImageLink(contentId: string): Observable<LinkForUploadFileResponse> {
-    return this.getLinkForUpload(FileType.Image, contentId).pipe(
+  // getVideoLinkForContent(
+  //   contentId: string
+  // ): Observable<LinkForUploadFileResponse> {
+  //   return this.getLinkForUpload(FileType.Movie, contentId).pipe(
+  //     this.#loggerService.error(
+  //       'Pobieranie linku dla uploadu wideo nie powiodło się.'
+  //     )
+  //   );
+  // }
+
+  getImageLink(): Observable<LinkForUploadFileResponse> {
+    return this.getLinkForUpload(FileType.Image).pipe(
       this.#loggerService.error(
         'Pobieranie linku dla uplaodu obrazu nie powiodło się.'
       )
@@ -45,12 +54,11 @@ export class FileUploadService {
   }
 
   private getLinkForUpload(
-    fileType: FileType,
-    contentId: string
+    fileType: FileType
   ): Observable<LinkForUploadFileResponse> {
     const uploadLink = fileType == FileType.Movie ? 'video' : 'image';
     return this.#httpClient.get<LinkForUploadFileResponse>(
-      `${environment.API_URL}uri/${uploadLink}/${contentId}`
+      `${environment.API_URL}uri/${uploadLink}`
     );
   }
 }

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommentsComponent } from './components/comment/comments.component';
 import { MovieComment } from 'src/app/core/models/movie-comment';
 import { ContentService } from 'src/app/core/services/content.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import {
   finalize,
@@ -118,7 +118,7 @@ export class MovieComponent implements OnInit, isLoading {
   private getMovieLink(): Observable<MovieLinkResponse> {
     this.isLoadingMovieLink = true;
 
-    return this.#movieService.getMovieLink(this.uuid).pipe(
+    return this.#movieService.getVideoLink(this.uuid).pipe(
       tap(({ result }) => {
         this.movieLink = result.url;
       }),

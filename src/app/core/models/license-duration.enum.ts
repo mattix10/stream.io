@@ -1,7 +1,7 @@
 export enum LicenseDuration {
-  Day = 1,
-  TwoDays,
-  ThreeDays,
-  Week,
-  Month,
+  OneDay = 'OneDay',
+  TwoDays = 'TwoDays',
+  ThreeDays = 'ThreeDays',
+  Week = 'Week',
+  Month = 'Month',
 }

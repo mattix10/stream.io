@@ -64,7 +64,7 @@
         <div class="label">Czas trwania:</div>
         <select type="text" class="input" formControlName="duration">
           @for (option of licenseDurationOptions; track option) {
-          <option [value]="+option.value" [disabled]="option.disabled">
+          <option [value]="option.value" [disabled]="option.disabled">
             {{ option.label }}
           </option>
           }

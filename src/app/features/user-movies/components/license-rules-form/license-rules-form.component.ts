@@ -32,17 +32,18 @@ import { LicenseType } from 'src/app/core/models/license-type.enum';
   styleUrl: './license-rules-form.component.scss',
 })
 export class LicenseRulesFormComponent implements OnInit {
-  @Input() isEditMode: boolean = false;
+  @Input() set isEditMode(isEditMode: boolean) {
+    this.#isEditMode = isEditMode;
+
+    if (!isEditMode) {
+      this.licenseRules = [];
+      this.addRule();
+    }
+  }
 
   @Input() set licenseRules(licenseRules: LicenseRule[]) {
     this.rules.clear();
     this.fillRulesForm(licenseRules);
-  }
-
-  @Input() set isUploadContentMetadataSuccess(
-    isUploadContentMetadataSuccess: boolean
-  ) {
-    if (isUploadContentMetadataSuccess) this.addRule();
   }
 
   @Input({ required: true }) set submit(submit: Subject<void>) {
@@ -64,13 +65,14 @@ export class LicenseRulesFormComponent implements OnInit {
 
   #destroyRef = inject(DestroyRef);
   #formBuilder = inject(FormBuilder);
+  #isEditMode = false;
 
   licenseRulesForm: FormGroup = this.#formBuilder.group({
     rules: this.#formBuilder.array([]),
   });
 
   ngOnInit(): void {
-    if (!this.isEditMode) this.addRule();
+    if (!this.#isEditMode) this.addRule();
     this.rulesListener();
   }
 
@@ -93,8 +95,9 @@ export class LicenseRulesFormComponent implements OnInit {
       type,
       duration,
     });
-
     this.rules.push(rule);
+    console.log(this.rules);
+
     this.displayAvailableLicenseTypeLabels();
     this.displayAvailableLicenseDurationLabels();
   }
@@ -131,7 +134,7 @@ export class LicenseRulesFormComponent implements OnInit {
 
   protected displayAvailableLicenseDurationLabels(): void {
     const usedLicenseDurationOptions = [
-      ...new Set(this.rules.getRawValue().map(({ duration }) => +duration)),
+      ...new Set(this.rules.getRawValue().map(({ duration }) => duration)),
     ];
 
     this.licenseDurationOptions = this.licenseDurationOptions.map((option) => {
@@ -156,7 +159,7 @@ export class LicenseRulesFormComponent implements OnInit {
   }
 
   private fillRulesForm(licenseRules: LicenseRule[]): void {
-    if (!this.isEditMode) return;
+    if (!this.#isEditMode) return;
 
     licenseRules.forEach(({ price, type, duration }) => {
       const validator = type === LicenseType.Rent ? Validators.required : null;

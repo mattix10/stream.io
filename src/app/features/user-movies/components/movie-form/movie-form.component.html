@@ -16,13 +16,13 @@
   </div>
 
   <app-license-rules-form
-    [isUploadContentMetadataSuccess]="isUploadContentMetadataSuccess"
     [submit]="submit"
     [isEditMode]="_isEditMode"
     [licenseRules]="licenseRules"
     (rulesChanged)="onRulesChanged($event)"
   ></app-license-rules-form>
 
+  @if(!_isEditMode) {
   <h3>Content</h3>
 
   <app-drag-and-drop-upload-file
@@ -40,6 +40,7 @@
     (removeFileChanged)="onRemoveMovie()"
     (uploadFileChanged)="onUploadVideo($event)"
   ></app-drag-and-drop-upload-file>
+  }
 
   <button class="button" type="submit">
     @if (isLoading) {

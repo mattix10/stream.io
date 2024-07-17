@@ -5,7 +5,7 @@ import { HeadersComponent } from './components/headers/headers.component';
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import {
   UserContentMetadata,
   UserContentMetadataResponse,
@@ -48,19 +48,11 @@ export class UserMoviesComponent implements OnInit {
   }
 
   onSubmitForm(): void {
-    console.warn('pobieranie danych');
     this.getUserContentMetadata().subscribe();
   }
 
   onRemoveMovieChanged(): void {
     this.getUserContentMetadata().subscribe();
-  }
-
-  private deleteMovie({
-    uuid,
-    title,
-  }: UserContentMetadata): Observable<void | Observable<never>> {
-    return this.#contentService.deleteContent(uuid);
   }
 
   private getUserContentMetadata(): Observable<

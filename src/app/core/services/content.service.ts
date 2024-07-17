@@ -3,7 +3,6 @@ import { HttpService } from './http.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { AllMoviesMetadataResponse } from '../models/responses/all-movies-metadata-response';
-import { UploadContentMetadataRequest } from '../models/requests/upload-movie-metadata-request';
 import {
   UserContentMetadata,
   UserContentMetadataResponse,
@@ -13,6 +12,8 @@ import { CreateCommentRequest } from '../models/requests/create-comment-request'
 import { MovieMetadataResponse } from '../models/responses/movie-metadata-response';
 import { MovieLinkResponse } from '../models/responses/movie-link-response';
 import { LoggerService } from './logger.service';
+import { CreateContentMetadataRequest } from '../models/requests/create-content-metadata-request';
+import { UpdateContentMetadataRequest } from '../models/requests/update-content-metadata-request';
 
 @Injectable({
   providedIn: 'root',
@@ -36,34 +37,32 @@ export class ContentService {
   getContent(uuid: string): Observable<MovieMetadataResponse> {
     return this.#httpService
       .getItem<MovieMetadataResponse>(`${this.#entity}`, uuid)
-      .pipe(this.#loggerService.error('Nie udało się załadować danych'));
+      .pipe(this.#loggerService.error('Nie udało się załadować danych.'));
   }
 
   createContent(
-    contentMetadataRequest: UploadContentMetadataRequest
+    contentMetadataRequest: CreateContentMetadataRequest
   ): Observable<UploadContentMetadataResponse> {
     return this.#httpService
-      .create<UploadContentMetadataResponse, UploadContentMetadataRequest>(
+      .create<UploadContentMetadataResponse, CreateContentMetadataRequest>(
         `${this.#entity}`,
         contentMetadataRequest
       )
       .pipe(
-        this.#loggerService.error('Wgrywanie metadanych nie powiodło się.')
+        this.#loggerService.error('Tworzenie metadanych nie powiodło się.')
       );
   }
 
   updateContent(
-    contentMetadataRequest: UploadContentMetadataRequest,
+    contentMetadataRequest: UpdateContentMetadataRequest,
     contentId: string
   ): Observable<UploadContentMetadataResponse> {
     return this.#httpService
-      .update<UploadContentMetadataResponse, UploadContentMetadataRequest>(
+      .update<UploadContentMetadataResponse, UpdateContentMetadataRequest>(
         `${this.#entity}/${contentId}`,
         contentMetadataRequest
       )
-      .pipe(
-        this.#loggerService.error('Wgrywanie metadanych nie powiodło się.')
-      );
+      .pipe(this.#loggerService.error('Edycja metadanych nie powiodła się.'));
   }
 
   getUserContentMetadataResponse(): Observable<UserContentMetadataResponse> {
@@ -74,7 +73,7 @@ export class ContentService {
       );
   }
 
-  getMovieLink(uuid: string): Observable<MovieLinkResponse> {
+  getVideoLink(uuid: string): Observable<MovieLinkResponse> {
     return this.#httpService
       .getItem(`uri/video/${uuid}`)
       .pipe(this.#loggerService.error<any>('Nie udało się załadować filmu.'));

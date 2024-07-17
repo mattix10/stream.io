@@ -18,25 +18,23 @@ import {
   forkJoin,
   mergeMap,
   Observable,
-  of,
   Subject,
-  switchMap,
   tap,
 } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { isLoading } from 'src/app/features/auth/models/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { LicenseRule } from 'src/app/core/models/license-rule';
-import { UploadContentMetadataRequest } from 'src/app/core/models/requests/upload-movie-metadata-request';
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
 import { LicenseRulesFormComponent } from '../license-rules-form/license-rules-form.component';
 import { FileType } from '../../models/file-type';
 import { FileUploadService } from '../../services/file-upload-service/file-upload.service';
 import { UserContentMetadata } from 'src/app/core/models/responses/user-content-metadata-response';
 import { ContentService } from 'src/app/core/services/content.service';
-import { UploadContentMetadataResponse } from 'src/app/core/models/responses/upload-content-metadata-response';
 import { LinkForUploadFileResponse } from 'src/app/core/models/responses/link-for-upload-file-response';
-import { FileStatus } from '../../models/file-status';
+import { ImageFileId } from 'src/app/core/models/image-file-id';
+import { Response } from 'src/app/core/models/response';
+import { VideoFileId } from 'src/app/core/models/video-file-id';
 
 @Component({
   selector: 'app-movie-form',
@@ -53,31 +51,20 @@ import { FileStatus } from '../../models/file-status';
 export class MovieFormComponent implements isLoading {
   @Input({ required: true }) set isEditMode(isEditMode: boolean) {
     this._isEditMode = isEditMode;
-    console.log('isEditMode: ', isEditMode);
-    if (isEditMode) {
-      console.log('here');
-      this.movieForm.get('image')?.removeValidators(Validators.required);
-      this.movieForm.get('movie')?.removeValidators(Validators.required);
-      this.movieForm.controls['image'].updateValueAndValidity();
-      this.movieForm.controls['movie'].updateValueAndValidity();
-    } else {
-      console.log('else');
-      this.movieForm.get('image')?.addValidators(Validators.required);
-      this.movieForm.get('movie')?.addValidators(Validators.required);
-      this.movieForm.controls['image'].updateValueAndValidity();
-      this.movieForm.controls['movie'].updateValueAndValidity();
+    this.uploadImageTemplate?.removeFile();
+    this.uploadMovieTemplate?.removeFile();
+
+    if (!isEditMode) {
       this.movieForm.reset();
     }
 
-    this.uploadImageTemplate?.removeFile();
-    this.uploadMovieTemplate?.removeFile();
+    this.manageFormValidators();
   }
 
   @Input() set contentMetadata(contentMetadata: UserContentMetadata | null) {
     if (!contentMetadata) return;
 
     this.#contentMetadata = contentMetadata;
-    this.#contentId = contentMetadata.uuid;
     const { title, description, licenseRules } = contentMetadata;
 
     this.licenseRules = licenseRules;
@@ -100,7 +87,6 @@ export class MovieFormComponent implements isLoading {
   @ViewChild('uploadMovieTemplate')
   uploadMovieTemplate!: DragAndDropUploadFileComponent;
 
-  isUploadContentMetadataSuccess = false;
   submit = new Subject<void>();
 
   movieForm = new FormGroup({
@@ -120,7 +106,6 @@ export class MovieFormComponent implements isLoading {
   readonly #contentService = inject(ContentService);
   readonly #toastrService = inject(ToastrService);
 
-  #contentId: string = '';
   #contentMetadata?: UserContentMetadata;
 
   onUploadImage(file: File): void {
@@ -144,137 +129,37 @@ export class MovieFormComponent implements isLoading {
   }
 
   onSubmit(): void {
-    console.log(this.movieForm);
     if (this.movieForm.invalid) return;
 
     this.submit.next();
     this.isLoading = true;
 
-    const contentMetadataRequest: UploadContentMetadataRequest = {
+    const contentMetadataRequest = {
       title: this.movieForm.value.title as string,
       description: this.movieForm.value.description as string,
       licenseRules: this.licenseRules,
     };
 
     if (this._isEditMode) {
-      const imageValue = this.movieForm.get('image')?.value;
-      const movieValue = this.movieForm.get('movie')?.value;
-
-      if (
-        (this.#contentMetadata!.contentStatus === FileStatus.InProgress &&
-          movieValue) ||
-        (this.#contentMetadata!.imageStatus === FileStatus.InProgress &&
-          imageValue)
-      ) {
-        this.#toastrService.error(
-          'Nie można edytować, ponieważ pliki są w trakcie wgrywania'
-        );
-        return;
-      }
-
-      // this.updateContentMetadata(contentMetadataRequest)
-      // of(['1'])
-      //   .pipe(
-      //     switchMap(() => {
-      console.log('here');
-      let calls = [];
-      console.log(this.#contentMetadata!);
-      if (
-        this.#contentMetadata!.imageStatus === FileStatus.Success &&
-        imageValue
-      ) {
-        const imageCall = this.#fileUploadService
-          .getImageLink(this.#contentId)
-          .pipe(
-            switchMap(({ result }) => {
-              return this.#fileUploadService
-                .delete(result.url)
-                .pipe(switchMap(() => this.uploadImage()));
-            })
-          );
-        calls.push(imageCall);
-      }
-
-      if (
-        this.#contentMetadata!.contentStatus === FileStatus.Success &&
-        movieValue
-      ) {
-        const videoCall = this.#fileUploadService
-          .getVideoLink(this.#contentId)
-          .pipe(
-            switchMap(({ result }) => {
-              return this.#fileUploadService
-                .delete(result.url)
-                .pipe(switchMap(() => this.uploadVideo()));
-            })
-          );
-
-        calls.push(videoCall);
-      }
-
-      if (imageValue) {
-        calls.push(this.uploadImage());
-      }
-
-      if (movieValue) {
-        calls.push(this.uploadVideo());
-      }
-
-      calls.push(this.updateContentMetadata(contentMetadataRequest));
-
-      forkJoin(calls).subscribe();
-      // .pipe(
-      //   switchMap(() => this.updateContentMetadata(contentMetadataRequest)),
-      //   tap(() => {
-      //     this.isLoading = false;
-      //     this.#toastrService.success('Edycja zakończyłą się pomyślnie.');
-      //   })
-      // )
-      // .subscribe();
-      // })
-      // tap(() => {
-      //   this.isLoading = false;
-      //   this.#toastrService.success('Edycja zakończyłą się pomyślnie.');
-      //   })
-      // )
-      // .subscribe();
+      this.updateMovie(contentMetadataRequest);
       return;
     }
+
     this.addMovie(contentMetadataRequest);
   }
-  addMovie(contentMetadataRequest: any) {
-    this.createContentMetadata(contentMetadataRequest)
+
+  private updateMovie(contentMetadataForm: {
+    title: string;
+    description: string;
+    licenseRules: LicenseRule[];
+  }) {
+    this.#contentService
+      .updateContent(contentMetadataForm, this.#contentMetadata!.uuid)
       .pipe(
-        switchMap(({ result }) => {
-          this.isUploadContentMetadataSuccess = true;
-          this.#toastrService.success('Metadane zostały wgrane pomyślnie.');
-          this.submitFormChanged.emit();
-
-          if (result.contentId) {
-            this.#contentId = result.contentId;
-          }
-
-          if (this.isFormContainOnlyMetadata()) {
-            this.movieForm.reset();
-            return EMPTY;
-          }
-
-          return forkJoin([this.uploadImage(), this.uploadVideo()]);
-        }),
-        tap((results) => {
-          if (results) {
-            const [uploadMovieResult, uploadImageResult] = results;
-
-            if (uploadMovieResult) {
-              this.uploadMovieTemplate.removeFile();
-              this.#toastrService.success('Wideo zostało wgrane pomyślnie');
-            }
-            if (uploadImageResult) {
-              this.uploadImageTemplate.removeFile();
-              this.#toastrService.success('Obraz został wgrany pomyślnie');
-            }
-          }
-
+        tap(() => {
+          this.#toastrService.success(
+            'Metadane zostały zaktualizowane pomyślnie.'
+          );
           this.movieForm.reset();
           this.submitFormChanged.emit();
         }),
@@ -282,56 +167,68 @@ export class MovieFormComponent implements isLoading {
       )
       .subscribe();
   }
-  private isFormContainOnlyMetadata(): boolean {
-    return (
-      !this.movieForm.get('image')?.value && !this.movieForm.get('movie')?.value
-    );
+
+  private addMovie(contentMetadataForm: {
+    title: string;
+    description: string;
+    licenseRules: LicenseRule[];
+  }) {
+    forkJoin([this.uploadImage(), this.uploadVideo()])
+      .pipe(
+        mergeMap(([imageResponse, movieResponse]) => {
+          const contentMetadataRequest = {
+            imageFileId: imageResponse.result.imageFileId,
+            videoFileId: movieResponse.result.videoFileId,
+            ...contentMetadataForm,
+          };
+          return this.#contentService.createContent(contentMetadataRequest);
+        }),
+        tap(() => {
+          this.#toastrService.success('Metadane zostały wgrane pomyślnie.');
+          this.movieForm.reset();
+          this.submitFormChanged.emit();
+        }),
+        finalize(() => (this.isLoading = false))
+      )
+      .subscribe();
   }
 
-  private uploadVideo(): Observable<LinkForUploadFileResponse> {
+  private uploadVideo(): Observable<Response<VideoFileId>> {
     const movieFile = this.movieForm.get('movie')?.value;
 
     if (!movieFile) return EMPTY;
 
     return this.#fileUploadService
-      .getVideoLink(this.#contentId)
+      .getVideoLink()
       .pipe(
         mergeMap(({ result }: LinkForUploadFileResponse) =>
-          this.#fileUploadService.upload(movieFile, result.url)
+          this.#fileUploadService.upload<VideoFileId>(movieFile, result.url)
         )
       );
   }
 
-  private uploadImage(): Observable<LinkForUploadFileResponse> {
+  private uploadImage(): Observable<Response<ImageFileId>> {
     const imageFile = this.movieForm.get('image')?.value;
 
     if (!imageFile) return EMPTY;
 
     return this.#fileUploadService
-      .getImageLink(this.#contentId)
+      .getImageLink()
       .pipe(
         mergeMap(({ result }: LinkForUploadFileResponse) =>
-          this.#fileUploadService.upload(imageFile, result.url)
+          this.#fileUploadService.upload<ImageFileId>(imageFile, result.url)
         )
       );
   }
 
-  private updateContentMetadata(
-    contentMetadataRequest: UploadContentMetadataRequest
-  ): Observable<UploadContentMetadataResponse> {
-    return this.#contentService.updateContent(
-      contentMetadataRequest,
-      this.#contentMetadata!.uuid
-    );
-  }
+  private manageFormValidators(): void {
+    const formFields = ['image', 'movie'];
 
-  private createContentMetadata(
-    contentMetadataRequest: UploadContentMetadataRequest
-  ): Observable<UploadContentMetadataResponse> {
-    return this.#contentService.createContent(contentMetadataRequest);
-  }
-
-  private createUserFilename(title: string, type: FileType): string {
-    return `${title}_${type}_file`;
+    formFields.forEach((fieldName) => {
+      this._isEditMode
+        ? this.movieForm.get(fieldName)?.removeValidators(Validators.required)
+        : this.movieForm.get(fieldName)?.addValidators(Validators.required);
+      this.movieForm.get(fieldName)?.updateValueAndValidity();
+    });
   }
 }
