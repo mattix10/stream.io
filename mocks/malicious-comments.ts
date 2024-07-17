@@ -65,11 +65,12 @@ export const maliciousComments: MovieComment[] = [
   //   creationTime: '2020-03-04',
   // },
   // object-src
-  {
-    userName: 'User2',
-    body: `<object data="http://localhost:3000/malicious-newsletter" width="300" height="100"></object>`,
-    creationTime: '2020-03-04',
-  },
+  // {
+  //   userName: 'User2',
+  //   body: `<object data="http://localhost:3000/malicious-newsletter" width="300" height="100"></object>`,
+  //   creationTime: '2020-03-04',
+  // },
+  // form-action
   {
     userName: 'User3',
     body: 'Oglądałem setki razy! 10/10.',

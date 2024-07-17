@@ -16,8 +16,6 @@ import { UserContentMetadata } from 'src/app/core/models/responses/user-content-
 import { FileUploadService } from '../../services/file-upload-service/file-upload.service';
 import { Observable, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { FileStatusPipe } from '../../pipes/file-status.pipe';
-import { FileStatusDirective } from '../../directives/file-status.directive';
 
 type MovieListItem = UserContentMetadata & {
   isExpanded: boolean;
@@ -25,14 +23,7 @@ type MovieListItem = UserContentMetadata & {
 @Component({
   selector: 'app-expansion-panel-movie',
   standalone: true,
-  imports: [
-    CommonModule,
-    FileStatusPipe,
-    FileStatusDirective,
-    CurrencyPipe,
-    LicenseTypePipe,
-    LicenseDurationPipe,
-  ],
+  imports: [CommonModule, CurrencyPipe, LicenseTypePipe, LicenseDurationPipe],
   templateUrl: './expansion-panel-movie.component.html',
   styleUrl: './expansion-panel-movie.component.scss',
   providers: [
