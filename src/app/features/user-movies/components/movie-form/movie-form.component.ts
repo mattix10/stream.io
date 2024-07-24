@@ -22,7 +22,6 @@ import {
   tap,
 } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { isLoading } from 'src/app/features/auth/models/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { LicenseRule } from 'src/app/core/models/license-rule';
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
@@ -35,6 +34,7 @@ import { LinkForUploadFileResponse } from 'src/app/core/models/responses/link-fo
 import { ImageFileId } from 'src/app/core/models/image-file-id';
 import { Response } from 'src/app/core/models/response';
 import { VideoFileId } from 'src/app/core/models/video-file-id';
+import { isLoading } from 'src/app/core/models/loading';
 
 @Component({
   selector: 'app-movie-form',

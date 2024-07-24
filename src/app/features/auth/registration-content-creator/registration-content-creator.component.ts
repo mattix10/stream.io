@@ -11,7 +11,7 @@ import { catchError, EMPTY, finalize, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { registrationSuccess } from '../constants/toastr-messages';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { isLoading } from '../models/loading';
+import { isLoading } from '../../../core/models/loading';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({

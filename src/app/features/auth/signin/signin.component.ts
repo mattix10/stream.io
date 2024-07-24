@@ -11,7 +11,7 @@ import { catchError, EMPTY, finalize, tap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LoginRequest } from '../models/login-request';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { isLoading } from '../models/loading';
+import { isLoading } from '../../../core/models/loading';
 import { errorMessage } from '../constants/toastr-messages';
 
 @Component({

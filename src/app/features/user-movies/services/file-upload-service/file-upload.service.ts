@@ -21,12 +21,6 @@ export class FileUploadService {
       .pipe(this.#loggerService.error('Wgrywanie pliku nie powiodło się.'));
   }
 
-  delete(linkForDelete: string): any {
-    return this.#httpClient.delete(linkForDelete, {
-      responseType: 'text',
-    });
-  }
-
   getVideoLink(): Observable<LinkForUploadFileResponse> {
     return this.getLinkForUpload(FileType.Movie).pipe(
       this.#loggerService.error(

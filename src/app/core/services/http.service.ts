@@ -26,7 +26,7 @@ export class HttpService {
     return this.#httpClient.put<T>(this.createUrl(url, id), body);
   }
 
-  updateEntity<T>(url: string, body: T, id?: string): Observable<T> {
+  updateField<T>(url: string, body: T, id?: string): Observable<T> {
     return this.#httpClient.patch<T>(this.createUrl(url, id), body);
   }
 

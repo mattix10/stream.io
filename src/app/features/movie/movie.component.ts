@@ -17,7 +17,7 @@ import {
 } from 'rxjs';
 import { MovieMetadata } from 'src/app/core/models/movie-metadata';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { isLoading } from '../auth/models/loading';
+import { isLoading } from '../../core/models/loading';
 import { MovieMetadataResponse } from 'src/app/core/models/responses/movie-metadata-response';
 import { MovieLinkResponse } from 'src/app/core/models/responses/movie-link-response';
 import {

@@ -12,33 +12,23 @@ import { Response } from '../models/response';
   providedIn: 'root',
 })
 export class AuthService {
-  currentUserSource = new ReplaySubject<User | null>(1);
+  readonly currentUserSource = new ReplaySubject<User | null>(1);
+  readonly #authUrl = environment.API_URL + 'user/';
   currentUser$ = this.currentUserSource.asObservable();
   isLoggedIn$: Observable<boolean> = this.currentUser$.pipe(
     map((user) => !!user?.userName)
   );
-  authUrl = environment.API_URL + 'user/';
 
   readonly #httpClient = inject(HttpClient);
   readonly #router = inject(Router);
 
   constructor() {
-    const token = this.getToken();
-
-    if (token) {
-      if (this.isTokenExpired()) {
-        this.removeToken();
-        this.removeCurrentUser();
-      }
-      this.setCurrentUser(token);
-    } else {
-      this.removeCurrentUser();
-    }
+    this.handleUser();
   }
 
   login(form: { password: string; email: string }): Observable<void> {
     return this.#httpClient
-      .post<Response<UserResponse>>(`${this.authUrl}sign-in`, form)
+      .post<Response<UserResponse>>(`${this.#authUrl}sign-in`, form)
       .pipe(
         map(({ result: { token } }) => {
           this.setCurrentUser(token);
@@ -75,7 +65,7 @@ export class AuthService {
     this.setToken(token);
   }
 
-  getToken() {
+  getToken(): string | null {
     return localStorage.getItem('token');
   }
 
@@ -87,6 +77,22 @@ export class AuthService {
     return this.tokenExpired(token) ? true : false;
   }
 
+  private handleUser(): void {
+    const token = this.getToken();
+
+    if (token) {
+      if (this.isTokenExpired()) {
+        this.removeToken();
+        this.removeCurrentUser();
+      }
+
+      this.setCurrentUser(token);
+      return;
+    }
+
+    this.removeCurrentUser();
+  }
+
   private removeCurrentUser(): void {
     this.currentUserSource.next(null);
   }
@@ -95,15 +101,17 @@ export class AuthService {
     localStorage.removeItem('token');
   }
 
+  // TODO: set type
   private getDecodedToken(token: string) {
+    console.log(JSON.parse(atob(token.split('.')[1])));
     return JSON.parse(atob(token.split('.')[1]));
   }
 
-  private setToken(token: string) {
+  private setToken(token: string): void {
     localStorage.setItem('token', token);
   }
 
-  private tokenExpired(token: string) {
+  private tokenExpired(token: string): boolean {
     const expiry = this.getDecodedToken(token).exp;
     return Math.floor(new Date().getTime() / 1000) >= expiry;
   }

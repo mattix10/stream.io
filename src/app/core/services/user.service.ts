@@ -69,7 +69,7 @@ export class UserService {
   changePassword(
     changePasswordRequest: ChangePasswordRequest
   ): Observable<ChangePasswordRequest> {
-    return this.#httpService.updateEntity<ChangePasswordRequest>(
+    return this.#httpService.updateField<ChangePasswordRequest>(
       `${this.#entity}/password`,
       changePasswordRequest
     );

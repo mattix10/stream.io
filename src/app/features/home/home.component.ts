@@ -8,7 +8,7 @@ import {
   ContentMetadata,
 } from 'src/app/core/models/responses/all-movies-metadata-response';
 import { finalize, tap } from 'rxjs';
-import { isLoading } from '../auth/models/loading';
+import { isLoading } from '../../core/models/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({

@@ -18,11 +18,11 @@ import { User } from 'src/app/core/models/user';
 import { UserData } from '../../models/user-data';
 import { Role } from 'src/app/core/models/roles.enum';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { isLoading } from 'src/app/features/auth/models/loading';
-import { catchError, EMPTY, finalize, Observable, of } from 'rxjs';
+import { catchError, EMPTY, finalize, Observable, of, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/core/services/user.service';
 import { EditHeaderComponent } from 'src/app/shared/components/edit-header/edit-header.component';
+import { isLoading } from 'src/app/core/models/loading';
 
 @Component({
   selector: 'app-user-data',
@@ -43,7 +43,8 @@ export class UserDataComponent implements OnInit, isLoading {
   @Output() userDataChanged = new EventEmitter<void>();
 
   isLoading: boolean = false;
-
+  isEditMode: boolean = false;
+  roles = Object.values(Role);
   userDataForm = new FormGroup({
     email: new FormControl('', Validators.email),
     userName: new FormControl(''),
@@ -57,8 +58,6 @@ export class UserDataComponent implements OnInit, isLoading {
       Validators.minLength(10),
     ]),
   });
-  isEditMode: boolean = false;
-  roles = Object.values(Role);
 
   get isContentCreator(): boolean {
     return this.user.userLevel === Role.ContentCreator;
@@ -112,12 +111,17 @@ export class UserDataComponent implements OnInit, isLoading {
         .pipe(this.handleUpdateError());
     }
 
-    call.pipe(finalize(() => (this.isLoading = false))).subscribe(() => {
-      this.userDataChanged.emit();
-      this.isEditMode = false;
-      this.#toastrService.success('Dane zostały zaktualizowane.');
-      this.resetFields();
-    });
+    call
+      .pipe(
+        tap(() => {
+          this.userDataChanged.emit();
+          this.isEditMode = false;
+          this.#toastrService.success('Dane zostały zaktualizowane.');
+          this.resetFields();
+        }),
+        finalize(() => (this.isLoading = false))
+      )
+      .subscribe();
   }
 
   private setUserData(): void {

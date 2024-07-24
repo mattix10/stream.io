@@ -2,11 +2,11 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, EMPTY, finalize } from 'rxjs';
+import { catchError, EMPTY, finalize, tap } from 'rxjs';
+import { isLoading } from 'src/app/core/models/loading';
 import { ChangePasswordRequest } from 'src/app/core/models/requests/change-password-request';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
-import { isLoading } from 'src/app/features/auth/models/loading';
 import { EditHeaderComponent } from 'src/app/shared/components/edit-header/edit-header.component';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
@@ -24,13 +24,13 @@ import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.comp
 })
 export class ChangePasswordComponent implements isLoading {
   isEditMode = false;
-  isLoading: boolean = false;
+  isLoading = false;
 
-  #formBuilder = inject(FormBuilder);
-  #userService = inject(UserService);
-  #toastrService = inject(ToastrService);
-  #authService = inject(AuthService);
-  #router = inject(Router);
+  readonly #formBuilder = inject(FormBuilder);
+  readonly #userService = inject(UserService);
+  readonly #toastrService = inject(ToastrService);
+  readonly #authService = inject(AuthService);
+  readonly #router = inject(Router);
 
   #validators = [Validators.required, Validators.minLength(6)];
 
@@ -52,18 +52,19 @@ export class ChangePasswordComponent implements isLoading {
     this.#userService
       .changePassword(this.changePasswordForm.value as ChangePasswordRequest)
       .pipe(
+        tap(() => {
+          this.#authService.logout();
+          this.#router.navigateByUrl('/auth/signin');
+          this.#toastrService.success(
+            'Hasło zostało zmienione pomyślnie. Zaloguj się ponownie.'
+          );
+        }),
         catchError(() => {
           this.#toastrService.error('Nie udało się zmienić hasła.');
           return EMPTY;
         }),
         finalize(() => (this.isLoading = false))
       )
-      .subscribe(() => {
-        this.#authService.logout();
-        this.#router.navigateByUrl('/auth/signin');
-        this.#toastrService.success(
-          'Hasło zostało zmienione pomyślnie. Zaloguj się ponownie.'
-        );
-      });
+      .subscribe();
   }
 }
