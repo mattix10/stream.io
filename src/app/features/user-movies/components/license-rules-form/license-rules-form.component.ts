@@ -180,6 +180,7 @@ export class LicenseRulesFormComponent implements OnInit {
     );
 
     this.rulesChanged.emit(licenseRules);
+    this.addRule();
   }
 
   private rulesListener(): void {
