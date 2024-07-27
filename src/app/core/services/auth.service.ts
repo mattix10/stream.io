@@ -103,7 +103,6 @@ export class AuthService {
 
   // TODO: set type
   private getDecodedToken(token: string) {
-    console.log(JSON.parse(atob(token.split('.')[1])));
     return JSON.parse(atob(token.split('.')[1]));
   }
 
