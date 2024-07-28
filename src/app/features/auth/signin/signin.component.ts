@@ -1,10 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, EMPTY, finalize, tap } from 'rxjs';
@@ -23,8 +18,11 @@ import { errorMessage } from '../constants/toastr-messages';
 })
 export class SigninComponent implements isLoading {
   form = new FormGroup({
-    email: new FormControl('', [Validators.email, Validators.required]),
-    password: new FormControl('', Validators.minLength(6)),
+    // TODO: Add validators
+    // email: new FormControl('', [Validators.email, Validators.required]),
+    // password: new FormControl('', Validators.minLength(6)),
+    email: new FormControl(''),
+    password: new FormControl(''),
   });
 
   isLoading: boolean = false;
