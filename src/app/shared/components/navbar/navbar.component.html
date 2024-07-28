@@ -45,7 +45,7 @@
         <li
           [routerLink]="'/user-movies'"
           class="navigation-item"
-          *ngIf="user$ | async"
+          *ngIf="(user$ | async) && (isContentCreator$ | async)"
         >
           <span class="list-title"> Moje filmy </span>
         </li>

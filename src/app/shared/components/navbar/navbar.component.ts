@@ -15,7 +15,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class NavbarComponent implements OnInit {
   user$: Observable<User | null> = of(null);
-  isUserAdmin$: Observable<boolean> = of(false);
 
   protected isMobileMenuVisible = false;
   protected searchValue: string = '';
@@ -23,11 +22,12 @@ export class NavbarComponent implements OnInit {
   readonly #router = inject(Router);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
+  isUserAdmin$ = this.#authService.isAdmin();
+  isContentCreator$ = this.#authService.isContentCreator();
 
   ngOnInit(): void {
     this.getSearchValue();
     this.getCurrentUser();
-    this.checkIsUserAdmin();
   }
 
   logout(): void {
@@ -63,9 +63,5 @@ export class NavbarComponent implements OnInit {
     // .pipe(
     //   tap((user) => console.log(user))
     // );
-  }
-
-  private checkIsUserAdmin(): void {
-    this.isUserAdmin$ = this.#authService.isAdmin();
   }
 }
