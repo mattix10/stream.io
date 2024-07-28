@@ -18,4 +18,8 @@ export class LoggerService {
       );
     };
   }
+
+  success(meesage: string): void {
+    this.#toastrService.success(meesage);
+  }
 }

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { BaseRegistrationRequest } from 'src/app/features/auth/models/base-registration-request';
 import { RegistrationContentCreatorRequest } from 'src/app/features/auth/models/registration-content-creator-request';
 import { UserData } from 'src/app/features/user-dashboard/models/user-data';
@@ -10,6 +10,7 @@ import { UpdateUserStatusRequest } from '../models/requests/update-user-status-r
 import { User } from '../models/user';
 import { HttpService } from './http.service';
 import { Response } from '../models/response';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,8 @@ import { Response } from '../models/response';
 export class UserService {
   readonly #httpService = inject(HttpService);
   readonly #entity = 'user';
+
+  readonly #loggerService = inject(LoggerService);
 
   registerEndUser(formValue: BaseRegistrationRequest): Observable<void> {
     return this.#httpService.create<void, BaseRegistrationRequest>(
@@ -39,7 +42,9 @@ export class UserService {
   }
 
   getUsers(): Observable<any> {
-    return this.#httpService.getItems(this.#entity);
+    return this.#httpService
+      .getItems(`${this.#entity}/all`)
+      .pipe(this.#loggerService.error('Nie udało się załadować użytkowników'));
   }
 
   updateEndUser(user: BaseUpdateUserRequest): Observable<void> {
@@ -60,10 +65,18 @@ export class UserService {
     username: string,
     userStatus: UpdateUserStatusRequest
   ): Observable<void> {
-    return this.#httpService.updateStatus(
-      `${this.#entity}/${username}/status`,
-      userStatus
-    );
+    return this.#httpService
+      .updateStatus(`${this.#entity}/${username}/status`, userStatus)
+      .pipe(
+        this.#loggerService.error(
+          `Aktualizacja statusu użytkownika "${username}" nie powiodła się.`
+        ),
+        tap(() => {
+          this.#loggerService.success(
+            `Status użytkownika "${username}" został zaktualizowany.`
+          );
+        })
+      );
   }
 
   changePassword(

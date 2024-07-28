@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgToggleModule } from 'ng-toggle-button';
 import { User } from 'src/app/core/models/user';
 import { UserStatusEvent } from '../../user-dashboard/models/user-status-event';
+
 @Component({
   selector: 'app-user-table',
   standalone: true,
@@ -15,7 +16,7 @@ export class UserTableComponent {
 
   @Output() userStatusChanged = new EventEmitter<UserStatusEvent>();
 
-  onUserStatusChange(isActive: boolean, { userName }: User): void {
-    this.userStatusChanged.emit({ isActive, userName });
+  onUserStatusChange(status: boolean, { userName }: User): void {
+    this.userStatusChanged.emit({ status, userName });
   }
 }
