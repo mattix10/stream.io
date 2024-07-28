@@ -7,7 +7,7 @@ import { LicenseDuration } from 'src/app/core/models/license-duration.enum';
   standalone: true,
 })
 export class LicenseDurationPipe implements PipeTransform {
-  transform(value: LicenseDuration): string {
+  transform(value: LicenseDuration | undefined | null): string {
     const licenseDurationLabel = licenseDurationLabels.find(
       (label) => label.value === value
     );

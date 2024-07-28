@@ -1,0 +1,59 @@
+@use "./variables" as var;
+
+.movie-content {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  aspect-ratio: 16 / 9;
+}
+
+.no-access-wrapper {
+  position: relative;
+
+  .no-access-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    height: 100%;
+    opacity: 0.5;
+    border-radius: var.$border-radius-small;
+  }
+}
+
+.no-access-bar {
+  position: absolute;
+  top: calc(50% - 24px);
+  padding: 24px 0;
+  background-color: var.$color-grey;
+  width: 100%;
+  font-size: 18px;
+  font-family: "Mitr-Regular";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .info-icon {
+    height: 24px;
+    width: 24px;
+  }
+
+  .no-access-title {
+    margin-left: 6px;
+  }
+}
+
+.dialog-wrapper {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  .dialog {
+    margin: 24px auto;
+    width: 60%;
+    max-width: 60%;
+    height: calc(100% - 48px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

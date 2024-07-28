@@ -44,8 +44,6 @@ export class ChangePasswordComponent implements isLoading {
   }
 
   onChangePassword(): void {
-    console.log(this.changePasswordForm);
-
     if (this.changePasswordForm.invalid) return;
 
     this.isLoading = true;

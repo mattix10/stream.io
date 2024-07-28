@@ -1,0 +1,41 @@
+@use "./variables" as var;
+
+.rule-wrapper {
+  // background-color: var.$color-grey-3; // or rgb(98 89 89 / 50%)
+  background-color: rgb(98 89 89 / 50%); // or rgb(98 89 89 / 50%)
+  border-radius: var.$border-radius-small;
+  padding: 12px;
+  display: flex;
+  margin-bottom: 12px;
+  border: 3px solid transparent;
+  cursor: pointer;
+
+  &.selected {
+    border: 3px solid var.$color-primary;
+  }
+
+  .rule-icon {
+    width: 30%;
+  }
+
+  .rule-details {
+    width: 50%;
+    margin-left: 12px;
+
+    .rule-type {
+      font-family: "Mitr-Medium";
+      margin-bottom: 8px;
+    }
+  }
+  .rule-price {
+    margin-left: auto;
+    font-family: "Mitr-Medium";
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+  }
+}
+.rule-duration {
+  font-family: "Mitr-Light";
+  font-size: 14px;
+}

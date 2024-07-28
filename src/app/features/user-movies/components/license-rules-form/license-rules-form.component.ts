@@ -96,7 +96,6 @@ export class LicenseRulesFormComponent implements OnInit {
       duration,
     });
     this.rules.push(rule);
-    console.log(this.rules);
 
     this.displayAvailableLicenseTypeLabels();
     this.displayAvailableLicenseDurationLabels();

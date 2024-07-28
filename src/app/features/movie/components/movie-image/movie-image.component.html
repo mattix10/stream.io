@@ -1,0 +1,21 @@
+<div class="movie-content">
+  <div class="no-access-wrapper">
+    <img [src]="imageUrl" class="no-access-image" />
+    @if(!(isLoggedIn$ | async)) {
+    <div class="no-access-bar">
+      <img src="./../../../assets/icons/info.svg" class="info-icon" />
+      <p class="no-access-title">
+        Musisz być zalogowany, aby móc oglądać ten film.
+      </p>
+    </div>
+    }
+    <div class="dialog-wrapper">
+      <div class="dialog">
+        @if (isLoading) {
+        <app-spinner [text]="'Trwa pobieranie licencji...'" [diameter]="60" />
+        }
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

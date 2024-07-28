@@ -90,7 +90,6 @@ export class UserDataComponent implements OnInit, isLoading {
   }
 
   onSave(): void {
-    console.log(this.userDataForm);
     if (!this.userDataForm.valid) return;
 
     const { role, ...formValue } = this.userDataForm.value;

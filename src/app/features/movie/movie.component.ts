@@ -6,6 +6,9 @@ import { ContentService } from 'src/app/core/services/content.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import {
+  catchError,
+  delay,
+  EMPTY,
   finalize,
   forkJoin,
   mergeMap,
@@ -28,6 +31,10 @@ import { HttpParams } from '@angular/common/http';
 import { MovieItemComponent } from '../home/movie-item/movie-item.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
 import { MovieMetadataComponent } from './components/movie-metadata/movie-metadata.component';
+import { LicenseService } from './services/license.service';
+import { MovieImageComponent } from './components/movie-image/movie-image.component';
+import { LicenseDialogComponent } from './components/license-dialog/license-dialog.component';
+import { LicenseDialogType } from './models/license-dialog-type';
 
 @Component({
   selector: 'app-movie',
@@ -39,7 +46,10 @@ import { MovieMetadataComponent } from './components/movie-metadata/movie-metada
     MovieItemComponent,
     VideoPlayerComponent,
     MovieMetadataComponent,
+    MovieImageComponent,
+    LicenseDialogComponent,
   ],
+  providers: [LicenseService],
   templateUrl: './movie.component.html',
   styleUrl: './movie.component.scss',
 })
@@ -53,11 +63,16 @@ export class MovieComponent implements OnInit, isLoading {
   isLoadingRecommendedMovies: boolean = false;
   recommendedMovies: ContentMetadata[] = [];
   submitComment = new Subject<void>();
+  isLicenseValid: boolean = false;
+  licenseDialogType?: LicenseDialogType;
+  isLoadingLicense = true;
 
   readonly #movieService = inject(ContentService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
+  readonly #licenseService = inject(LicenseService);
   readonly isLoggedIn$ = this.#authService.isLoggedIn$.pipe(take(1));
+  protected licenseId?: string;
 
   ngOnInit(): void {
     this.getMovieDetails();
@@ -85,7 +100,7 @@ export class MovieComponent implements OnInit, isLoading {
               ];
 
               if (isLoggedIn) {
-                calls.push(this.getMovieLink());
+                calls.push(this.handleMovieLicense());
               }
 
               return forkJoin(calls);
@@ -102,6 +117,8 @@ export class MovieComponent implements OnInit, isLoading {
         this.uuid = params.has('uuid') ? params.get('uuid')! : '';
 
         if (!this.uuid) return;
+
+        this.resetMovieData();
       })
     );
   }
@@ -110,21 +127,10 @@ export class MovieComponent implements OnInit, isLoading {
     this.isLoading = true;
 
     return this.#movieService.getContent(this.uuid).pipe(
-      tap(({ result }) => (this.movieMetadata = result)),
-      finalize(() => (this.isLoading = false))
-    );
-  }
-
-  private getMovieLink(): Observable<MovieLinkResponse> {
-    this.isLoadingMovieLink = true;
-
-    return this.#movieService.getVideoLink(this.uuid).pipe(
       tap(({ result }) => {
-        this.movieLink = result.url;
+        this.movieMetadata = result;
       }),
-      finalize(() => {
-        this.isLoadingMovieLink = false;
-      })
+      finalize(() => (this.isLoading = false))
     );
   }
 
@@ -141,5 +147,53 @@ export class MovieComponent implements OnInit, isLoading {
         }),
         finalize(() => (this.isLoadingRecommendedMovies = false))
       );
+  }
+
+  private handleMovieLicense(): Observable<MovieLinkResponse> {
+    this.isLicenseValid = false;
+    this.isLoadingLicense = true;
+
+    return this.#licenseService.getLicense(this.uuid).pipe(
+      delay(1000),
+      catchError(() => {
+        this.licenseDialogType = LicenseDialogType.Buy;
+        return EMPTY;
+      }),
+      mergeMap(({ result }) => {
+        if (result.keyData == null) {
+          this.licenseDialogType = LicenseDialogType.Renew;
+          this.licenseId = result.uuid;
+          return EMPTY;
+        }
+
+        this.isLicenseValid = true;
+        return this.getMovieLink();
+      }),
+      finalize(() => (this.isLoadingLicense = false))
+    );
+  }
+
+  private getMovieLink(): Observable<MovieLinkResponse> {
+    this.isLoadingMovieLink = true;
+
+    return this.#movieService.getVideoLink(this.uuid).pipe(
+      tap(({ result }) => {
+        this.movieLink = result.url;
+      }),
+      finalize(() => {
+        this.isLoadingMovieLink = false;
+      })
+    );
+  }
+
+  private resetMovieData(): void {
+    this.movieMetadata = undefined;
+    this.movieLink = '';
+    this.isLoading = true;
+    this.isLicenseValid = false;
+  }
+
+  onSubmitLicense(): void {
+    this.handleMovieLicense().subscribe();
   }
 }

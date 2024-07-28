@@ -1,0 +1,23 @@
+@if(licenseRule) {
+<div
+  class="rule-wrapper"
+  [class.selected]="isSelectedRule"
+  (click)="onSelectLicenseRule(licenseRule)"
+>
+  <div class="icon-wrapper">
+    <img src="./../../../../../assets/icons/{{ iconName }}.svg" />
+  </div>
+  <div class="rule-details">
+    <div class="rule-type">{{ licenseRule.type | licenseType }}</div>
+    <div class="rule-duration">
+      Czas trwania:
+      {{
+        licenseRule.duration
+          ? (licenseRule.duration | licenseDuration)
+          : "Nieograniczony"
+      }}
+    </div>
+  </div>
+  <div class="rule-price">{{ licenseRule.price | currency }}</div>
+</div>
+}

@@ -1,0 +1,37 @@
+:host {
+  max-height: 80%;
+  background-color: black;
+  border-radius: 5px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 24px;
+}
+
+.license-dialog {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+
+  .title {
+    text-align: center;
+  }
+}
+
+.subtitle {
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.license-item-wrapper {
+  max-height: 300px;
+}
+
+.overflow {
+  overflow: auto;
+  padding-right: 10px;
+}
+
+.button {
+  margin-top: 15px;
+}

@@ -2,11 +2,31 @@
 <div class="movie-container dashboard container">
   <div class="content">
     <div class="movie">
+      @if (movieLink) {
       <app-video-player
-        [imageUrl]="movieMetadata.imageUrl"
         [movieLink]="movieLink"
+        [isLicenseValid]="isLicenseValid"
       />
+      } @if(!(isLoggedIn$ | async) || ((isLoggedIn$ | async) && !isLicenseValid
+      && !movieLink)) {
+      <app-movie-image
+        [imageUrl]="movieMetadata.imageUrl"
+        [isLoading]="isLoadingLicense"
+      >
+        @if (!isLicenseValid && !isLoadingLicense) {
+        <app-license-dialog
+          [licenseId]="licenseId"
+          [licenseRules]="movieMetadata.licenseRules"
+          [licenseDialogType]="licenseDialogType"
+          [contentId]="uuid"
+          (submitButtonChanged)="onSubmitLicense()"
+        />
+        }
+      </app-movie-image>
+      }
+
       <app-movie-metadata [movieMetadata]="movieMetadata" />
+
       <app-comments
         class="comments comments-desktop"
         [submitComment]="submitComment"

@@ -4,5 +4,5 @@ import { LicenseType } from './license-type.enum';
 export interface LicenseRule {
   price: number;
   type: LicenseType;
-  duration: LicenseDuration;
+  duration?: LicenseDuration | null;
 }

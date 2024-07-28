@@ -1,0 +1,23 @@
+<div class="license-dialog">
+  <h2 class="title">{{ dialogConfig.title }}</h2>
+  <p class="subtitle">{{ dialogConfig.subtitle }}</p>
+
+  @if (licenseRules) {
+  <div class="license-item-wrapper" [class.overflow]="licenseRules!.length > 2">
+    @for (rule of licenseRules; track rule; let i = $index) {
+    <app-license-item
+      [isSelectedRule]="selectedRuleIndex === i"
+      [licenseRule]="rule"
+      [isLicenseExpired]="isLicenseExpired"
+      (selectLicenseRuleChanged)="onSelectLicenseRuleChange($event, i)"
+    />
+    }
+  </div>
+  }
+
+  <button class="button" (click)="onSubmit()">
+    @if (isLoading) {
+    <app-spinner [diameter]="18"></app-spinner>
+    } @else { {{ dialogConfig.buttonTitle }} }
+  </button>
+</div>

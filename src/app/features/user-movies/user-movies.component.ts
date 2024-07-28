@@ -60,10 +60,6 @@ export class UserMoviesComponent implements OnInit {
   > {
     return this.#contentService.getUserContentMetadataResponse().pipe(
       tap(({ result }) => {
-        console.log(
-          'result.contentCreatorContents: ',
-          result.contentCreatorContents
-        );
         this.contentMetadata = [...result.contentCreatorContents];
       })
     );

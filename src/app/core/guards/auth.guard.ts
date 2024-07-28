@@ -6,7 +6,6 @@ import { AuthService } from '../services/auth.service';
 export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  console.log('here');
 
   // const token = authService.getToken();
   // if (!token) {
@@ -24,7 +23,6 @@ export const authGuard: CanActivateFn = () => {
   return authService.isLoggedIn$.pipe(
     take(1),
     map((isLoggedIn) => {
-      console.log(isLoggedIn);
       if (!isLoggedIn) {
         router.navigateByUrl('auth/signin');
         return false;

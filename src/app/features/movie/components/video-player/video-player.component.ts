@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrl: './video-player.component.scss',
 })
 export class VideoPlayerComponent {
-  @Input() imageUrl = '';
+  @Input() isLicenseValid = false;
 
   source?: string;
   readonly #authService = inject(AuthService);
