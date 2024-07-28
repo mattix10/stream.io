@@ -34,16 +34,18 @@ import { LicenseType } from 'src/app/core/models/license-type.enum';
 export class LicenseRulesFormComponent implements OnInit {
   @Input() set isEditMode(isEditMode: boolean) {
     this.#isEditMode = isEditMode;
-
-    if (!isEditMode) {
-      this.licenseRules = [];
-      this.addRule();
-    }
+    this.cleanAndAddRule();
   }
 
   @Input() set licenseRules(licenseRules: LicenseRule[]) {
     this.rules.clear();
     this.fillRulesForm(licenseRules);
+  }
+
+  @Input() set clearLicenseRules(clearLicenseRules: boolean) {
+    if (clearLicenseRules) {
+      this.cleanAndAddRule();
+    }
   }
 
   @Input({ required: true }) set submit(submit: Subject<void>) {
@@ -72,7 +74,6 @@ export class LicenseRulesFormComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    if (!this.#isEditMode) this.addRule();
     this.rulesListener();
   }
 
@@ -179,7 +180,6 @@ export class LicenseRulesFormComponent implements OnInit {
     );
 
     this.rulesChanged.emit(licenseRules);
-    this.addRule();
   }
 
   private rulesListener(): void {
@@ -198,4 +198,9 @@ export class LicenseRulesFormComponent implements OnInit {
 
   private getFirstAvailableDurationOption = () =>
     this.licenseDurationOptions.filter(({ disabled }) => !disabled)[0].value;
+
+  private cleanAndAddRule(): void {
+    this.rules.clear();
+    this.addRule();
+  }
 }

@@ -19,8 +19,9 @@
     [submit]="submit"
     [isEditMode]="_isEditMode"
     [licenseRules]="licenseRules"
+    [clearLicenseRules]="clearLicenseRules"
     (rulesChanged)="onRulesChanged($event)"
-  ></app-license-rules-form>
+  />
 
   @if(!_isEditMode) {
   <h3>Content</h3>
@@ -31,7 +32,7 @@
     [label]="'Zdjęcie'"
     (removeFileChanged)="onRemoveImage()"
     (uploadFileChanged)="onUploadImage($event)"
-  ></app-drag-and-drop-upload-file>
+  />
 
   <app-drag-and-drop-upload-file
     #uploadMovieTemplate
@@ -39,12 +40,12 @@
     [label]="'Film'"
     (removeFileChanged)="onRemoveMovie()"
     (uploadFileChanged)="onUploadVideo($event)"
-  ></app-drag-and-drop-upload-file>
+  />
   }
 
   <button class="button" type="submit">
     @if (isLoading) {
-    <app-spinner [diameter]="18"></app-spinner>
+    <app-spinner [diameter]="18" />
     } @else {
     {{ _isEditMode ? "Edytuj" : "Dodaj" }} film }
   </button>

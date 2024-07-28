@@ -97,6 +97,7 @@ export class MovieFormComponent implements isLoading {
     movie: new FormControl<any>(''),
   });
   licenseRules: LicenseRule[] = [];
+  clearLicenseRules = false;
 
   isLoading: boolean = false;
   _isEditMode = false;
@@ -131,6 +132,10 @@ export class MovieFormComponent implements isLoading {
   onSubmit(): void {
     if (this.movieForm.invalid) return;
 
+    if (this.clearLicenseRules) {
+      this.clearLicenseRules = false;
+    }
+
     this.submit.next();
     this.isLoading = true;
 
@@ -162,6 +167,7 @@ export class MovieFormComponent implements isLoading {
           );
           this.movieForm.reset();
           this.submitFormChanged.emit();
+          this.clearLicenseRules = true;
         }),
         finalize(() => (this.isLoading = false))
       )
@@ -185,8 +191,11 @@ export class MovieFormComponent implements isLoading {
         }),
         tap(() => {
           this.#toastrService.success('Metadane zostały wgrane pomyślnie.');
+          this.clearLicenseRules = true;
           this.movieForm.reset();
           this.submitFormChanged.emit();
+          this.uploadImageTemplate.removeFile();
+          this.uploadMovieTemplate.removeFile();
         }),
         finalize(() => (this.isLoading = false))
       )
