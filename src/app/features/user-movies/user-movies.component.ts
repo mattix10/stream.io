@@ -5,13 +5,15 @@ import { HeadersComponent } from './components/headers/headers.component';
 import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie/expansion-panel-movie.component';
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable, tap } from 'rxjs';
+import { finalize, Observable, tap } from 'rxjs';
 import {
   UserContentMetadata,
   UserContentMetadataResponse,
 } from 'src/app/core/models/responses/user-content-metadata-response';
 import { ContentService } from 'src/app/core/services/content.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { isLoading } from 'src/app/core/models/loading';
 
 @Component({
   selector: 'app-user-movies',
@@ -21,11 +23,12 @@ import { AuthService } from 'src/app/core/services/auth.service';
     HeadersComponent,
     MovieFormComponent,
     ExpansionPanelMovieComponent,
+    SpinnerComponent,
   ],
   templateUrl: './user-movies.component.html',
   styleUrl: './user-movies.component.scss',
 })
-export class UserMoviesComponent implements OnInit {
+export class UserMoviesComponent implements OnInit, isLoading {
   readonly #authService = inject(AuthService);
   readonly #contentService = inject(ContentService);
   readonly #destroyRef = inject(DestroyRef);
@@ -33,6 +36,7 @@ export class UserMoviesComponent implements OnInit {
   isContentCreator$ = this.#authService.isContentCreator();
   isEndUser$ = this.#authService.isEndUser();
 
+  isLoading: boolean = true;
   isEditMode = false;
   selectedContentMetadataForEdit: UserContentMetadata | null = null;
   contentMetadata?: UserContentMetadata[];
@@ -61,7 +65,8 @@ export class UserMoviesComponent implements OnInit {
     return this.#contentService.getUserContentMetadataResponse().pipe(
       tap(({ result }) => {
         this.contentMetadata = [...result.contentCreatorContents];
-      })
+      }),
+      finalize(() => (this.isLoading = false))
     );
   }
 

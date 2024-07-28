@@ -27,7 +27,9 @@
         [isEditMode]="isEditMode"
         (removeMovieChanged)="onRemoveMovieChanged()"
       />
-      } @if (!contentMetadata?.length){
+      } @if (isLoading) {
+      <app-spinner [diameter]="50" text="Trwa ładowanie filmów" />
+      } @if (!isLoading && !contentMetadata?.length) {
       <div>Aktualnie brak dodanych filmów.</div>
       }
     </div>
