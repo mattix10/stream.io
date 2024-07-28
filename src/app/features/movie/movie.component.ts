@@ -57,15 +57,15 @@ export class MovieComponent implements OnInit, isLoading {
   comments: MovieComment[] = [];
   movieMetadata?: MovieMetadata;
   movieLink: string = '';
-  uuid: string = '';
+  contentId: string = '';
   isLoading: boolean = false;
   isLoadingMovieLink: boolean = false;
   isLoadingRecommendedMovies: boolean = false;
+  isLoadingLicense: boolean = true;
   recommendedMovies: ContentMetadata[] = [];
   submitComment = new Subject<void>();
   isLicenseValid: boolean = false;
   licenseDialogType?: LicenseDialogType;
-  isLoadingLicense = true;
 
   readonly #movieService = inject(ContentService);
   readonly #activatedRoute = inject(ActivatedRoute);
@@ -80,7 +80,7 @@ export class MovieComponent implements OnInit, isLoading {
 
   onCommentChanged(body: string): void {
     this.#movieService
-      .createComment({ body, contentId: this.uuid })
+      .createComment({ body, contentId: this.contentId })
       .pipe(
         tap(() => this.submitComment.next()),
         mergeMap(() => this.getMovieMetadata())
@@ -114,9 +114,11 @@ export class MovieComponent implements OnInit, isLoading {
   private getMovieuuid(): Observable<ParamMap> {
     return this.#activatedRoute.paramMap.pipe(
       tap((params: ParamMap) => {
-        this.uuid = params.has('uuid') ? params.get('uuid')! : '';
+        this.contentId = params.has('contentId')
+          ? params.get('contentId')!
+          : '';
 
-        if (!this.uuid) return;
+        if (!this.contentId) return;
 
         this.resetMovieData();
       })
@@ -126,7 +128,7 @@ export class MovieComponent implements OnInit, isLoading {
   private getMovieMetadata(): Observable<MovieMetadataResponse> {
     this.isLoading = true;
 
-    return this.#movieService.getContent(this.uuid).pipe(
+    return this.#movieService.getContent(this.contentId).pipe(
       tap(({ result }) => {
         this.movieMetadata = result;
       }),
@@ -142,7 +144,7 @@ export class MovieComponent implements OnInit, isLoading {
       .pipe(
         tap(({ result }: AllMoviesMetadataResponse) => {
           this.recommendedMovies = result.contents.filter(
-            (content) => content.uuid !== this.uuid
+            (content) => content.uuid !== this.contentId
           );
         }),
         finalize(() => (this.isLoadingRecommendedMovies = false))
@@ -153,7 +155,7 @@ export class MovieComponent implements OnInit, isLoading {
     this.isLicenseValid = false;
     this.isLoadingLicense = true;
 
-    return this.#licenseService.getLicense(this.uuid).pipe(
+    return this.#licenseService.getLicense(this.contentId).pipe(
       delay(1000),
       catchError(() => {
         this.licenseDialogType = LicenseDialogType.Buy;
@@ -176,7 +178,7 @@ export class MovieComponent implements OnInit, isLoading {
   private getMovieLink(): Observable<MovieLinkResponse> {
     this.isLoadingMovieLink = true;
 
-    return this.#movieService.getVideoLink(this.uuid).pipe(
+    return this.#movieService.getVideoLink(this.contentId).pipe(
       tap(({ result }) => {
         this.movieLink = result.url;
       }),

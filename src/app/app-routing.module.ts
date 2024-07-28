@@ -32,7 +32,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'movie/:uuid',
+    path: 'movie/:contentId',
     loadComponent: () =>
       import('./features/movie/movie.component').then(
         (mod) => mod.MovieComponent
