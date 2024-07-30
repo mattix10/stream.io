@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
+import { License } from 'src/app/core/models/responses/license-response';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -11,6 +12,14 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class VideoPlayerComponent {
   @Input() isLicenseValid = false;
+  _license?: License;
+
+  @Input() set license(license: License) {
+    if (license) {
+      this._license = license;
+    }
+    console.log(this._license);
+  }
 
   source?: string;
   readonly #authService = inject(AuthService);
