@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { User } from 'src/app/core/models/user';
 
@@ -14,7 +14,7 @@ export class NavigationDesktopComponent {
   @Input() isContentCreator = false;
   @Input() user: User | null = null;
 
-  logoutChanged = new EventEmitter<void>();
+  @Output() logoutChanged = new EventEmitter<void>();
 
   onLogout(): void {
     this.logoutChanged.emit();

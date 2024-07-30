@@ -20,7 +20,11 @@ export class NavigationMobileComponent {
   @Input() isContentCreator = false;
   @Input() user: User | null = null;
   @Output() toggleMobileMenuVisibilityChanged = new EventEmitter<void>();
+  @Output() logoutChanged = new EventEmitter<void>();
 
+  onLogout(): void {
+    this.logoutChanged.emit();
+  }
   readonly #breakpointMedium = 996;
 
   @HostListener('window:resize', ['$event'])

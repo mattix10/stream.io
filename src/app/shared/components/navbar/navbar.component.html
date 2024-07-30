@@ -14,6 +14,7 @@
       [user]="data.user"
       [isContentCreator]="data.isContentCreator"
       [isUserAdmin]="data.isUserAdmin"
+      (logoutChanged)="logout()"
     />
     }
   </div>
@@ -25,5 +26,6 @@
   [isContentCreator]="data.isContentCreator"
   [isUserAdmin]="data.isUserAdmin"
   (toggleMobileMenuVisibilityChanged)="toggleMobileMenuVisibility()"
+  (logoutChanged)="logout()"
 />
 }
