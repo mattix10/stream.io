@@ -48,7 +48,7 @@ export class VideoPlayerComponent implements OnInit {
     const video = document.querySelector('video');
     if (!video) return;
 
-    console.log('video!!!!!!!!!!!!!');
+    console.log(this.license);
     // this.#licenseService.getLicense(this.contentId).subscribe(
     //   x =>
     //   {
