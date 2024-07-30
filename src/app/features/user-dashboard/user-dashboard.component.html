@@ -5,7 +5,9 @@
   <app-user-data [user]="user" (userDataChanged)="onUserDataChanged()" />
   <app-change-password />
   <app-delete-account />
-  }
-
   <div class="divider"></div>
+
+  } @if(isLoading) {
+  <app-spinner [diameter]="60" text="Trwa ładowanie danych użytkownika" />
+  }
 </div>

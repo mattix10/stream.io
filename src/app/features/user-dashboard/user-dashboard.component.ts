@@ -6,6 +6,8 @@ import { UserDataComponent } from './components/user-data/user-data.component';
 import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { UserService } from 'src/app/core/services/user.service';
+import { isLoading } from 'src/app/core/models/loading';
+import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -15,14 +17,13 @@ import { UserService } from 'src/app/core/services/user.service';
     UserDataComponent,
     DeleteAccountComponent,
     ChangePasswordComponent,
+    SpinnerComponent,
   ],
   templateUrl: './user-dashboard.component.html',
-  styleUrl: './user-dashboard.component.scss',
 })
-export class UserDashboardComponent implements OnInit {
+export class UserDashboardComponent implements isLoading, OnInit {
   user: User | null = null;
-  isEditMode: boolean = false;
-  isContentCreator: boolean = false;
+  isLoading = true;
 
   readonly #userService = inject(UserService);
 
@@ -39,8 +40,11 @@ export class UserDashboardComponent implements OnInit {
   }
 
   private loadUser(): Observable<any> {
+    this.isLoading = true;
+
     return this.#userService.getUser().pipe(
       tap(({ result: user }) => {
+        this.isLoading = false;
         this.user = user;
       })
     );
