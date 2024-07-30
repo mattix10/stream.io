@@ -62,7 +62,7 @@ export class MovieComponent implements OnInit, isLoading {
   isLoading: boolean = false;
   isLoadingMovieLink: boolean = false;
   isLoadingRecommendedMovies: boolean = false;
-  isLoadingLicense: boolean = true;
+  isLoadingLicense: boolean = false;
   recommendedMovies: ContentMetadata[] = [];
   submitComment = new Subject<void>();
   isLicenseValid: boolean = false;
@@ -93,6 +93,7 @@ export class MovieComponent implements OnInit, isLoading {
   private getMovieDetails(): void {
     this.getMovieuuid()
       .pipe(
+        delay(500),
         mergeMap(() =>
           this.isLoggedIn$.pipe(
             switchMap((isLoggedIn) => {
@@ -169,10 +170,10 @@ export class MovieComponent implements OnInit, isLoading {
           this.licenseId = result.uuid;
           return EMPTY;
         }
-        console.log(result);
-        this.license = result;
 
+        this.license = result;
         this.isLicenseValid = true;
+
         return this.getMovieLink();
       }),
       finalize(() => (this.isLoadingLicense = false))

@@ -15,7 +15,7 @@
           [imageUrl]="movieMetadata.imageUrl"
           [isLoading]="isLoadingLicense"
         >
-          @if (!isLicenseValid && !isLoadingLicense) {
+          @if (!isLicenseValid && !isLoadingLicense && (isLoggedIn$ | async)) {
           <app-license-dialog
             [licenseId]="licenseId"
             [licenseRules]="movieMetadata.licenseRules"

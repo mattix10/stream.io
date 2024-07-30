@@ -13,11 +13,11 @@
   flex-direction: column;
   gap: 15px;
   width: 20%;
+  margin-left: 25px;
 }
 
 .movie-wrapper {
   width: 80%;
-  margin-right: 25px;
   aspect-ratio: 16 / 9;
 }
 
@@ -43,16 +43,16 @@
     width: 100%;
   }
 
-  .comments-wrapper {
+  .recommended-movies {
     display: none;
+  }
+
+  .movie-wrapper {
+    width: 100%;
   }
 
   .comments {
     margin-top: 50px;
-  }
-
-  .comments-desktop {
-    display: none;
   }
 
   .comments-mobile {
