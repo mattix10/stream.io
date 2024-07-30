@@ -1,119 +1,29 @@
 <nav class="navbar">
   <div class="content container">
-    <section class="navigation-section">
+    <div class="left-section">
       <div class="logo" routerLink="/">STREAM.io</div>
-      <input
-        placeholder="Tytuł..."
-        class="input-search"
-        type="search"
-        [(ngModel)]="searchValue"
-        (keyup.enter)="navigateToSearchResults()"
-      />
-      <button
-        type="reset"
-        class="reset"
-        (click)="resetSearchValue()"
-        [class.show-reset]="searchValue"
-      >
-        &times;
-      </button>
-      <button class="button-search" (click)="navigateToSearchResults()">
-        <img src="./../../../../assets/icons/search.svg" />
-      </button>
-    </section>
+      <app-search-movie-input />
+    </div>
     <img
       src="./../../../../assets/icons/menu.svg"
       class="menu-icon"
-      (click)="toggleMobileVisibility()"
+      (click)="toggleMobileMenuVisibility()"
     />
-    <section class="user-management">
-      <ul class="navigation-list">
-        <li
-          [routerLink]="'/user-management'"
-          class="navigation-item"
-          *ngIf="user$ && (isUserAdmin$ | async)"
-        >
-          <span class="list-title">Użytkownicy</span>
-        </li>
-        <li
-          [routerLink]="'/user-dashboard'"
-          class="navigation-item"
-          *ngIf="user$ | async"
-        >
-          <span class="list-title"> Moje konto </span>
-        </li>
-        <li
-          [routerLink]="'/user-movies'"
-          class="navigation-item"
-          *ngIf="(user$ | async) && (isContentCreator$ | async)"
-        >
-          <span class="list-title"> Moje filmy </span>
-        </li>
-        <li
-          [routerLink]="'/'"
-          class="navigation-item"
-          (click)="logout()"
-          *ngIf="user$ | async"
-        >
-          <span class="list-title"> Wyloguj </span>
-        </li>
-        <li
-          [routerLink]="'/auth/signin'"
-          class="navigation-item"
-          *ngIf="!(user$ | async)"
-        >
-          <span class="list-title"> Zaloguj </span>
-        </li>
-        <li
-          [routerLink]="'/auth/signup'"
-          class="navigation-item"
-          *ngIf="!(user$ | async)"
-        >
-          <span class="list-title"> Zarejestruj się </span>
-        </li>
-      </ul>
-      <div
-        routerLink="/user-dashboard"
-        *ngIf="user$ | async as user"
-        class="user"
-      >
-        <span class="username">{{ user.userName }}</span>
-        <img
-          class="user-icon"
-          src="./../../../../assets/icons/user-account.svg"
-        />
-      </div>
-    </section>
+    @if (data$ | async; as data) {
+    <app-navigation-desktop
+      [user]="data.user"
+      [isContentCreator]="data.isContentCreator"
+      [isUserAdmin]="data.isUserAdmin"
+    />
+    }
   </div>
 </nav>
-<div class="mobile-menu-container">
-  <ul class="mobile-menu" *ngIf="isMobileMenuVisible">
-    <li class="list-item" (click)="toggleMobileVisibility()" [routerLink]="'/'">
-      <span class="list-title"> Strona główna </span>
-    </li>
-    <li
-      class="list-item"
-      (click)="toggleMobileVisibility()"
-      [routerLink]="'/user-dashboard'"
-      *ngIf="user$ | async"
-    >
-      <span class="list-title"> Moje konto </span>
-    </li>
-    <li
-      class="list-item"
-      (click)="toggleMobileVisibility()"
-      [routerLink]="'/user-movies'"
-      *ngIf="user$ | async"
-    >
-      <span class="list-title"> Moje filmy </span>
-    </li>
-    <li
-      class="list-item"
-      (click)="toggleMobileVisibility()"
-      [routerLink]="'/auth/signin'"
-      *ngIf="!(user$ | async)"
-    >
-      <span class="list-title"> Zaloguj </span>
-    </li>
-  </ul>
-</div>
+
+@if (isMobileMenuVisible && (data$ | async); as data) {
+<app-navigation-mobile
+  [user]="data.user"
+  [isContentCreator]="data.isContentCreator"
+  [isUserAdmin]="data.isUserAdmin"
+  (toggleMobileMenuVisibilityChanged)="toggleMobileMenuVisibility()"
+/>
+}

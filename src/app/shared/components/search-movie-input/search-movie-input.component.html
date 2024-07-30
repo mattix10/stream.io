@@ -1,0 +1,20 @@
+<section class="search-movie-section">
+  <input
+    placeholder="Tytuł..."
+    class="input-search"
+    type="search"
+    [(ngModel)]="searchValue"
+    (keyup.enter)="navigateToSearchResults()"
+  />
+  <button
+    type="reset"
+    class="reset"
+    (click)="resetSearchValue()"
+    [class.show-reset]="searchValue"
+  >
+    &times;
+  </button>
+  <button class="button-search" (click)="navigateToSearchResults()">
+    <img src="./../../../../assets/icons/search.svg" />
+  </button>
+</section>

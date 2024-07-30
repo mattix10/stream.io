@@ -1,0 +1,28 @@
+<nav class="mobile-menu-container">
+  <ul class="mobile-menu" (click)="toggleMobileVisibility()">
+    <li class="list-item" [routerLink]="'/'">
+      <span class="list-title"> Strona główna </span>
+    </li>
+    @if (user) {
+    <li class="list-item" [routerLink]="'/user-dashboard'">
+      <span class="list-title"> Moje konto </span>
+    </li>
+    } @if ((user) && (isContentCreator)) {
+    <li class="list-item" [routerLink]="'/user-movies'">
+      <span class="list-title"> Moje filmy </span>
+    </li>
+    } @if ((user) && (isUserAdmin)) {
+    <li class="list-item" [routerLink]="'/user-management'">
+      <span class="list-title"> Użytkownicy </span>
+    </li>
+    } @if (user) {
+    <li class="list-item" [routerLink]="'/auth/signin'">
+      <span class="list-title"> Wyloguj </span>
+    </li>
+    } @if (!(user)) {
+    <li class="list-item" [routerLink]="'/auth/signin'">
+      <span class="list-title"> Zaloguj </span>
+    </li>
+    }
+  </ul>
+</nav>

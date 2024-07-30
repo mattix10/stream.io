@@ -1,0 +1,49 @@
+@use "./variables" as var;
+
+.mobile-menu-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  // display: none;
+}
+
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  background-color: black;
+  // display: none;
+
+  .list2 {
+    width: 100%;
+  }
+
+  .list-item {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid black;
+    font-size: 14px;
+  }
+  .list-title {
+    cursor: pointer;
+  }
+
+  .list-item:hover {
+    color: var.$color-primary;
+    transition: color 0.4s ease;
+  }
+}
+
+@media screen and (max-width: var.$breakpoint-large) {
+  .mobile-menu-container {
+    display: block;
+  }
+  .mobile-menu {
+    display: block;
+  }
+}
+
+@media screen and (max-width: var.$breakpoint-medium) {
+}

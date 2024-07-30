@@ -1,0 +1,35 @@
+<section class="user-management">
+  <ul class="navigation-list">
+    @if ((user) && (isUserAdmin)) {
+    <li [routerLink]="'/user-management'" class="navigation-item">
+      <span class="list-title">Użytkownicy</span>
+    </li>
+    } @if (user) {
+    <li [routerLink]="'/user-dashboard'" class="navigation-item">
+      <span class="list-title"> Moje konto </span>
+    </li>
+    } @if ((user) && (isContentCreator)) {
+    <li [routerLink]="'/user-movies'" class="navigation-item">
+      <span class="list-title"> Moje filmy </span>
+    </li>
+    } @if (user) {
+    <li [routerLink]="'/'" class="navigation-item" (click)="onLogout()">
+      <span class="list-title"> Wyloguj </span>
+    </li>
+    } @if (!(user)) {
+    <li [routerLink]="'/auth/signin'" class="navigation-item">
+      <span class="list-title"> Zaloguj </span>
+    </li>
+    } @if (!(user)) {
+    <li [routerLink]="'/auth/signup'" class="navigation-item">
+      <span class="list-title"> Zarejestruj się </span>
+    </li>
+    }
+  </ul>
+  @if (user) {
+  <div routerLink="/user-dashboard" class="user">
+    <span class="username">{{ user.userName }}</span>
+    <img class="user-icon" src="./../../../../assets/icons/user-account.svg" />
+  </div>
+  }
+</section>

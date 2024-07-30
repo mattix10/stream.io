@@ -1,0 +1,47 @@
+@use "./variables" as var;
+
+.search-movie-section {
+  display: flex;
+
+  .input-search {
+    width: 215px;
+    padding: 0 10px;
+    margin-left: 12px;
+    border: 1px solid var.$color-grey;
+    border-right: none;
+    background-color: black;
+    color: white;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    font-size: 14px;
+    // background-image: url("./../../../../assets/icons/search.svg");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+
+  .button-search {
+    background-color: rgb(39, 38, 38);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 1px solid var.$color-grey;
+    border-left: none;
+  }
+
+  .reset {
+    background-color: black;
+    border: none;
+    border: 1px solid var.$color-grey;
+    border-left: none;
+    padding: 0 10px;
+  }
+
+  .show-reset {
+    color: white;
+  }
+}
+
+@media screen and (max-width: var.$breakpoint-medium) {
+  .search-movie-section {
+    display: none;
+  }
+}
