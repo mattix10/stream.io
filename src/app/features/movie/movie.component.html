@@ -7,6 +7,7 @@
         <app-video-player
           [movieLink]="movieLink"
           [isLicenseValid]="isLicenseValid"
+          [contentId]="contentId"
         />
         } @if(!(isLoggedIn$ | async) || ((isLoggedIn$ | async) &&
         !isLicenseValid)) {
