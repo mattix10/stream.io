@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReplaySubject, Observable, map } from 'rxjs';
+import { ReplaySubject, Observable, map, catchError } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { UserResponse } from '../models/responses/user-response';
 import { Role } from '../models/roles.enum';
 import { User } from '../models/user';
 import { Response } from '../models/response';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,7 @@ export class AuthService {
 
   readonly #httpClient = inject(HttpClient);
   readonly #router = inject(Router);
+  readonly #loggerService = inject(LoggerService);
 
   constructor() {
     this.handleUser();
@@ -33,7 +35,12 @@ export class AuthService {
         map(({ result: { token } }) => {
           this.setCurrentUser(token);
           this.#router.navigateByUrl('/');
-        })
+        }),
+        catchError(
+          this.#loggerService.error<void>(
+            'Wystąpił błąd. Spróbuj ponownie później.'
+          )
+        )
       );
   }
 

@@ -35,6 +35,7 @@ import { LicenseService } from './services/license.service';
 import { MovieImageComponent } from './components/movie-image/movie-image.component';
 import { LicenseDialogComponent } from './components/license-dialog/license-dialog.component';
 import { LicenseDialogType } from './models/license-dialog-type';
+import { License } from 'src/app/core/models/responses/license-response';
 
 @Component({
   selector: 'app-movie',
@@ -66,6 +67,7 @@ export class MovieComponent implements OnInit, isLoading {
   submitComment = new Subject<void>();
   isLicenseValid: boolean = false;
   licenseDialogType?: LicenseDialogType;
+  license!: License;
 
   readonly #movieService = inject(ContentService);
   readonly #activatedRoute = inject(ActivatedRoute);
@@ -167,6 +169,8 @@ export class MovieComponent implements OnInit, isLoading {
           this.licenseId = result.uuid;
           return EMPTY;
         }
+        console.log(result);
+        this.license = result;
 
         this.isLicenseValid = true;
         return this.getMovieLink();

@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { catchError, EMPTY, finalize, tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 import { isLoading } from 'src/app/core/models/loading';
 import { ChangePasswordRequest } from 'src/app/core/models/requests/change-password-request';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -28,7 +27,6 @@ export class ChangePasswordComponent implements isLoading {
 
   readonly #formBuilder = inject(FormBuilder);
   readonly #userService = inject(UserService);
-  readonly #toastrService = inject(ToastrService);
   readonly #authService = inject(AuthService);
   readonly #router = inject(Router);
 
@@ -53,13 +51,6 @@ export class ChangePasswordComponent implements isLoading {
         tap(() => {
           this.#authService.logout();
           this.#router.navigateByUrl('/auth/signin');
-          this.#toastrService.success(
-            'Hasło zostało zmienione pomyślnie. Zaloguj się ponownie.'
-          );
-        }),
-        catchError(() => {
-          this.#toastrService.error('Nie udało się zmienić hasła.');
-          return EMPTY;
         }),
         finalize(() => (this.isLoading = false))
       )

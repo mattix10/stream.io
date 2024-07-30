@@ -18,8 +18,7 @@ import { User } from 'src/app/core/models/user';
 import { UserData } from '../../models/user-data';
 import { Role } from 'src/app/core/models/roles.enum';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { catchError, EMPTY, finalize, Observable, of, tap } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
+import { finalize, Observable, of, tap } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { EditHeaderComponent } from 'src/app/shared/components/edit-header/edit-header.component';
 import { isLoading } from 'src/app/core/models/loading';
@@ -68,7 +67,6 @@ export class UserDataComponent implements OnInit, isLoading {
   }
 
   readonly #userService = inject(UserService);
-  readonly #toastrService = inject(ToastrService);
 
   ngOnInit(): void {
     this.userDataForm.controls.role.disable();
@@ -93,21 +91,17 @@ export class UserDataComponent implements OnInit, isLoading {
     if (!this.userDataForm.valid) return;
 
     const { role, ...formValue } = this.userDataForm.value;
-    let updatedUserData = formValue;
-    let call: Observable<any> = of(null);
+    let updatedUserData = formValue as UserData;
+    let call: Observable<void> = of();
 
     this.isLoading = true;
 
     if (this.isContentCreator) {
-      call = this.#userService
-        .updateContentCreator(updatedUserData as UserData)
-        .pipe(this.handleUpdateError());
+      call = this.#userService.updateContentCreator(updatedUserData);
     }
 
     if (this.isEndUser) {
-      call = this.#userService
-        .updateEndUser(updatedUserData as UserData)
-        .pipe(this.handleUpdateError());
+      call = this.#userService.updateEndUser(updatedUserData);
     }
 
     call
@@ -115,7 +109,6 @@ export class UserDataComponent implements OnInit, isLoading {
         tap(() => {
           this.userDataChanged.emit();
           this.isEditMode = false;
-          this.#toastrService.success('Dane zostały zaktualizowane.');
           this.resetFields();
         }),
         finalize(() => (this.isLoading = false))
@@ -124,33 +117,23 @@ export class UserDataComponent implements OnInit, isLoading {
   }
 
   private setUserData(): void {
+    const { email, userName, userLevel: role } = this.user;
+
     this.userDataForm.patchValue({
-      email: this.user.email,
-      userName: this.user.userName,
-      role: this.user.userLevel,
+      email,
+      userName,
+      role,
     });
 
     if (this.isContentCreator) {
       this.userDataForm.patchValue({
-        nip: this.user.nip ? this.user.nip : '',
-        phoneNumber: this.user.phoneNumber ? this.user.phoneNumber : '',
+        nip: this.user.nip ?? '',
+        phoneNumber: this.user.phoneNumber ?? '',
       });
     }
   }
 
   private resetFields(): void {
     this.userDataForm.reset();
-  }
-
-  private handleUpdateError<T>(): (source: Observable<T>) => Observable<T> {
-    return (source: Observable<T>) =>
-      source.pipe(
-        catchError((error) => {
-          this.#toastrService.error(
-            `${error?.error?.message} Aktualizacja danych nie powiodła się.`
-          );
-          return EMPTY;
-        })
-      );
   }
 }

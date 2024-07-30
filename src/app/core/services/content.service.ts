@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpService } from './http.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { AllMoviesMetadataResponse } from '../models/responses/all-movies-metadata-response';
 import {
@@ -49,7 +49,10 @@ export class ContentService {
         contentMetadataRequest
       )
       .pipe(
-        this.#loggerService.error('Tworzenie metadanych nie powiodło się.')
+        this.#loggerService.error('Tworzenie metadanych nie powiodło się.'),
+        tap(() =>
+          this.#loggerService.success('Dane filmu zostały wgrane pomyślnie.')
+        )
       );
   }
 
@@ -62,7 +65,14 @@ export class ContentService {
         `${this.#entity}/${contentId}`,
         contentMetadataRequest
       )
-      .pipe(this.#loggerService.error('Edycja metadanych nie powiodła się.'));
+      .pipe(
+        this.#loggerService.error('Edycja metadanych nie powiodła się.'),
+        tap(() =>
+          this.#loggerService.success(
+            'Metadane zostały zaktualizowane pomyślnie.'
+          )
+        )
+      );
   }
 
   getUserContentMetadataResponse(): Observable<UserContentMetadataResponse> {
@@ -80,9 +90,10 @@ export class ContentService {
   }
 
   deleteContent(uuid: string): Observable<void> {
-    return this.#httpService
-      .delete(`${this.#entity}/${uuid}`)
-      .pipe(this.#loggerService.error('Nie udało się usunąć filmu.'));
+    return this.#httpService.delete(`${this.#entity}/${uuid}`).pipe(
+      this.#loggerService.error('Nie udało się usunąć filmu.'),
+      tap(() => this.#loggerService.success('Film został usunięty pomyślnie'))
+    );
   }
 
   createComment(commentRequest: CreateCommentRequest): Observable<void> {

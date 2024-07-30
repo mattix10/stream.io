@@ -1,6 +1,7 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { License } from 'src/app/core/models/responses/license-response';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LicenseService } from '../../services/license.service';
 
@@ -13,8 +14,15 @@ import { LicenseService } from '../../services/license.service';
 })
 export class VideoPlayerComponent implements OnInit {
   @Input() isLicenseValid = false;
+  _license?: License;
 
-  @Input() contentId: string = '';
+  @Input() set license(license: License) {
+    if (license) {
+      this._license = license;
+    }
+    console.log(this._license);
+  }
+
   source?: string;
   readonly #authService = inject(AuthService);
   readonly #licenseService = inject(LicenseService);
@@ -26,10 +34,7 @@ export class VideoPlayerComponent implements OnInit {
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {
-    console.log(this.contentId);
-    
-  }
+  ngOnInit(): void {}
 
   async ngAfterViewInit()
   {
@@ -44,11 +49,11 @@ export class VideoPlayerComponent implements OnInit {
     if (!video) return;
 
     console.log('video!!!!!!!!!!!!!');
-    this.#licenseService.getLicense(this.contentId).subscribe(
-      x =>
-      {
-        console.log(x);
-      });
+    // this.#licenseService.getLicense(this.contentId).subscribe(
+    //   x =>
+    //   {
+    //     console.log(x);
+    //   });
     const keyData = await this.fetchKey();
     const encryptedVideoResponse = await fetch(this.source);
     const encryptedVideoBuffer = await encryptedVideoResponse.arrayBuffer();

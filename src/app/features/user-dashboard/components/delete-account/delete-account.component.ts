@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { catchError, EMPTY, finalize, tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 import { isLoading } from 'src/app/core/models/loading';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -21,7 +20,6 @@ export class DeleteAccountComponent implements isLoading {
   isLoading: boolean = false;
 
   #userService = inject(UserService);
-  #toastrService = inject(ToastrService);
   #authService = inject(AuthService);
   #router = inject(Router);
   password = new FormControl('', [
@@ -41,11 +39,6 @@ export class DeleteAccountComponent implements isLoading {
         tap(() => {
           this.#authService.logout();
           this.#router.navigateByUrl('/');
-          this.#toastrService.success('Konto zostało usunięte.');
-        }),
-        catchError(() => {
-          this.#toastrService.error('Nie udało się usunąć użytkownika.');
-          return EMPTY;
         }),
         finalize(() => (this.isLoading = false))
       )
