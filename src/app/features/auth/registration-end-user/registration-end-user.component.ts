@@ -7,9 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseRegistrationRequest } from '../models/base-registration-request';
-import { catchError, EMPTY, finalize, tap } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import { registrationSuccess } from '../constants/toastr-messages';
+import { finalize, tap } from 'rxjs';
 import { isLoading } from '../../../core/models/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { UserService } from 'src/app/core/services/user.service';
@@ -37,7 +35,6 @@ export class RegistrationEndUserComponent implements isLoading {
 
   readonly #router = inject(Router);
   readonly #userService = inject(UserService);
-  readonly #toastrService = inject(ToastrService);
 
   onSubmit(): void {
     if (this.form.invalid) return;
@@ -48,15 +45,9 @@ export class RegistrationEndUserComponent implements isLoading {
       .registerEndUser(this.form.value as unknown as BaseRegistrationRequest)
       .pipe(
         tap(() => this.navigateToSignIn()),
-        catchError((error) => {
-          this.#toastrService.error(
-            `${error.error?.message} Rejestracja nie powiodła się.`
-          );
-          return EMPTY;
-        }),
         finalize(() => (this.isLoading = false))
       )
-      .subscribe(() => this.#toastrService.success(registrationSuccess));
+      .subscribe();
   }
 
   navigateToSignIn(): void {

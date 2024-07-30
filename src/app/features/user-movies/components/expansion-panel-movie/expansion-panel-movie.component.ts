@@ -15,7 +15,6 @@ import { LicenseDurationPipe } from '../../pipes/license-duration.pipe';
 import { UserContentMetadata } from 'src/app/core/models/responses/user-content-metadata-response';
 import { FileUploadService } from '../../services/file-upload-service/file-upload.service';
 import { Observable, tap } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 
 type MovieListItem = UserContentMetadata & {
   isExpanded: boolean;
@@ -48,7 +47,6 @@ export class ExpansionPanelMovieComponent {
 
   movieList: MovieListItem[] = [];
   readonly #contentService = inject(ContentService);
-  readonly #toastrService = inject(ToastrService);
 
   toggleMovie(uuid: string): void {
     this.movieList = this.movieList.map((movie) =>
@@ -73,7 +71,6 @@ export class ExpansionPanelMovieComponent {
     return this.#contentService.deleteContent(uuid).pipe(
       tap(() => {
         this.removeMovieChanged.emit();
-        this.#toastrService.success('Film został usunięty pomyślnie');
       })
     );
   }

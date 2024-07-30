@@ -7,9 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegistrationContentCreatorRequest } from '../models/registration-content-creator-request';
-import { catchError, EMPTY, finalize, tap } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import { registrationSuccess } from '../constants/toastr-messages';
+import { finalize, tap } from 'rxjs';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { isLoading } from '../../../core/models/loading';
 import { UserService } from 'src/app/core/services/user.service';
@@ -25,7 +23,6 @@ export class RegistrationContentCreatorComponent implements isLoading {
   readonly #fb = inject(FormBuilder);
   readonly #router = inject(Router);
   readonly #userService = inject(UserService);
-  readonly #toastrService = inject(ToastrService);
   isLoading: boolean = false;
 
   form = this.#fb.group({
@@ -52,8 +49,8 @@ export class RegistrationContentCreatorComponent implements isLoading {
 
   onSubmit(): void {
     if (this.form.invalid) return;
-    this.isLoading = true;
 
+    this.isLoading = true;
     const formValue = this.form.value;
 
     this.#userService
@@ -62,15 +59,9 @@ export class RegistrationContentCreatorComponent implements isLoading {
       )
       .pipe(
         tap(() => this.navigateToSignIn()),
-        catchError((error) => {
-          this.#toastrService.error(
-            `${error.error?.message} Rejestracja nie powiodła się.`
-          );
-          return EMPTY;
-        }),
         finalize(() => (this.isLoading = false))
       )
-      .subscribe(() => this.#toastrService.success(registrationSuccess));
+      .subscribe();
   }
 
   navigateToSignIn(): void {

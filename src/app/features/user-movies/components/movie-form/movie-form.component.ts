@@ -21,7 +21,6 @@ import {
   Subject,
   tap,
 } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { LicenseRule } from 'src/app/core/models/license-rule';
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
@@ -105,7 +104,6 @@ export class MovieFormComponent implements isLoading {
   readonly fileType = FileType;
   readonly #fileUploadService = inject(FileUploadService);
   readonly #contentService = inject(ContentService);
-  readonly #toastrService = inject(ToastrService);
 
   #contentMetadata?: UserContentMetadata;
 
@@ -162,9 +160,6 @@ export class MovieFormComponent implements isLoading {
       .updateContent(contentMetadataForm, this.#contentMetadata!.uuid)
       .pipe(
         tap(() => {
-          this.#toastrService.success(
-            'Metadane zostały zaktualizowane pomyślnie.'
-          );
           this.movieForm.reset();
           this.submitFormChanged.emit();
           this.clearLicenseRules = true;
@@ -190,7 +185,6 @@ export class MovieFormComponent implements isLoading {
           return this.#contentService.createContent(contentMetadataRequest);
         }),
         tap(() => {
-          this.#toastrService.success('Metadane zostały wgrane pomyślnie.');
           this.clearLicenseRules = true;
           this.movieForm.reset();
           this.submitFormChanged.emit();

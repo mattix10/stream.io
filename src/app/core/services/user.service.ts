@@ -17,48 +17,71 @@ import { LoggerService } from './logger.service';
 })
 export class UserService {
   readonly #httpService = inject(HttpService);
+  readonly #loggerService = inject(LoggerService);
   readonly #entity = 'user';
 
-  readonly #loggerService = inject(LoggerService);
-
   registerEndUser(formValue: BaseRegistrationRequest): Observable<void> {
-    return this.#httpService.create<void, BaseRegistrationRequest>(
-      `${this.#entity}/end-user`,
-      formValue
-    );
+    return this.#httpService
+      .create<void, BaseRegistrationRequest>(
+        `${this.#entity}/end-user`,
+        formValue
+      )
+      .pipe(
+        this.#loggerService.error('Rejestracja nie powiodła się.'),
+        tap(() =>
+          this.#loggerService.success('Rejestracja zakończona sukcesem.')
+        )
+      );
   }
 
   registerContentCreator(
     registrationForm: RegistrationContentCreatorRequest
   ): Observable<void> {
-    return this.#httpService.create<void, RegistrationContentCreatorRequest>(
-      `${this.#entity}/content-creator`,
-      registrationForm
-    );
+    return this.#httpService
+      .create<void, RegistrationContentCreatorRequest>(
+        `${this.#entity}/content-creator`,
+        registrationForm
+      )
+      .pipe(
+        this.#loggerService.error('Rejestracja nie powiodła się.'),
+        tap(() =>
+          this.#loggerService.success('Rejestracja zakończona sukcesem.')
+        )
+      );
   }
 
   getUser(): Observable<Response<User>> {
-    return this.#httpService.getItem<Response<User>>(`${this.#entity}`);
+    return this.#httpService
+      .getItem<Response<User>>(`${this.#entity}`)
+      .pipe(
+        this.#loggerService.error('Nie udało się załadować danych użytkownika.')
+      );
   }
 
   getUsers(): Observable<any> {
     return this.#httpService
       .getItems(`${this.#entity}/all`)
-      .pipe(this.#loggerService.error('Nie udało się załadować użytkowników'));
+      .pipe(this.#loggerService.error('Nie udało się załadować użytkowników.'));
   }
 
   updateEndUser(user: BaseUpdateUserRequest): Observable<void> {
-    return this.#httpService.update<void, UserData>(
-      `${this.#entity}/end-user`,
-      user
-    );
+    return this.#httpService
+      .update<void, UserData>(`${this.#entity}/end-user`, user)
+      .pipe(
+        this.#loggerService.error(
+          'Nie udało się zaktualizować danych użytkownika.'
+        )
+      );
   }
 
   updateContentCreator(user: UpdateContentCreatorRequest): Observable<void> {
-    return this.#httpService.update<void, UserData>(
-      `${this.#entity}/content-creator`,
-      user
-    );
+    return this.#httpService
+      .update<void, UserData>(`${this.#entity}/content-creator`, user)
+      .pipe(
+        this.#loggerService.error(
+          'Nie udało się zaktualizować danych użytkownika.'
+        )
+      );
   }
 
   updateUserStatus(
@@ -82,13 +105,27 @@ export class UserService {
   changePassword(
     changePasswordRequest: ChangePasswordRequest
   ): Observable<ChangePasswordRequest> {
-    return this.#httpService.updateField<ChangePasswordRequest>(
-      `${this.#entity}/password`,
-      changePasswordRequest
-    );
+    return this.#httpService
+      .updateField<ChangePasswordRequest>(
+        `${this.#entity}/password`,
+        changePasswordRequest
+      )
+      .pipe(
+        this.#loggerService.error('Nie udało się zmienić hasła.'),
+        tap(() =>
+          this.#loggerService.success(
+            'Hasło zostało zmienione pomyślnie. Zaloguj się ponownie.'
+          )
+        )
+      );
   }
 
   deleteUser(password: string): Observable<void> {
-    return this.#httpService.delete(this.#entity, undefined, { password });
+    return this.#httpService.delete(this.#entity, undefined, { password }).pipe(
+      this.#loggerService.error('Nie udało się usunąć użytkownika.'),
+      tap(() =>
+        this.#loggerService.success('Konto zostało usunięte pomyślnie.')
+      )
+    );
   }
 }

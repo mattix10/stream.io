@@ -1,13 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { catchError, EMPTY, finalize, tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LoginRequest } from '../models/login-request';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { isLoading } from '../../../core/models/loading';
-import { errorMessage } from '../constants/toastr-messages';
 
 @Component({
   selector: 'app-signin',
@@ -29,7 +27,6 @@ export class SigninComponent implements isLoading {
 
   #router = inject(Router);
   #authService = inject(AuthService);
-  #toastrService = inject(ToastrService);
 
   onSubmit(): void {
     this.form.markAllAsTouched();
@@ -42,17 +39,13 @@ export class SigninComponent implements isLoading {
     this.#authService
       .login(formvalue)
       .pipe(
-        tap(() => this.#router.navigateByUrl('/')),
-        catchError(() => {
-          this.#toastrService.error(errorMessage);
-          return EMPTY;
+        tap(() => {
+          this.#router.navigateByUrl('/');
+          this.form.setValue({ email: '', password: '' });
         }),
         finalize(() => (this.isLoading = false))
       )
-      .subscribe(() => {
-        this.#toastrService.clear();
-        this.form.setValue({ email: '', password: '' });
-      });
+      .subscribe();
   }
 
   protected navigate(): void {
