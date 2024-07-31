@@ -11,5 +11,5 @@ export interface License {
 
 export interface KeyData {
   key: string;
-  id: string;
+  iv: string;
 }

@@ -1,7 +1,7 @@
 <div class="movie-content">
   <ng-container *ngIf="(isLoggedIn$ | async) && source">
-    <video controls class="video" (canplay)="initializeVideo()">
-      <source [src]="source" type="video/mp4" />
+    <video #videoElement controls class="video">
+      <source type="video/mp4" />
       Your browser does not support the video tag.
     </video>
   </ng-container>
