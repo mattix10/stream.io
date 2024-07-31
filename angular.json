@@ -68,10 +68,20 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          "options": {
+            "port": 4200,
+            "ssl": false
+          },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "stream-io:build:production"
+            },
+            "ssl": {
+              "ssl": true,
+              "buildTarget": "stream-io:build:development",
+              "sslKey": "src/assets/ssl/key.pem",
+              "sslCert": "src/assets/ssl/cert.pem"
             },
             "development": {
               "buildTarget": "stream-io:build:development"
@@ -106,9 +116,7 @@
     }
   },
   "cli": {
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ],
+    "schematicCollections": ["@angular-eslint/schematics"],
     "analytics": false
   }
 }
