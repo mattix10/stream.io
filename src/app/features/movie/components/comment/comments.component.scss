@@ -78,3 +78,9 @@ textarea.disabled {
   align-self: flex-end;
   justify-content: center;
 }
+
+@media screen and (max-width: var.$breakpoint-small) {
+  .button {
+    width: 100%;
+  }
+}

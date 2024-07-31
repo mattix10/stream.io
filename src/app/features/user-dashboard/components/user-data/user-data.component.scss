@@ -1,3 +1,5 @@
+@use "./variables" as var;
+
 .user-data-item {
   width: 40%;
 
@@ -13,4 +15,11 @@
 
 .block {
   display: block;
+}
+
+@media screen and (max-width: var.$breakpoint-medium) {
+  .user-data-item,
+  .button {
+    width: 100%;
+  }
 }

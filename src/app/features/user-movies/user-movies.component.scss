@@ -1,3 +1,5 @@
+@use "./variables" as var;
+
 .movies-section {
   display: flex;
   justify-content: space-between;
@@ -6,4 +8,17 @@
 .movie-list,
 .movie-form {
   width: 40%;
+}
+
+@media screen and (max-width: var.$breakpoint-medium) {
+  .movie-list,
+  .movie-form {
+    width: 100%;
+  }
+  .movie-form {
+    margin-bottom: 24px;
+  }
+  .movies-section {
+    flex-direction: column;
+  }
 }
