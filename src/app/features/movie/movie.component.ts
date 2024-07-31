@@ -7,10 +7,10 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import {
   catchError,
+  combineLatest,
   delay,
   EMPTY,
   finalize,
-  forkJoin,
   mergeMap,
   Observable,
   Subject,
@@ -94,7 +94,7 @@ export class MovieComponent implements OnInit, isLoading {
     this.getMovieuuid()
       .pipe(
         delay(500),
-        mergeMap(() =>
+        switchMap(() =>
           this.isLoggedIn$.pipe(
             switchMap((isLoggedIn) => {
               let calls: Observable<any>[] = [
@@ -106,7 +106,7 @@ export class MovieComponent implements OnInit, isLoading {
                 calls.push(this.handleMovieLicense());
               }
 
-              return forkJoin(calls);
+              return combineLatest(calls);
             })
           )
         )
