@@ -25,6 +25,11 @@
   padding: 10px;
 }
 
+.selected {
+  border: 2px solid var.$color-primary;
+  margin-top: -1px;
+}
+
 .content-body {
   font-size: 14px;
   width: 100%;

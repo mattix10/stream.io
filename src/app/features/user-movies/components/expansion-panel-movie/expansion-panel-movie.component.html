@@ -1,7 +1,10 @@
-@for (movie of movieList | paginate: { itemsPerPage, currentPage }; track movie)
-{
-<div class="expansion-panel">
-  <div class="header">
+@for (movie of movieList | paginate: { itemsPerPage, currentPage } ; track
+movie; let i = $index) {
+<div
+  class="expansion-panel"
+  [class.selected]="selectedMovie?.uuid === movie.uuid"
+>
+  <div class="header" [class.selected]="selectedMovie?.uuid === movie.uuid">
     <div class="title" (click)="toggleMovie(movie.uuid)">
       <img
         class="expand-arrow"

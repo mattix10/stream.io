@@ -2,6 +2,7 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import {
   Component,
   DEFAULT_CURRENCY_CODE,
+  DestroyRef,
   EventEmitter,
   inject,
   Input,
@@ -16,6 +17,7 @@ import { UserContentMetadata } from 'src/app/core/models/responses/user-content-
 import { FileUploadService } from '../../services/file-upload-service/file-upload.service';
 import { Observable, tap } from 'rxjs';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 type MovieListItem = UserContentMetadata & {
   isExpanded: boolean;
@@ -54,8 +56,23 @@ export class ExpansionPanelMovieComponent {
   movieList: MovieListItem[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 22;
+  selectedMovie?: MovieListItem;
 
   readonly #contentService = inject(ContentService);
+  readonly #destroyRef = inject(DestroyRef);
+
+  ngOnInit(): void {
+    this.#contentService.selectedMovieForEdit$
+      .pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        tap((movie) => {
+          if (!movie) {
+            this.selectedMovie = undefined;
+          }
+        })
+      )
+      .subscribe();
+  }
 
   toggleMovie(uuid: string): void {
     this.movieList = this.movieList.map((movie) =>
@@ -64,10 +81,10 @@ export class ExpansionPanelMovieComponent {
   }
 
   editMovie(uuid: string): void {
-    const movie = this.movieList.find((movie) => movie.uuid === uuid);
-    if (!movie) return;
+    this.selectedMovie = this.movieList.find((movie) => movie.uuid === uuid);
+    if (!this.selectedMovie) return;
 
-    this.#contentService.selectedMovieForEdit$.next(movie);
+    this.#contentService.selectedMovieForEdit$.next(this.selectedMovie);
   }
 
   deleteMovie(movie: UserContentMetadata): void {
