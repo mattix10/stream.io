@@ -1,3 +1,6 @@
+@use "./variables" as var;
+@use "./../../../../../styles/pagination.scss";
+
 .expansion-panel {
   width: 100%;
   font-size: 14px;

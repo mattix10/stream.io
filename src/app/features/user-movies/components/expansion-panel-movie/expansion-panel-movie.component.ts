@@ -15,6 +15,7 @@ import { LicenseDurationPipe } from '../../pipes/license-duration.pipe';
 import { UserContentMetadata } from 'src/app/core/models/responses/user-content-metadata-response';
 import { FileUploadService } from '../../services/file-upload-service/file-upload.service';
 import { Observable, tap } from 'rxjs';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 type MovieListItem = UserContentMetadata & {
   isExpanded: boolean;
@@ -22,7 +23,13 @@ type MovieListItem = UserContentMetadata & {
 @Component({
   selector: 'app-expansion-panel-movie',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, LicenseTypePipe, LicenseDurationPipe],
+  imports: [
+    CommonModule,
+    CurrencyPipe,
+    LicenseTypePipe,
+    LicenseDurationPipe,
+    NgxPaginationModule,
+  ],
   templateUrl: './expansion-panel-movie.component.html',
   styleUrl: './expansion-panel-movie.component.scss',
   providers: [
@@ -44,8 +51,10 @@ export class ExpansionPanelMovieComponent {
   @Input({ required: true }) isEditMode: boolean = false;
 
   @Output() removeMovieChanged = new EventEmitter<void>();
-
   movieList: MovieListItem[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 22;
+
   readonly #contentService = inject(ContentService);
 
   toggleMovie(uuid: string): void {

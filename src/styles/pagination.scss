@@ -1,0 +1,30 @@
+@use "./variables" as var;
+
+%pagination-item {
+  background-color: var.$color-primary !important;
+  border-radius: var.$border-radius-small;
+  color: black !important;
+}
+
+.pagination-controls {
+  margin-top: 20px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+::ng-deep {
+  .ngx-pagination .current {
+    @extend %pagination-item;
+  }
+
+  li {
+    a {
+      color: white !important;
+
+      &:hover {
+        @extend %pagination-item;
+      }
+    }
+  }
+}

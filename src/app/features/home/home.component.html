@@ -10,12 +10,20 @@
 
   } @if (movieMetadataList.length) {
   <div class="movie-items-container">
-    @for (movieMetadata of movieMetadataList; track movieMetadata) {
+    @for (movieMetadata of movieMetadataList | paginate: { itemsPerPage,
+    currentPage }; track movieMetadata) {
     <app-movie-item
       class="movie-item"
       [movieMetadata]="movieMetadata"
     ></app-movie-item>
     }
+  </div>
+  <div class="pagination-controls">
+    <pagination-controls
+      (pageChange)="currentPage = $event"
+      previousLabel=""
+      nextLabel=""
+    />
   </div>
   } @if( movieMetadataList.length === 0 && !isLoading ) { Brak filmów do
   wyświetlenia. }

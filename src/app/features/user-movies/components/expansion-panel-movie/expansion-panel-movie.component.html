@@ -1,4 +1,5 @@
-@for (movie of movieList; track movie) {
+@for (movie of movieList | paginate: { itemsPerPage, currentPage }; track movie)
+{
 <div class="expansion-panel">
   <div class="header">
     <div class="title" (click)="toggleMovie(movie.uuid)">
@@ -57,3 +58,10 @@
   }
 </div>
 }
+<div class="pagination-controls">
+  <pagination-controls
+    (pageChange)="currentPage = $event"
+    previousLabel=""
+    nextLabel=""
+  />
+</div>

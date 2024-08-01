@@ -1,4 +1,5 @@
 @use "variables" as var;
+@use "./../../../styles/pagination.scss";
 
 .spinner-wrapper {
   display: flex;
