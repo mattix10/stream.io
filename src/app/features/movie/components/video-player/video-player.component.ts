@@ -54,76 +54,189 @@ export class VideoPlayerComponent implements OnInit, AfterViewInit {
 
     console.log('Video element found, setting up MediaSource...');
     const mediaSource = new MediaSource();
-    mediaSource.addEventListener('sourceopen', () => this.sourceOpen(mediaSource, video));
     video.src = URL.createObjectURL(mediaSource);
+    mediaSource.addEventListener('sourceopen', () => this.sourceOpen(mediaSource, video));
   }
 
-async sourceOpen(mediaSource: MediaSource, video: HTMLVideoElement) {
+  async sourceOpen(mediaSource: MediaSource, video: HTMLVideoElement) {
     console.log('MediaSource opened, adding source buffer...');
-    const mimeCodec = 'video/webm; codecs="vp8, vorbis"';
-    if (MediaSource.isTypeSupported(mimeCodec)) {
-      const sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
-      sourceBuffer.mode = 'sequence';
+    const sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8, vorbis"');
+    sourceBuffer.mode = 'sequence'; //TODO: check other options
 
-      const response = await fetch(this.source!);
-      const arrayBuffer = await response.arrayBuffer();
-      console.log('Fetch response:', response);
-      console.log('ArrayBuffer:', arrayBuffer);
+    const keyData = this._license?.keyData;
+    console.log('Key data:', keyData);
 
-      //this.downloadArrayBuffer(arrayBuffer, 'video.mp4');
+    const response = await fetch(this.source!);
+    //const reader = response.body?.getReader();
+    const arrayBuffer = await response.arrayBuffer();
+    console.log('Fetch response:', response);
+    //console.log('Response reader:', reader);
 
-      sourceBuffer.addEventListener('error', (e) => {
-        const errorEvent = e as any; // Using 'any' to log detailed error information
-        console.error('SourceBuffer error:', e);
-        console.error('Error details: ', {
-          name: errorEvent.name,
-          message: errorEvent.message,
-          target: errorEvent.target,
-          currentTarget: errorEvent.currentTarget,
-          eventPhase: errorEvent.eventPhase
-        });
-      });
+    // const stream = new ReadableStream({
+    //   start: (controller) => {
+    //     return this.processStream(reader!, keyData, controller);
+    //   }
+    // });
 
-      sourceBuffer.addEventListener('updateend', () => {
-        console.log({
-          "sourceBuffer.updating": sourceBuffer.updating,
-          "mediaSource.readyState": mediaSource.readyState
-        });
+    //const responseStreamReader = stream.getReader();
+    //let firstChunkAppended = false;
 
-        if (!sourceBuffer.updating && mediaSource.readyState === "open") {
-          mediaSource.endOfStream();
-          //video.play();
-        }
-      });
-
-      
-      if(mediaSource.readyState == "open") {
-        try {
-          sourceBuffer.appendBuffer(arrayBuffer);
-          console.log('Buffer added!!!!!!!!');
-        } catch (error) {
-          console.error('Error appending buffer:', error);
-        }
-
-      }
-      
-      try {
+    sourceBuffer.addEventListener('updateend', () => {
+      if (mediaSource.readyState === 'open' && video.paused) {
         video.play().then(() => {
           console.log('Video started playing');
         }).catch((error) => {
           console.error('Error starting video playback:', error);
         });
-      } catch (error) {
-        console.error('Error appending buffer:', error);
       }
-      
-      // await this.waitForSourceBuffer(sourceBuffer);
-      // if (!sourceBuffer.updating && mediaSource.readyState === "open") {
-      //     mediaSource.endOfStream();
-      // }
-      // console.log('MediaSource end of stream');
-    } else {
-      console.error('Unsupported MIME type or codec:', mimeCodec);
+    });
+
+    let decryptedBuffer = await this.decryptBuffer(arrayBuffer, keyData);
+    sourceBuffer.appendBuffer(decryptedBuffer);
+
+    // while (true) {
+    //   const { done, value } = await responseStreamReader.read();
+    //   if (done) {
+    //     console.log('Stream reading done');
+    //     break;
+    //   }
+    //   console.log('Appending buffer to source buffer:', value.byteLength);
+
+    //   try {
+    //     await this.waitForSourceBuffer(sourceBuffer);
+    //     sourceBuffer.appendBuffer(value.buffer);
+
+    //     if (!firstChunkAppended) {
+    //       firstChunkAppended = true;
+    //       video.play().then(() => {
+    //         console.log('Video started playing');
+    //       }).catch((error) => {
+    //         console.error('Error starting video playback:', error);
+    //       });
+    //     }
+
+    //   } catch (error) {
+    //     console.error('Error appending buffer:', error);
+    //   }
+    // }
+
+    //await this.waitForSourceBuffer(sourceBuffer);
+    mediaSource.endOfStream();
+    console.log('MediaSource end of stream');
+  }
+
+  async processStream(reader: ReadableStreamDefaultReader<Uint8Array>, keyData: any, controller: ReadableStreamDefaultController) {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        controller.close();
+        break;
+      }
+      await this.decryptChunk(value, keyData);
+      console.log('Enqueuing chunk to stream:', value.byteLength);
+      controller.enqueue(value);
+    }
+  }
+
+  async decryptBuffer(buffer: ArrayBuffer, keyData: any): Promise<Uint8Array> {
+    console.log('Decrypting chunk with keyData:', keyData);
+    const key = this.base64ToArrayBuffer(keyData.key);
+    const iv = this.base64ToArrayBuffer(keyData.iv);
+    console.log('Key:', key);
+    console.log('IV:', iv);
+
+    if (key.byteLength !== 16 && key.byteLength !== 24 && key.byteLength !== 32) {
+      console.error('Invalid key length:', key.byteLength);
+      throw new Error('Invalid key length: AES key data must be 128, 192, or 256 bits');
+    }
+
+    if (iv.byteLength !== 16) {
+      console.error('Invalid IV length:', iv.byteLength);
+      throw new Error('Invalid IV length: AES IV data must be 128 bits');
+    }
+
+    // Proceed with actual decryption
+    const cryptoKey = await crypto.subtle.importKey(
+      'raw',
+      key,
+      { name: 'AES-CBC' },
+      false,
+      ['decrypt']
+    );
+
+    console.log('chunk:!!!!');
+    console.log(buffer);
+    try {
+      const decryptedArrayBuffer = await crypto.subtle.decrypt(
+        { name: 'AES-CBC', iv: iv },
+        cryptoKey,
+        buffer //TODO: try chunk
+      );
+
+      console.log('Decrypted buffer:', new Uint8Array(decryptedArrayBuffer));
+      return new Uint8Array(decryptedArrayBuffer);
+    } catch (e) {
+      console.error('Decryption error:', e);
+      throw e;
+    }
+  }
+
+  async decryptChunk(chunk: Uint8Array, keyData: any): Promise<Uint8Array> {
+    console.log('Decrypting chunk with keyData:', keyData);
+    const key = this.base64ToArrayBuffer(keyData.key);
+    const iv = this.base64ToArrayBuffer(keyData.iv);
+    console.log('Key:', key);
+    console.log('IV:', iv);
+
+    if (key.byteLength !== 16 && key.byteLength !== 24 && key.byteLength !== 32) {
+      console.error('Invalid key length:', key.byteLength);
+      throw new Error('Invalid key length: AES key data must be 128, 192, or 256 bits');
+    }
+
+    if (iv.byteLength !== 16) {
+      console.error('Invalid IV length:', iv.byteLength);
+      throw new Error('Invalid IV length: AES IV data must be 128 bits');
+    }
+
+    // Proceed with actual decryption
+    const cryptoKey = await crypto.subtle.importKey(
+      'raw',
+      key,
+      { name: 'AES-CBC' },
+      false,
+      ['decrypt']
+    );
+
+    console.log('chunk:!!!!');
+    console.log(chunk);
+    console.log(chunk.buffer);
+    try {
+      const decryptedArrayBuffer = await crypto.subtle.decrypt(
+        { name: 'AES-CBC', iv: iv },
+        cryptoKey,
+        chunk.buffer //TODO: try chunk
+      );
+
+      console.log('Decrypted buffer:', new Uint8Array(decryptedArrayBuffer));
+      return new Uint8Array(decryptedArrayBuffer);
+    } catch (e) {
+      console.error('Decryption error:', e);
+      throw e;
+    }
+  }
+
+  base64ToArrayBuffer(base64: string): ArrayBuffer {
+    try {
+      const binaryString = window.atob(base64);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      return bytes.buffer;
+    } catch (e) {
+      console.error('Failed to decode Base64 string:', base64, e);
+      throw e;
     }
   }
 
@@ -141,37 +254,4 @@ async sourceOpen(mediaSource: MediaSource, video: HTMLVideoElement) {
       check();
     });
   }
-
-  downloadArrayBuffer(arrayBuffer: ArrayBuffer, filename: string) {
-    const blob = new Blob([arrayBuffer], { type: 'video/mp4' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
-  playVideo() {
-    const video = this.videoElement.nativeElement;
-    video.play().then(() => {
-      console.log('Video started playing');
-    }).catch((error) => {
-      console.error('Error starting video playback:', error);
-    });
-  }
-
-  // async processStream(reader: ReadableStreamDefaultReader<Uint8Array>, controller: ReadableStreamDefaultController) {
-  //   while (true) {
-  //     const { done, value } = await reader.read();
-  //     if (done) {
-  //       controller.close();
-  //       break;
-  //     }
-  //     //console.log('Enqueuing chunk to stream:', value.byteLength);
-  //     controller.enqueue(value);
-  //   }
-  // }
 }
