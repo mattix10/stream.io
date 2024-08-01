@@ -159,7 +159,7 @@ export class MovieComponent implements OnInit, isLoading {
     this.isLoadingLicense = true;
 
     return this.#licenseService.getLicense(this.contentId).pipe(
-      delay(1000),
+      delay(500),
       catchError(() => {
         this.licenseDialogType = LicenseDialogType.Buy;
         return EMPTY;

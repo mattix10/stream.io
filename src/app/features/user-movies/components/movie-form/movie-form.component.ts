@@ -96,7 +96,7 @@ export class MovieFormComponent implements isLoading {
     movie: new FormControl<any>(''),
   });
   licenseRules: LicenseRule[] = [];
-  clearLicenseRules = false;
+  clearLicenseRules = new Subject<void>();
 
   isLoading: boolean = false;
   _isEditMode = false;
@@ -130,10 +130,6 @@ export class MovieFormComponent implements isLoading {
   onSubmit(): void {
     if (this.movieForm.invalid) return;
 
-    if (this.clearLicenseRules) {
-      this.clearLicenseRules = false;
-    }
-
     this.submit.next();
     this.isLoading = true;
 
@@ -162,7 +158,7 @@ export class MovieFormComponent implements isLoading {
         tap(() => {
           this.movieForm.reset();
           this.submitFormChanged.emit();
-          this.clearLicenseRules = true;
+          this.clearLicenseRules.next();
         }),
         finalize(() => (this.isLoading = false))
       )
@@ -185,7 +181,7 @@ export class MovieFormComponent implements isLoading {
           return this.#contentService.createContent(contentMetadataRequest);
         }),
         tap(() => {
-          this.clearLicenseRules = true;
+          this.clearLicenseRules.next();
           this.movieForm.reset();
           this.submitFormChanged.emit();
           this.uploadImageTemplate.removeFile();

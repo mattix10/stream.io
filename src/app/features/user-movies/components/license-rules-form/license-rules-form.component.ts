@@ -18,7 +18,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, tap } from 'rxjs';
 import { LicenseRule } from 'src/app/core/models/license-rule';
 import { licenseTypeOptions } from '../../models/license-type-options';
 import { licenseDurationOptions } from '../../models/license-duration-options';
@@ -38,14 +38,15 @@ export class LicenseRulesFormComponent implements OnInit {
   }
 
   @Input() set licenseRules(licenseRules: LicenseRule[]) {
+    if (!this.#isEditMode) return;
     this.rules.clear();
     this.fillRulesForm(licenseRules);
   }
 
-  @Input() set clearLicenseRules(clearLicenseRules: boolean) {
-    if (clearLicenseRules) {
-      this.cleanAndAddRule();
-    }
+  @Input() set clearLicenseRules(clearLicenseRules: Subject<void>) {
+    clearLicenseRules
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe(() => this.cleanAndAddRule());
   }
 
   @Input({ required: true }) set submit(submit: Subject<void>) {
@@ -188,10 +189,11 @@ export class LicenseRulesFormComponent implements OnInit {
 
   private rulesListener(): void {
     this.rules.valueChanges
-      .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe(() => {
-        this.displayAvailableLicenseDurationLabels();
-      });
+      .pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        tap(() => this.displayAvailableLicenseDurationLabels())
+      )
+      .subscribe();
   }
 
   private haveRulesContainBuyLicenseType = (): boolean =>
