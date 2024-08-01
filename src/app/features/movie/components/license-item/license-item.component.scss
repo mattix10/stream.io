@@ -14,10 +14,6 @@
     border: 3px solid var.$color-primary;
   }
 
-  .rule-icon {
-    width: 30%;
-  }
-
   .rule-details {
     width: 50%;
     margin-left: 12px;
@@ -34,8 +30,46 @@
     display: flex;
     align-items: center;
   }
+  .rule-duration {
+    font-family: "Mitr-Light";
+    font-size: 14px;
+
+    .duration-value {
+      display: inline;
+    }
+  }
 }
-.rule-duration {
-  font-family: "Mitr-Light";
-  font-size: 14px;
+
+@media screen and (max-width: var.$breakpoint-small) {
+  .rule-wrapper {
+    padding: 6px;
+
+    .icon-wrapper {
+      display: flex;
+      align-items: center;
+
+      .rule-icon {
+        width: 36px;
+      }
+    }
+
+    .rule-details {
+      .rule-type {
+        margin-bottom: 4px;
+      }
+    }
+
+    .rule-price {
+      font-size: 16px;
+    }
+
+    .rule-duration {
+      font-size: 12px;
+
+      .duration-value {
+        display: block;
+        line-height: 150%;
+      }
+    }
+  }
 }

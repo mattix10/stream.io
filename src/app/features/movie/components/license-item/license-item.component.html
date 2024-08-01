@@ -5,17 +5,22 @@
   (click)="onSelectLicenseRule(licenseRule)"
 >
   <div class="icon-wrapper">
-    <img src="./../../../../../assets/icons/{{ iconName }}.svg" />
+    <img
+      src="./../../../../../assets/icons/{{ iconName }}.svg"
+      class="rule-icon"
+    />
   </div>
   <div class="rule-details">
     <div class="rule-type">{{ licenseRule.type | licenseType }}</div>
     <div class="rule-duration">
       Czas trwania:
-      {{
-        licenseRule.duration
-          ? (licenseRule.duration | licenseDuration)
-          : "Nieograniczony"
-      }}
+      <div class="duration-value">
+        {{
+          licenseRule.duration
+            ? (licenseRule.duration | licenseDuration)
+            : "Nieograniczony"
+        }}
+      </div>
     </div>
   </div>
   <div class="rule-price">{{ licenseRule.price | currency }}</div>

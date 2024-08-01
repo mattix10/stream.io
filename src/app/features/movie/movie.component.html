@@ -17,6 +17,7 @@
         >
           @if (!isLicenseValid && !isLoadingLicense && (isLoggedIn$ | async)) {
           <app-license-dialog
+            class="license-dialog-wrapper"
             [licenseId]="licenseId"
             [licenseRules]="movieMetadata.licenseRules"
             [licenseDialogType]="licenseDialogType"

@@ -60,8 +60,23 @@
   }
 }
 
+@media screen and (max-width: var.$breakpoint-medium) {
+  .dialog-wrapper {
+    .dialog {
+      height: auto;
+    }
+  }
+}
+
 @media screen and (max-width: var.$breakpoint-small) {
   .no-access-bar {
     font-size: 14px;
+  }
+
+  .dialog-wrapper {
+    .dialog {
+      width: 95%;
+      max-width: 95%;
+    }
   }
 }
