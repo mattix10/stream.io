@@ -75,6 +75,10 @@ export class LicenseRulesFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.rulesListener();
+
+    if (!this.rules.value.length) {
+      this.addRule();
+    }
   }
 
   addRule(): void {
