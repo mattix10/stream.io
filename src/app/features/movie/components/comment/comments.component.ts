@@ -6,6 +6,7 @@ import {
   EventEmitter,
   inject,
   Input,
+  LOCALE_ID,
   OnInit,
   Output,
   ViewChild,
@@ -20,6 +21,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
   selector: 'app-comments',
   standalone: true,
   imports: [CommonModule],
+  providers: [{ provide: LOCALE_ID, useValue: 'pl' }],
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.scss',
 })
