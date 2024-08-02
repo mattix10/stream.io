@@ -1,11 +1,11 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
-import { mergeMap } from 'rxjs';
+import { map, mergeMap, tap } from 'rxjs';
 import { ContentService } from 'src/app/core/services/content.service';
 import { MovieItemComponent } from '../home/movie-item/movie-item.component';
 import { CommonModule } from '@angular/common';
-import { MovieMetadata } from 'src/app/core/models/movie-metadata';
+import { ContentMetadata } from 'src/app/core/models/responses/all-movies-metadata-response';
 
 @Component({
   selector: 'app-search-results',
@@ -15,7 +15,7 @@ import { MovieMetadata } from 'src/app/core/models/movie-metadata';
   styleUrl: './search-results.component.scss',
 })
 export class SearchResultsComponent implements OnInit {
-  movieMetadataList: MovieMetadata[] = [];
+  movieMetadataList: ContentMetadata[] = [];
   searchValue: string = '';
 
   readonly #searchParamName = 'search';
@@ -35,7 +35,17 @@ export class SearchResultsComponent implements OnInit {
             this.#searchParamName,
             this.searchValue
           );
-          return this.#contentService.getMovies(param);
+          return this.#contentService.getMovies(param).pipe(
+            map(({ result }) =>
+              result.contents.filter((content) =>
+                content.title.includes(this.searchValue)
+              )
+            ),
+            tap(
+              (movieMetadataList) =>
+                (this.movieMetadataList = movieMetadataList)
+            )
+          );
         })
       )
       .subscribe();
