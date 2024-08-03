@@ -11,6 +11,7 @@ import { FileType } from 'src/app/features/user-movies/models/file-type';
 })
 export class DragAndDropUploadFileComponent {
   file?: File;
+  FileType = FileType;
   isDragOver = false;
 
   @Input({ required: true }) fileType: FileType = FileType.Image;

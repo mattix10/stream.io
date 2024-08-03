@@ -8,7 +8,12 @@
     (drop)="onDrop($event)"
     (dragleave)="onDragLeave($event)"
   >
-    <input type="file" (change)="onInputChange($event)" class="file-input" />
+    <input
+      type="file"
+      (change)="onInputChange($event)"
+      class="file-input"
+      [accept]="fileType === FileType.Image ? 'jpg/jpeg' : 'mp4'"
+    />
     <div>
       <div class="upload-file">
         <img src="./../../../../../assets/icons/upload.svg" />
