@@ -50,10 +50,17 @@ export class CommentsComponent implements OnInit {
   readonly isLoggedIn$ = this.#authService.isLoggedIn$.pipe(take(1));
 
   ngOnInit(): void {
-    this.comments = this.comments?.map((com) => ({
-      ...com,
-      body: this.domSanitizer.bypassSecurityTrustHtml(com.body) as string,
-    }));
+    this.comments = this.comments
+      ?.map((com) => ({
+        ...com,
+        body: this.domSanitizer.bypassSecurityTrustHtml(com.body) as string,
+      }))
+      .sort((a, b) => {
+        return (
+          new Date(b.creationTime).getTime() -
+          new Date(a.creationTime).getTime()
+        );
+      });
   }
 
   onAddComment(comment: string): void {

@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import {
   catchError,
   combineLatest,
-  delay,
+  // delay,
   EMPTY,
   finalize,
   mergeMap,
@@ -93,7 +93,7 @@ export class MovieComponent implements OnInit, isLoading {
   private getMovieDetails(): void {
     this.getMovieuuid()
       .pipe(
-        delay(500),
+        // delay(500),
         switchMap(() =>
           this.isLoggedIn$.pipe(
             switchMap((isLoggedIn) => {
@@ -159,7 +159,7 @@ export class MovieComponent implements OnInit, isLoading {
     this.isLoadingLicense = true;
 
     return this.#licenseService.getLicense(this.contentId).pipe(
-      delay(500),
+      // delay(500),
       catchError(() => {
         this.licenseDialogType = LicenseDialogType.Buy;
         return EMPTY;

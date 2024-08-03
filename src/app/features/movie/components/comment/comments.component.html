@@ -29,7 +29,9 @@
     <div class="comment">
       <div class="comment-header">
         <h3 class="username">{{ comment?.userName }}</h3>
-        <span class="creation-time">{{ comment.creationTime | date }}</span>
+        <span class="creation-time">{{
+          comment.creationTime | date : "dd-MM-YYYY"
+        }}</span>
       </div>
       <div class="description" [innerHTML]="comment.body">
         <!-- {{ comment?.body }} -->

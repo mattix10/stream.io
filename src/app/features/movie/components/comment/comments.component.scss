@@ -41,15 +41,20 @@
   font-size: 16px;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid var.$color-primary;
   background-color: var.$color-grey-2;
   color: white;
   resize: none;
   margin: 10px 0;
 }
 
-textarea::placeholder {
-  font-family: "Mitr-Light"; /* Rodzina czcionki */
+textarea {
+  &::placeholder {
+    font-family: "Mitr-Light";
+  }
+
+  &:focus {
+    border: 1px solid var.$color-primary;
+  }
 }
 
 .username {
@@ -82,5 +87,9 @@ textarea.disabled {
 @media screen and (max-width: var.$breakpoint-small) {
   .button {
     width: 100%;
+  }
+
+  .no-comments {
+    font-size: 14px;
   }
 }

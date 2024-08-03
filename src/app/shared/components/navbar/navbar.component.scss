@@ -1,5 +1,11 @@
 @use "./variables" as var;
 
+:host {
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  height: 60px;
+}
 .navbar {
   background-color: black;
   height: 60px;

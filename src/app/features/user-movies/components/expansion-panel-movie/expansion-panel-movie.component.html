@@ -60,7 +60,7 @@ movie; let i = $index) {
   </div>
   }
 </div>
-}
+} @if(movieList.length > 0 ) {
 <div class="pagination-controls">
   <pagination-controls
     (pageChange)="currentPage = $event"
@@ -68,3 +68,4 @@ movie; let i = $index) {
     nextLabel=""
   />
 </div>
+}
