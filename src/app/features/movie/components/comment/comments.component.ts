@@ -7,7 +7,6 @@ import {
   inject,
   Input,
   LOCALE_ID,
-  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -25,8 +24,17 @@ import { AuthService } from 'src/app/core/services/auth.service';
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.scss',
 })
-export class CommentsComponent implements OnInit {
-  @Input() comments?: MovieComment[];
+export class CommentsComponent {
+  @Input() set contentComments(comments: MovieComment[]) {
+    if (!comments?.length) return;
+
+    this.comments = [
+      ...comments!.sort(this.sortCommentsPredicate).map((com) => ({
+        ...com,
+        body: this.domSanitizer.bypassSecurityTrustHtml(com.body) as string,
+      })),
+    ];
+  }
 
   @Input() set submitComment(submit: Subject<void>) {
     submit
@@ -44,24 +52,11 @@ export class CommentsComponent implements OnInit {
   @Output() commentChanged = new EventEmitter<string>();
 
   domSanitizer = inject(DomSanitizer);
+  comments?: MovieComment[];
 
   readonly #authService = inject(AuthService);
   readonly #destroyRef = inject(DestroyRef);
   readonly isLoggedIn$ = this.#authService.isLoggedIn$.pipe(take(1));
-
-  ngOnInit(): void {
-    this.comments = this.comments
-      ?.map((com) => ({
-        ...com,
-        body: this.domSanitizer.bypassSecurityTrustHtml(com.body) as string,
-      }))
-      .sort((a, b) => {
-        return (
-          new Date(b.creationTime).getTime() -
-          new Date(a.creationTime).getTime()
-        );
-      });
-  }
 
   onAddComment(comment: string): void {
     if (!comment) return;
@@ -72,4 +67,7 @@ export class CommentsComponent implements OnInit {
     textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px';
   }
+
+  private sortCommentsPredicate = (a: MovieComment, b: MovieComment) =>
+    new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime();
 }
