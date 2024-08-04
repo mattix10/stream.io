@@ -3,7 +3,9 @@ import { Component, inject, Input, OnInit, AfterViewInit, ViewChild, ElementRef 
 import { HttpClient } from '@angular/common/http';
 import { License } from 'src/app/core/models/responses/license-response';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { LicenseService } from '../../services/license.service';
+import * as CryptoJS from 'crypto-js';
+import WordArray from 'crypto-js/lib-typedarrays'; 
+type Padding = typeof CryptoJS.pad.NoPadding;
 
 @Component({
   selector: 'app-video-player',
@@ -12,6 +14,8 @@ import { LicenseService } from '../../services/license.service';
   templateUrl: './video-player.component.html',
   styleUrls: ['./video-player.component.scss'],
 })
+
+//TODO: Create DecryptionService and VideoManagementService and move relevant logic there... 
 export class VideoPlayerComponent implements OnInit, AfterViewInit {
   @Input() isLicenseValid = false;
 
@@ -26,7 +30,6 @@ export class VideoPlayerComponent implements OnInit, AfterViewInit {
 
   @Input() source?: string;
   readonly #authService = inject(AuthService);
-  readonly #licenseService = inject(LicenseService);
   readonly isLoggedIn$ = this.#authService.isLoggedIn$;
 
   @Input() set movieLink(source: string) {
@@ -61,186 +64,144 @@ export class VideoPlayerComponent implements OnInit, AfterViewInit {
   async sourceOpen(mediaSource: MediaSource, video: HTMLVideoElement) {
     console.log('MediaSource opened, adding source buffer...');
     const sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8, vorbis"');
-    sourceBuffer.mode = 'sequence'; //TODO: check other options
-
-    const keyData = this._license?.keyData;
-    console.log('Key data:', keyData);
+    sourceBuffer.mode = 'sequence'; //sequence mode will assume that all processed data is related in the time context
 
     const response = await fetch(this.source!);
-    //const reader = response.body?.getReader();
-    const arrayBuffer = await response.arrayBuffer();
-    console.log('Fetch response:', response);
-    //console.log('Response reader:', reader);
+    const reader = response.body?.getReader();
 
-    // const stream = new ReadableStream({
-    //   start: (controller) => {
-    //     return this.processStream(reader!, keyData, controller);
-    //   }
-    // });
-
-    //const responseStreamReader = stream.getReader();
-    //let firstChunkAppended = false;
-
-    sourceBuffer.addEventListener('updateend', () => {
-      if (mediaSource.readyState === 'open' && video.paused) {
-        video.play().then(() => {
-          console.log('Video started playing');
-        }).catch((error) => {
-          console.error('Error starting video playback:', error);
-        });
+    const stream = new ReadableStream({
+      start: (controller) => {
+        return this.processStream(reader!, controller);
       }
     });
 
-    let decryptedBuffer = await this.decryptBuffer(arrayBuffer, keyData);
-    sourceBuffer.appendBuffer(decryptedBuffer);
+    const responseStreamReader = stream.getReader();
 
-    // while (true) {
-    //   const { done, value } = await responseStreamReader.read();
-    //   if (done) {
-    //     console.log('Stream reading done');
-    //     break;
-    //   }
-    //   console.log('Appending buffer to source buffer:', value.byteLength);
+    while (true) {
+      const { done, value } = await responseStreamReader.read();
+      if (done) {
+        console.log('Stream reading done');
+        break;
+      }
 
-    //   try {
-    //     await this.waitForSourceBuffer(sourceBuffer);
-    //     sourceBuffer.appendBuffer(value.buffer);
+      try {
+        await this.waitForSourceBuffer(sourceBuffer);
+        
+        sourceBuffer.appendBuffer(value.buffer);
+    
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+          console.warn('Buffer full, waiting for updateend event to free up space');
+    
+          //TODO: ----- Managing buffer is not finished yet, but it is acceptable for now -----
+          await new Promise<void>(async resolve => {
+            const checkBuffer = () => {
+              console.log('CHECKING BUFFER!!');
+              if (!sourceBuffer.updating) {
+                console.log('REMOVE EVENT CHECK BUFFER');
+                sourceBuffer.removeEventListener('updateend', checkBuffer);
+                resolve();
+              }
+            };
+            console.log('ADD EVENT CHECK BUFFER');
+            sourceBuffer.addEventListener('updateend', checkBuffer);
+            await this.waitForBufferChangeIndexPositionAndRemoveDataFromBuffer(sourceBuffer, this.videoElement.nativeElement);
+          });
+    
+          try {
+            console.log('RTRY TO FILL THE BUFFER ONCE AGAIN');
+            await this.waitForSourceBuffer(sourceBuffer);
+            sourceBuffer.appendBuffer(value.buffer);
+          } catch (retryError) {
+            console.error('Error appending buffer on retry:', retryError);
+          }
+          //---------------------------------------------------------------------------------------
+        } else {
+          console.error('Error appending buffer:', error);
+        }
+      }
+    }
 
-    //     if (!firstChunkAppended) {
-    //       firstChunkAppended = true;
-    //       video.play().then(() => {
-    //         console.log('Video started playing');
-    //       }).catch((error) => {
-    //         console.error('Error starting video playback:', error);
-    //       });
-    //     }
-
-    //   } catch (error) {
-    //     console.error('Error appending buffer:', error);
-    //   }
-    // }
-
-    //await this.waitForSourceBuffer(sourceBuffer);
+    await this.waitForSourceBuffer(sourceBuffer);
     mediaSource.endOfStream();
     console.log('MediaSource end of stream');
   }
 
-  async processStream(reader: ReadableStreamDefaultReader<Uint8Array>, keyData: any, controller: ReadableStreamDefaultController) {
+  async processStream(reader: ReadableStreamDefaultReader<Uint8Array>, controller: ReadableStreamDefaultController) {
+    const chunkSize = 64 * 1024; // 512 KB
+    let buffer = new Uint8Array(0);
+
+    const keyHex = CryptoJS.enc.Base64.parse(this._license?.keyData.key as string);
+    let prevChunkIvHex = CryptoJS.enc.Base64.parse(this._license?.keyData.iv as string);
+
+
     while (true) {
       const { done, value } = await reader.read();
       if (done) {
+        //TODO: Why this condition is not executed. Will it be an issue in some cases???
+        console.log('Last frame...');
+        if (buffer.length > 0) {
+          console.log('Proceed with last frame...');
+          const decryptedChunk = await this.decryptChunk(buffer, keyHex, prevChunkIvHex, CryptoJS.pad.Pkcs7);
+          controller.enqueue(decryptedChunk);
+        }
         controller.close();
         break;
       }
-      await this.decryptChunk(value, keyData);
-      console.log('Enqueuing chunk to stream:', value.byteLength);
-      controller.enqueue(value);
-    }
-  }
 
-  async decryptBuffer(buffer: ArrayBuffer, keyData: any): Promise<Uint8Array> {
-    console.log('Decrypting chunk with keyData:', keyData);
-    const key = this.base64ToArrayBuffer(keyData.key);
-    const iv = this.base64ToArrayBuffer(keyData.iv);
-    console.log('Key:', key);
-    console.log('IV:', iv);
+      const newBuffer = new Uint8Array(buffer.length + value.length);
+      newBuffer.set(buffer);
+      newBuffer.set(value, buffer.length);
+      buffer = newBuffer;
 
-    if (key.byteLength !== 16 && key.byteLength !== 24 && key.byteLength !== 32) {
-      console.error('Invalid key length:', key.byteLength);
-      throw new Error('Invalid key length: AES key data must be 128, 192, or 256 bits');
-    }
-
-    if (iv.byteLength !== 16) {
-      console.error('Invalid IV length:', iv.byteLength);
-      throw new Error('Invalid IV length: AES IV data must be 128 bits');
-    }
-
-    // Proceed with actual decryption
-    const cryptoKey = await crypto.subtle.importKey(
-      'raw',
-      key,
-      { name: 'AES-CBC' },
-      false,
-      ['decrypt']
-    );
-
-    console.log('chunk:!!!!');
-    console.log(buffer);
-    try {
-      const decryptedArrayBuffer = await crypto.subtle.decrypt(
-        { name: 'AES-CBC', iv: iv },
-        cryptoKey,
-        buffer //TODO: try chunk
-      );
-
-      console.log('Decrypted buffer:', new Uint8Array(decryptedArrayBuffer));
-      return new Uint8Array(decryptedArrayBuffer);
-    } catch (e) {
-      console.error('Decryption error:', e);
-      throw e;
-    }
-  }
-
-  async decryptChunk(chunk: Uint8Array, keyData: any): Promise<Uint8Array> {
-    console.log('Decrypting chunk with keyData:', keyData);
-    const key = this.base64ToArrayBuffer(keyData.key);
-    const iv = this.base64ToArrayBuffer(keyData.iv);
-    console.log('Key:', key);
-    console.log('IV:', iv);
-
-    if (key.byteLength !== 16 && key.byteLength !== 24 && key.byteLength !== 32) {
-      console.error('Invalid key length:', key.byteLength);
-      throw new Error('Invalid key length: AES key data must be 128, 192, or 256 bits');
-    }
-
-    if (iv.byteLength !== 16) {
-      console.error('Invalid IV length:', iv.byteLength);
-      throw new Error('Invalid IV length: AES IV data must be 128 bits');
-    }
-
-    // Proceed with actual decryption
-    const cryptoKey = await crypto.subtle.importKey(
-      'raw',
-      key,
-      { name: 'AES-CBC' },
-      false,
-      ['decrypt']
-    );
-
-    console.log('chunk:!!!!');
-    console.log(chunk);
-    console.log(chunk.buffer);
-    try {
-      const decryptedArrayBuffer = await crypto.subtle.decrypt(
-        { name: 'AES-CBC', iv: iv },
-        cryptoKey,
-        chunk.buffer //TODO: try chunk
-      );
-
-      console.log('Decrypted buffer:', new Uint8Array(decryptedArrayBuffer));
-      return new Uint8Array(decryptedArrayBuffer);
-    } catch (e) {
-      console.error('Decryption error:', e);
-      throw e;
-    }
-  }
-
-  base64ToArrayBuffer(base64: string): ArrayBuffer {
-    try {
-      const binaryString = window.atob(base64);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      while (buffer.length >= chunkSize) {
+        const chunk = buffer.slice(0, chunkSize);
+        buffer = buffer.slice(chunkSize);
+        
+        const decryptedChunk = await this.decryptChunk(chunk, keyHex, prevChunkIvHex, CryptoJS.pad.NoPadding);
+        prevChunkIvHex = CryptoJS.lib.WordArray.create(chunk.slice(-16)); // Update IV to last 16 bytes of chunk
+        controller.enqueue(decryptedChunk);
       }
-      return bytes.buffer;
+    }
+  }
+
+  async decryptChunk(chunk: Uint8Array, keyHex: WordArray, ivHex: WordArray, padding: Padding): Promise<Uint8Array> {
+
+    if (keyHex.sigBytes !== 16 && keyHex.sigBytes !== 24 && keyHex.sigBytes !== 32) {
+      console.error('Invalid key length:', keyHex.sigBytes);
+      throw new Error('Invalid key length: AES key data must be 128, 192, or 256 bits');
+    }
+    
+    if (ivHex.sigBytes !== 16) {
+      console.error('Invalid IV length:', ivHex.sigBytes);
+      throw new Error('Invalid IV length: AES IV data must be 128 bits');
+    }
+
+    const wordArrayChunk = CryptoJS.lib.WordArray.create(chunk);
+    const cipherParams = CryptoJS.lib.CipherParams.create({
+      ciphertext: wordArrayChunk
+    });
+
+    try {
+      const decryptedChunk = CryptoJS.AES.decrypt(
+        cipherParams,
+        keyHex,
+        {
+          iv: ivHex,
+          mode: CryptoJS.mode.CBC,
+          padding: padding
+        }
+      ).toString(CryptoJS.enc.Latin1);
+      
+      const decryptedBytes = new Uint8Array(decryptedChunk.length).map((_, j) => decryptedChunk.charCodeAt(j));
+      return decryptedBytes;
     } catch (e) {
-      console.error('Failed to decode Base64 string:', base64, e);
+      console.error('Decryption error:', e);
       throw e;
     }
   }
 
-  waitForSourceBuffer(sourceBuffer: SourceBuffer): Promise<void> {
+  async waitForSourceBuffer(sourceBuffer: SourceBuffer): Promise<void> {
     return new Promise((resolve) => {
       const check = () => {
         if (!sourceBuffer.updating) {
@@ -254,4 +215,33 @@ export class VideoPlayerComponent implements OnInit, AfterViewInit {
       check();
     });
   }
+
+  //TODO: ----- Managing buffer is not finished yet, but it is acceptable for now -----
+  async waitForBufferChangeIndexPositionAndRemoveDataFromBuffer(sourceBuffer: SourceBuffer, videoElement: HTMLVideoElement): Promise<void> {
+    return new Promise((resolve) => {
+      const check = () => {
+        const duration = videoElement.duration;
+        const currentTime = videoElement.currentTime;
+        const bufferEnd = sourceBuffer.buffered.length > 0 ? sourceBuffer.buffered.end(0) : 0;
+        
+        if (currentTime > duration / 3) {
+          // Remove first 0.25 time of the content
+          const removeEnd = duration / 4;
+          if (sourceBuffer.buffered.length > 0 && bufferEnd > removeEnd) {
+            sourceBuffer.remove(0, removeEnd);
+            console.log('Player buffer has enough space to remove');
+            resolve();
+          } else {
+            console.log('Buffer end is not greater than remove end');
+            setTimeout(check, 50);
+          }
+        } else {
+          console.log('Waiting for playback to reach one third of the video duration...');
+          setTimeout(check, 50);
+        }
+      };
+      check();
+    });
+  }
+  //-----------------------------------------------------------------------------------------
 }
