@@ -1,16 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { licenseTypeValueLabels } from '../models/license-type-value-labels';
 import { LicenseType } from 'src/app/core/models/license-type.enum';
+import { licenseTypeLabels } from '../models/license-type-labels';
 
 @Pipe({
   name: 'licenseType',
   standalone: true,
 })
 export class LicenseTypePipe implements PipeTransform {
-  transform(value: LicenseType): string {
-    const licenseLabel = licenseTypeValueLabels.find(
-      (label) => label.value === value
+  transform(licenseType: LicenseType): string {
+    return (
+      licenseTypeLabels.find(({ value }) => value === licenseType)?.label ?? ''
     );
-    return licenseLabel ? licenseLabel.label : '';
   }
 }
