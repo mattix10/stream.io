@@ -7,6 +7,7 @@ import { contentCreatorGuard } from './core/guards/content-creator.guard';
 export const routes: Routes = [
   {
     path: 'user-dashboard',
+    title: 'Panel użytkownika',
     canMatch: [authGuard],
     loadComponent: () =>
       import('./features/user-dashboard/user-dashboard.component').then(
@@ -17,7 +18,8 @@ export const routes: Routes = [
   },
   {
     path: 'user-movies',
-    canMatch: [authGuard, contentCreatorGuard],
+    title: 'Filmy użytkownika',
+    canMatch: [contentCreatorGuard],
     loadComponent: () =>
       import('./features/user-movies/user-movies.component').then(
         (mod) => mod.UserMoviesComponent
@@ -25,6 +27,7 @@ export const routes: Routes = [
   },
   {
     path: 'user-management',
+    title: 'Zarządzanie użytkownikami',
     canMatch: [adminGuard],
     loadComponent: () =>
       import('./features/user-management/user-management.component').then(
@@ -33,6 +36,7 @@ export const routes: Routes = [
   },
   {
     path: 'movie/:contentId',
+    title: 'Szczegóły filmu',
     loadComponent: () =>
       import('./features/movie/movie.component').then(
         (mod) => mod.MovieComponent
@@ -40,12 +44,14 @@ export const routes: Routes = [
   },
   {
     path: 'auth',
+    title: 'Uwierzytelnienie',
     loadComponent: () =>
       import('./features/auth/auth.component').then((mod) => mod.AuthComponent),
     loadChildren: () => import('./features/auth/auth-routes'),
   },
   {
     path: 'search-results',
+    title: 'Wyniki wyszukiwania',
     loadComponent: () =>
       import('./features/search-results/search-results.component').then(
         (mod) => mod.SearchResultsComponent
