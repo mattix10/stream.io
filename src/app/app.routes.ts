@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
 import { authGuard } from './core/guards/auth.guard';
-import { adminGuard } from './core/guards/admin-guard';
+import { adminGuard } from './core/guards/admin.guard';
+import { contentCreatorGuard } from './core/guards/content-creator.guard';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'user-dashboard',
     canMatch: [authGuard],
@@ -17,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'user-movies',
-    canMatch: [authGuard],
+    canMatch: [authGuard, contentCreatorGuard],
     loadComponent: () =>
       import('./features/user-movies/user-movies.component').then(
         (mod) => mod.UserMoviesComponent
@@ -54,9 +54,3 @@ const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: '**', component: HomeComponent },
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes), HomeComponent],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}
