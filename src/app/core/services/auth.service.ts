@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReplaySubject, Observable, map, catchError } from 'rxjs';
+import { ReplaySubject, Observable, map } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { UserResponse } from '../models/responses/user-response';
 import { Role } from '../models/roles.enum';
@@ -36,10 +36,8 @@ export class AuthService {
           this.setCurrentUser(token);
           this.#router.navigateByUrl('/');
         }),
-        catchError(
-          this.#loggerService.error<void>(
-            'Wystąpił błąd. Spróbuj ponownie później.'
-          )
+        this.#loggerService.error<void>(
+          'Wystąpił błąd. Spróbuj ponownie później.'
         )
       );
   }
