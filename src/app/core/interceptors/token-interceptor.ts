@@ -10,25 +10,21 @@ import { AuthService } from '../services/auth.service';
   providedIn: 'root',
 })
 export class TokenInterceptorService implements HttpInterceptor {
-  #authService = inject(AuthService);
+  readonly #authService = inject(AuthService);
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const token = this.#authService.getToken();
 
-    if (token) {
-      if (!this.#authService.isTokenExpired()) {
-        this.#authService.setCurrentUser(token);
-        let modifiedRequest = req.clone({
-          headers: req.headers.append('Authorization', `Bearer ${token}`),
-        });
-
-        return next.handle(modifiedRequest);
-      }
+    if (!token || this.#authService.isTokenExpired()) {
       this.#authService.logout();
-
       return next.handle(req);
     }
 
-    return next.handle(req);
+    this.#authService.setCurrentUser(token);
+    const modifiedRequest = req.clone({
+      headers: req.headers.append('Authorization', `Bearer ${token}`),
+    });
+
+    return next.handle(modifiedRequest);
   }
 }
