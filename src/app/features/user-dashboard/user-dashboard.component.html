@@ -9,5 +9,5 @@
 
   } @if (isLoading) {
   <app-spinner [diameter]="60" text="Trwa ładowanie danych użytkownika" />
-  } @if (!user) { Brak danych do wyświetlenia }
+  } @if (!user && !isLoading) { Brak danych do wyświetlenia }
 </div>

@@ -11,7 +11,7 @@ export function tokenInterceptor(
   const token = authService.getToken();
 
   if (!token || authService.isTokenExpired()) {
-    authService.logout();
+    authService.removeCurrentUser();
     return next(req);
   }
 

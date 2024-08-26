@@ -82,6 +82,10 @@ export class AuthService {
     return this.tokenExpired(token) ? true : false;
   }
 
+  removeCurrentUser(): void {
+    this.currentUserSource.next(null);
+  }
+
   private handleUser(): void {
     const token = this.getToken();
 
@@ -96,10 +100,6 @@ export class AuthService {
     }
 
     this.removeCurrentUser();
-  }
-
-  private removeCurrentUser(): void {
-    this.currentUserSource.next(null);
   }
 
   private removeToken() {
