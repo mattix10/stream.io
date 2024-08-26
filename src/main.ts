@@ -25,7 +25,6 @@ bootstrapApplication(AppComponent, {
         preventDuplicates: true,
       })
     ),
-
     {
       provide: CSP_NONCE,
       useValue: getNonce(),
