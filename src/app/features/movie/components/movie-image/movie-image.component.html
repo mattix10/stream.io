@@ -1,6 +1,6 @@
 <div class="movie-content">
   <div class="no-access-wrapper">
-    <img [src]="imageUrl" class="no-access-image" />
+    <img src="{{ imageUrl }}" class="no-access-image" />
     @if(!(isLoggedIn$ | async)) {
     <div class="no-access-bar">
       <img src="./../../../assets/icons/info.svg" class="info-icon" />

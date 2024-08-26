@@ -12,7 +12,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
+  // Validators,
 } from '@angular/forms';
 import { User } from 'src/app/core/models/user';
 import { UserData } from '../../models/user-data';
@@ -45,16 +45,22 @@ export class UserDataComponent implements OnInit, isLoading {
   isEditMode: boolean = false;
   roles = Object.values(Role);
   userDataForm = new FormGroup({
-    email: new FormControl('', Validators.email),
+    email: new FormControl(
+      ''
+      // TODO: Uncomment
+      // Validators.email
+    ),
     userName: new FormControl(''),
     role: new FormControl(''),
     phoneNumber: new FormControl('', [
-      Validators.maxLength(9),
-      Validators.minLength(9),
+      // TODO: Uncomment
+      // Validators.maxLength(9),
+      // Validators.minLength(9),
     ]),
     nip: new FormControl('', [
-      Validators.maxLength(10),
-      Validators.minLength(10),
+      // TODO: Uncomment
+      // Validators.maxLength(10),
+      // Validators.minLength(10),
     ]),
   });
 
@@ -109,7 +115,6 @@ export class UserDataComponent implements OnInit, isLoading {
         tap(() => {
           this.userDataChanged.emit();
           this.isEditMode = false;
-          this.resetFields();
         }),
         finalize(() => (this.isLoading = false))
       )
@@ -131,9 +136,5 @@ export class UserDataComponent implements OnInit, isLoading {
         phoneNumber: this.user.phoneNumber ?? '',
       });
     }
-  }
-
-  private resetFields(): void {
-    this.userDataForm.reset();
   }
 }

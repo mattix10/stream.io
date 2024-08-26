@@ -6,12 +6,17 @@ export default [
   {
     path: '',
     children: [
-      { path: 'signup', component: RegistrationEndUserComponent },
+      {
+        path: 'signup',
+        component: RegistrationEndUserComponent,
+        title: 'Rejestracja użytkownika',
+      },
       {
         path: 'signup-content-creator',
         component: RegistrationContentCreatorComponent,
+        title: 'Rejestracja dla firm',
       },
-      { path: 'signin', component: SigninComponent },
+      { path: 'signin', component: SigninComponent, title: 'Logowanie' },
     ],
   },
   {

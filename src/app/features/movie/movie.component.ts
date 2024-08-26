@@ -8,7 +8,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import {
   catchError,
   combineLatest,
-  // delay,
   EMPTY,
   finalize,
   mergeMap,
@@ -36,6 +35,7 @@ import { MovieImageComponent } from './components/movie-image/movie-image.compon
 import { LicenseDialogComponent } from './components/license-dialog/license-dialog.component';
 import { LicenseDialogType } from './models/license-dialog-type';
 import { License } from 'src/app/core/models/responses/license-response';
+import { LicenseType } from 'src/app/core/models/license-type.enum';
 
 @Component({
   selector: 'app-movie',
@@ -134,6 +134,9 @@ export class MovieComponent implements OnInit, isLoading {
     return this.#movieService.getContent(this.contentId).pipe(
       tap(({ result }) => {
         this.movieMetadata = result;
+        this.movieMetadata.licenseRules.sort((a) =>
+          a.type === LicenseType.Buy ? -1 : 1
+        );
       }),
       finalize(() => (this.isLoading = false))
     );

@@ -38,7 +38,7 @@ export class SearchResultsComponent implements OnInit {
           return this.#contentService.getMovies(param).pipe(
             map(({ result }) =>
               result.contents.filter((content) =>
-                content.title.includes(this.searchValue)
+                content.title.toLowerCase().includes(this.searchValue)
               )
             ),
             tap(

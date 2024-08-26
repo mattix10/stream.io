@@ -31,7 +31,6 @@ export class CommentsComponent {
     this.comments = [
       ...comments!.sort(this.sortCommentsPredicate).map((com) => ({
         ...com,
-        body: this.domSanitizer.bypassSecurityTrustHtml(com.body) as string,
       })),
     ];
   }

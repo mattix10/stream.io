@@ -44,7 +44,6 @@ export const routes: Routes = [
   },
   {
     path: 'auth',
-    title: 'Uwierzytelnienie',
     loadComponent: () =>
       import('./features/auth/auth.component').then((mod) => mod.AuthComponent),
     loadChildren: () => import('./features/auth/auth-routes'),

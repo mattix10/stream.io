@@ -9,17 +9,17 @@ import { LicenseRuleRequest } from '../../../core/models/requests/license-rule-r
 export class LicenseService {
   readonly #httpService = inject(HttpService);
   readonly #loggerService = inject(LoggerService);
-  readonly #entity = 'license';
+  readonly #url = 'license';
 
   getLicense(contentId: string): Observable<LicenseResponse> {
     return this.#httpService
-      .getItem<LicenseResponse>(this.#entity, contentId)
+      .getItem<LicenseResponse>(this.#url, contentId)
       .pipe(this.#loggerService.error('Nie udało się pobrać licencji', true));
   }
 
   createLicense(licenseRuleRequest: LicenseRuleRequest): Observable<Response> {
     return this.#httpService
-      .create<Response, LicenseRuleRequest>(this.#entity, licenseRuleRequest)
+      .create<Response, LicenseRuleRequest>(this.#url, licenseRuleRequest)
       .pipe(this.#loggerService.error('Nie udało się zakupić licencji'));
   }
 
@@ -29,7 +29,7 @@ export class LicenseService {
   ): Observable<Response> {
     return this.#httpService
       .update<Response, LicenseRuleRequest>(
-        `${this.#entity}/${licenseId}`,
+        `${this.#url}/${licenseId}`,
         licenseRuleRequest
       )
       .pipe(this.#loggerService.error('Nie udało się zaktualizować licencji'));

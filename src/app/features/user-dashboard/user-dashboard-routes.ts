@@ -1,4 +1,4 @@
-import { adminGuard } from 'src/app/core/guards/admin-guard';
+import { adminGuard } from 'src/app/core/guards/admin.guard';
 import { UserDashboardComponent } from './user-dashboard.component';
 
 export default [

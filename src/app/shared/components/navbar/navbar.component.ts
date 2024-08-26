@@ -31,6 +31,7 @@ export class NavbarComponent implements OnInit {
     isUserAdmin: boolean;
     isContentCreator: boolean;
   }>;
+
   readonly #authService = inject(AuthService);
 
   ngOnInit(): void {

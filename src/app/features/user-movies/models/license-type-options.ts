@@ -1,6 +1,6 @@
-import { licenseTypeValueLabels } from './license-type-value-labels';
+import { licenseTypeLabels } from './license-type-labels';
 
-export const licenseTypeOptions = licenseTypeValueLabels.map((obj) => ({
+export const licenseTypeOptions = licenseTypeLabels.map((obj) => ({
   ...obj,
   disabled: false,
 }));
