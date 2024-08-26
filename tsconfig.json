@@ -20,8 +20,13 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    //"noUnusedLocals": true,
+    //"noUnusedParameters": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "types"
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
