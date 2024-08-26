@@ -1,12 +1,12 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
 import { CSP_NONCE, importProvidersFrom } from '@angular/core';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TokenInterceptorService } from './app/core/interceptors/token-interceptor';
+import { tokenInterceptor } from './app/core/interceptors/token-interceptor';
 
 function getNonce(): string {
   const metaTag = document.querySelector('meta[name="CSP-NONCE"]');
@@ -16,7 +16,7 @@ function getNonce(): string {
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([tokenInterceptor])),
     importProvidersFrom(
       BrowserAnimationsModule,
       ToastrModule.forRoot({
@@ -25,11 +25,7 @@ bootstrapApplication(AppComponent, {
         preventDuplicates: true,
       })
     ),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptorService,
-      multi: true,
-    },
+
     {
       provide: CSP_NONCE,
       useValue: getNonce(),

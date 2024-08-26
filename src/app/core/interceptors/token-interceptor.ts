@@ -1,30 +1,24 @@
-import {
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class TokenInterceptorService implements HttpInterceptor {
-  readonly #authService = inject(AuthService);
+export function tokenInterceptor(
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<unknown>> {
+  const authService = inject(AuthService);
+  const token = authService.getToken();
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const token = this.#authService.getToken();
-
-    if (!token || this.#authService.isTokenExpired()) {
-      this.#authService.logout();
-      return next.handle(req);
-    }
-
-    this.#authService.setCurrentUser(token);
-    const modifiedRequest = req.clone({
-      headers: req.headers.append('Authorization', `Bearer ${token}`),
-    });
-
-    return next.handle(modifiedRequest);
+  if (!token || authService.isTokenExpired()) {
+    authService.logout();
+    return next(req);
   }
+
+  authService.setCurrentUser(token);
+  const modifiedRequest = req.clone({
+    headers: req.headers.append('Authorization', `Bearer ${token}`),
+  });
+
+  return next(modifiedRequest);
 }
