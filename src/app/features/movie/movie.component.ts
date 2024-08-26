@@ -134,9 +134,9 @@ export class MovieComponent implements OnInit, isLoading {
     return this.#movieService.getContent(this.contentId).pipe(
       tap(({ result }) => {
         this.movieMetadata = result;
-        this.movieMetadata.licenseRules.sort((a) =>
-          a.type === LicenseType.Buy ? -1 : 1
-        );
+        this.movieMetadata.licenseRules
+          .sort((a) => (a.type === LicenseType.Buy ? -1 : 1))
+          .sort((a, b) => (a.price > b.price ? -1 : 1));
       }),
       finalize(() => (this.isLoading = false))
     );
