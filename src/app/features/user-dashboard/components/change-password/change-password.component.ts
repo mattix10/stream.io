@@ -6,7 +6,7 @@ import { isLoading } from 'src/app/core/models/loading';
 import { ChangePasswordRequest } from 'src/app/core/models/requests/change-password-request';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
-import { EditHeaderComponent } from 'src/app/shared/components/edit-header/edit-header.component';
+import { EditHeaderComponent } from 'src/app/features/user-dashboard/components/edit-header/edit-header.component';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({

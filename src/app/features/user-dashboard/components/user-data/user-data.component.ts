@@ -20,7 +20,7 @@ import { Role } from 'src/app/core/models/roles.enum';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { finalize, Observable, of, tap } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
-import { EditHeaderComponent } from 'src/app/shared/components/edit-header/edit-header.component';
+import { EditHeaderComponent } from 'src/app/features/user-dashboard/components/edit-header/edit-header.component';
 import { isLoading } from 'src/app/core/models/loading';
 
 @Component({
