@@ -1,5 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize, tap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -16,17 +21,25 @@ import { isLoading } from '../../../core/models/interfaces/loading';
 })
 export class SigninComponent implements isLoading {
   form = new FormGroup({
-    // TODO: Add validators
-    // email: new FormControl('', [Validators.email, Validators.required]),
-    // password: new FormControl('', Validators.minLength(6)),
-    email: new FormControl(''),
-    password: new FormControl(''),
+    email: new FormControl('', [Validators.email, Validators.required]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
   });
 
   isLoading: boolean = false;
 
   #router = inject(Router);
   #authService = inject(AuthService);
+
+  get email() {
+    return this.form.get('email');
+  }
+
+  get password() {
+    return this.form.get('password');
+  }
 
   onSubmit(): void {
     this.form.markAllAsTouched();

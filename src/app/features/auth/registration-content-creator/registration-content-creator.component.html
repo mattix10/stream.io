@@ -4,11 +4,36 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form-field">
     <label class="label" for="username">Nazwa użytkownika*</label>
-    <input type="text" class="input" formControlName="username" />
+    <input
+      type="text"
+      class="input"
+      formControlName="username"
+      [class.invalid]="username?.touched && username?.invalid"
+    />
+    @if(username?.touched && username?.invalid) {
+    @if(username?.errors?.['required']) {
+    <small class="error"> Nazwa użytkownika jest wymagana. </small>
+    } @if(username?.errors?.['minlength']) {
+    <small class="error">
+      Nazwa użytkownika musi mieć co najmniej
+      {{ username?.errors?.['minlength'].requiredLength }} znaków.</small
+    >
+    } }
   </div>
   <div class="form-field">
     <label class="label" for="email">E-mail*</label>
-    <input type="email" class="input" id="email" formControlName="email" />
+    <input
+      type="email"
+      class="input"
+      id="email"
+      formControlName="email"
+      [class.invalid]="email?.touched && email?.invalid"
+    />
+    @if(email?.touched && email?.invalid) { @if(email?.errors?.['required']) {
+    <small class="error"> Adres e-mail jest wymagany. </small>
+    } @if(email?.errors?.['email']) {
+    <small class="error"> Nieprawidłowy adres e-mail </small>
+    } }
   </div>
   <div class="form-field">
     <label class="label" for="password">Hasło*</label>
@@ -17,7 +42,17 @@
       type="password"
       id="password"
       formControlName="password"
+      [class.invalid]="password?.touched && password?.invalid"
     />
+    @if(password?.touched && password?.invalid) {
+    @if(password?.errors?.['required']) {
+    <small class="error"> Hasło jest wymagane. </small>
+    } @if(password?.errors?.['minlength']) {
+    <small class="error">
+      Nazwa użytkownika musi mieć co najmniej
+      {{ password?.errors?.['minlength'].requiredLength }} znaków.</small
+    >
+    } }
   </div>
   <div class="form-field">
     <label class="label" for="phoneNumber">Numer telefonu*</label>
@@ -26,11 +61,40 @@
       class="input"
       id="phoneNumber"
       formControlName="phoneNumber"
+      [class.invalid]="phoneNumber?.touched && phoneNumber?.invalid"
     />
+    @if(phoneNumber?.touched && phoneNumber?.invalid) {
+    @if(phoneNumber?.errors?.['required']) {
+    <small class="error"> Numer telefonu jest wymagany. </small>
+    } @if(phoneNumber?.errors?.['minlength']) {
+    <small class="error">
+      Numer telefonu musi mieć co najmniej
+      {{ phoneNumber?.errors?.['minlength'].requiredLength }} znaków.</small
+    >
+    } }
   </div>
   <div class="form-field">
     <label class="label" for="nip">NIP*</label>
-    <input type="text" class="input" id="nip" formControlName="nip" />
+    <input
+      type="text"
+      class="input"
+      id="nip"
+      formControlName="nip"
+      [class.invalid]="nip?.touched && nip?.invalid"
+    />
+    @if(nip?.touched && nip?.invalid) { @if(nip?.errors?.['required']) {
+    <small class="error"> Numer NIP jest wymagany. </small>
+    } @if(nip?.errors?.['minlength']) {
+    <small class="error">
+      NIP musi mieć co najmniej
+      {{ nip?.errors?.['minlength'].requiredLength }} znaków.</small
+    >
+    } @if(nip?.errors?.['maxlength']) {
+    <small class="error">
+      NIP musi mieć maksimum
+      {{ nip?.errors?.['maxlength'].requiredLength }} znaków.</small
+    >
+    }}
   </div>
   <button type="submit" class="button">
     @if (isLoading) {

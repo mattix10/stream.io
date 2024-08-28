@@ -107,6 +107,14 @@ export class MovieFormComponent implements isLoading {
 
   #contentMetadata?: UserContentMetadata;
 
+  get title() {
+    return this.movieForm.get('title');
+  }
+
+  get description() {
+    return this.movieForm.get('description');
+  }
+
   onUploadImage(file: File): void {
     this.movieForm.controls.image.patchValue(file);
   }
@@ -128,6 +136,8 @@ export class MovieFormComponent implements isLoading {
   }
 
   onSubmit(): void {
+    this.movieForm.markAllAsTouched();
+
     if (this.movieForm.invalid) return;
 
     this.submit.next();

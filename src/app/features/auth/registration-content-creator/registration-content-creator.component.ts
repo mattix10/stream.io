@@ -29,6 +29,7 @@ export class RegistrationContentCreatorComponent implements isLoading {
     email: new FormControl('', [Validators.email, Validators.required]),
     username: new FormControl('', [
       Validators.minLength(6),
+      Validators.maxLength(50),
       Validators.required,
     ]),
     password: new FormControl('', [
@@ -37,7 +38,6 @@ export class RegistrationContentCreatorComponent implements isLoading {
     ]),
     phoneNumber: new FormControl('', [
       Validators.minLength(9),
-      Validators.maxLength(10),
       Validators.required,
     ]),
     nip: new FormControl('', [
@@ -47,7 +47,29 @@ export class RegistrationContentCreatorComponent implements isLoading {
     ]),
   });
 
+  get username() {
+    return this.form.get('username');
+  }
+
+  get email() {
+    return this.form.get('email');
+  }
+
+  get password() {
+    return this.form.get('password');
+  }
+
+  get phoneNumber() {
+    return this.form.get('phoneNumber');
+  }
+
+  get nip() {
+    return this.form.get('nip');
+  }
+
   onSubmit(): void {
+    this.form.markAllAsTouched();
+
     if (this.form.invalid) return;
 
     this.isLoading = true;

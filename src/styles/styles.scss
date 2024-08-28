@@ -51,6 +51,15 @@ h3 {
   margin-bottom: 12px;
 }
 
+small {
+  margin-top: 8px;
+  font-size: 12px;
+
+  &.error {
+    color: var.$color-error;
+  }
+}
+
 .divider {
   border-bottom: 1px solid grey;
   margin: 25px 0;
@@ -108,6 +117,10 @@ button.disabled {
     &.disabled {
       // border: 1px solid var.$color-grey-3;
       opacity: 0.5;
+    }
+
+    &.invalid {
+      border: 2px solid var.$color-error;
     }
   }
 }

@@ -29,14 +29,23 @@
       </div>
       <div class="wrapper">
         <div class="form-field">
-          <label class="label" for="Price">Cena (zł)</label>
+          <label class="label" for="Price">Cena (zł)*</label>
           <input
             class="input"
             id="price"
             formControlName="price"
             type="number"
             min="0"
+            [class.invalid]="
+              rules.controls[index].get('price')?.touched &&
+              rules.controls[index].get('price')?.invalid
+            "
           />
+          @if(rules.controls[index].get('price')?.touched &&
+          rules.controls[index].get('price')?.invalid) {
+          @if(rules.controls[index].get('price')?.errors?.['required']) {
+          <small class="error"> Cena jest wymagana </small>
+          } }
         </div>
         <div class="form-field">
           <div class="label">Rodzaj licencji:</div>

@@ -36,7 +36,21 @@ export class RegistrationEndUserComponent implements isLoading {
   readonly #router = inject(Router);
   readonly #userService = inject(UserService);
 
+  get username() {
+    return this.form.get('username');
+  }
+
+  get email() {
+    return this.form.get('email');
+  }
+
+  get password() {
+    return this.form.get('password');
+  }
+
   onSubmit(): void {
+    this.form.markAllAsTouched();
+
     if (this.form.invalid) return;
 
     this.isLoading = true;

@@ -1,18 +1,31 @@
 <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
   <h3>Metadane</h3>
   <div class="form-field">
-    <label class="label" for="title">Tytuł</label>
-    <input class="input" id="title" formControlName="title" />
+    <label class="label" for="title">Tytuł*</label>
+    <input
+      class="input"
+      id="title"
+      formControlName="title"
+      [class.invalid]="title?.touched && title?.invalid"
+    />
+    @if(title?.touched && title?.invalid) { @if(title?.errors?.['required']) {
+    <small class="error"> Tytuł jest wymagany. </small>
+    } }
   </div>
 
   <div class="form-field">
-    <label class="label" for="description">Opis</label>
+    <label class="label" for="description">Opis*</label>
     <textarea
       class="input"
       id="description"
       formControlName="description"
+      [class.invalid]="description?.touched && description?.invalid"
       rows="5"
     ></textarea>
+    @if(description?.touched && description?.invalid) {
+    @if(description?.errors?.['required']) {
+    <small class="error"> Opis jest wymagany. </small>
+    } }
   </div>
 
   <app-license-rules-form
