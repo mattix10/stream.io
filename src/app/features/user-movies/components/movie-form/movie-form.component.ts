@@ -26,7 +26,6 @@ import { LicenseRule } from 'src/app/core/models/license-rule';
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
 import { LicenseRulesFormComponent } from '../license-rules-form/license-rules-form.component';
 import { FileType } from '../../models/file-type';
-import { FileUploadService } from '../../services/file-upload-service/file-upload.service';
 import { UserContentMetadata } from 'src/app/core/models/responses/user-content-metadata-response';
 import { ContentService } from 'src/app/core/services/content.service';
 import { LinkForUploadFileResponse } from 'src/app/core/models/responses/link-for-upload-file-response';
@@ -34,6 +33,7 @@ import { ImageFileId } from 'src/app/core/models/image-file-id';
 import { Response } from 'src/app/core/models/response';
 import { VideoFileId } from 'src/app/core/models/video-file-id';
 import { isLoading } from 'src/app/core/models/loading';
+import { FileUploadService } from '../../services/file-upload.service';
 
 @Component({
   selector: 'app-movie-form',
