@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata';
@@ -6,7 +6,7 @@ import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata
 @Component({
   selector: 'app-movie-item',
   standalone: true,
-  imports: [CommonModule],
+  imports: [NgIf],
   templateUrl: './movie-item.component.html',
   styleUrl: './movie-item.component.scss',
 })

@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { MovieItemComponent } from './movie-item/movie-item.component';
+import { MovieItemComponent } from '../../shared/components/movie-item/movie-item.component';
 import { ContentService } from 'src/app/core/services/content.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';

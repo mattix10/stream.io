@@ -24,7 +24,7 @@ import { MovieMetadataResponse } from 'src/app/core/models/responses/movie-metad
 import { MovieLinkResponse } from 'src/app/core/models/responses/movie-link-response';
 import { AllMoviesMetadataResponse } from 'src/app/core/models/responses/all-movies-metadata-response';
 import { HttpParams } from '@angular/common/http';
-import { MovieItemComponent } from '../home/movie-item/movie-item.component';
+import { MovieItemComponent } from '../../shared/components/movie-item/movie-item.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
 import { MovieMetadataComponent } from './components/movie-metadata/movie-metadata.component';
 import { LicenseService } from './services/license.service';
