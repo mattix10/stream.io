@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { NavigationMobileComponent } from '../navigation-mobile/navigation-mobile.component';
 import { NavigationDesktopComponent } from '../navigation-desktop/navigation-desktop.component';
 import { combineLatest, map, Observable } from 'rxjs';
-import { User } from 'src/app/core/models/user';
+import { User } from 'src/app/core/models/classes/user';
 import { SearchMovieInputComponent } from '../search-movie-input/search-movie-input.component';
 
 @Component({

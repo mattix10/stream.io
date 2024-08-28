@@ -6,11 +6,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RegistrationContentCreatorRequest } from '../models/registration-content-creator-request';
 import { finalize, tap } from 'rxjs';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { isLoading } from '../../../core/models/loading';
+import { isLoading } from '../../../core/models/interfaces/loading';
 import { UserService } from 'src/app/core/services/user.service';
+import { RegistrationContentCreatorRequest } from 'src/app/core/models/requests/registration-content-creator-request';
 
 @Component({
   selector: 'app-registration-content-creator',
@@ -37,12 +37,12 @@ export class RegistrationContentCreatorComponent implements isLoading {
     ]),
     phoneNumber: new FormControl('', [
       Validators.minLength(9),
+      Validators.maxLength(10),
       Validators.required,
     ]),
     nip: new FormControl('', [
       Validators.minLength(10),
       Validators.maxLength(10),
-      Validators.pattern('^[0-9]*$'),
       Validators.required,
     ]),
   });

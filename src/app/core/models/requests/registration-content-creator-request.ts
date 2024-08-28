@@ -1,4 +1,4 @@
-import { BaseRegistrationRequest } from './base-registration-request';
+import { BaseRegistrationRequest } from '../../../core/models/requests/base-registration-request';
 
 export interface RegistrationContentCreatorRequest
   extends BaseRegistrationRequest {

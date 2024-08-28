@@ -30,9 +30,9 @@ export class HttpService {
     return this.#httpClient.patch<T>(this.createUrl(url, id), body);
   }
 
-  updateStatus(url: string, body: UpdateUserStatusRequest): Observable<void> {
-    return this.#httpClient.patch<void>(this.createUrl(url), body);
-  }
+  // updateStatus(url: string, body: UpdateUserStatusRequest): Observable<void> {
+  //   return this.#httpClient.patch<void>(this.createUrl(url), body);
+  // }
 
   delete(
     url: string,

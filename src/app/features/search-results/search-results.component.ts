@@ -5,7 +5,7 @@ import { map, mergeMap, tap } from 'rxjs';
 import { ContentService } from 'src/app/core/services/content.service';
 import { MovieItemComponent } from '../home/movie-item/movie-item.component';
 import { CommonModule } from '@angular/common';
-import { ContentMetadata } from 'src/app/core/models/responses/all-movies-metadata-response';
+import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata';
 
 @Component({
   selector: 'app-search-results',

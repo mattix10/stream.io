@@ -1,16 +1,9 @@
-export interface AllMoviesMetadataResponse {
-  result: MoviesMetadataResponse;
-  message: string;
-}
+import { ContentMetadata } from '../interfaces/content-metadata';
+import { Response } from './response';
+
+export type AllMoviesMetadataResponse = Response<MoviesMetadataResponse>;
 
 interface MoviesMetadataResponse {
   contents: ContentMetadata[];
   count: number;
-}
-
-export interface ContentMetadata {
-  uuid: string;
-  title: string;
-  duration: number;
-  imageUrl: string;
 }

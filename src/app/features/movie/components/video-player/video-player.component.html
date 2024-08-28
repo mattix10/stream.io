@@ -1,7 +1,7 @@
 <div class="movie-content">
-  <ng-container *ngIf="(isLoggedIn$ | async) && source">
-    <video #videoElement controls class="video">
-      Your browser does not support the video tag.
-    </video>
-  </ng-container>
+  @if((isLoggedIn$ | async) && source) {
+  <video #videoElement controls class="video">
+    Your browser does not support the video tag.
+  </video>
+  }
 </div>

@@ -19,10 +19,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { Subject, tap } from 'rxjs';
-import { LicenseRule } from 'src/app/core/models/license-rule';
 import { licenseTypeOptions } from '../../models/license-type-options';
 import { licenseDurationOptions } from '../../models/license-duration-options';
-import { LicenseType } from 'src/app/core/models/license-type.enum';
+import { LicenseType } from 'src/app/core/models/enums/license-type.enum';
+import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
 
 @Component({
   selector: 'app-license-rules-form',

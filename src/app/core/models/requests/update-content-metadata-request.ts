@@ -1,4 +1,4 @@
-import { LicenseRule } from '../license-rule';
+import { LicenseRule } from '../interfaces/license-rule';
 
 export interface UpdateContentMetadataRequest {
   title: string;

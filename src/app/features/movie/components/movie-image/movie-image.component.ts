@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
-import { isLoading } from 'src/app/core/models/loading';
+import { isLoading } from 'src/app/core/models/interfaces/loading';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 

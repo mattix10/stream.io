@@ -1,12 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { User } from 'src/app/core/models/user';
+import { User } from 'src/app/core/models/classes/user';
 import { UserDataComponent } from './components/user-data/user-data.component';
 import { DeleteAccountComponent } from './components/delete-account/delete-account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { UserService } from 'src/app/core/services/user.service';
-import { isLoading } from 'src/app/core/models/loading';
+import { isLoading } from 'src/app/core/models/interfaces/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({

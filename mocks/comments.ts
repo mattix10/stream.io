@@ -1,4 +1,4 @@
-import { MovieComment } from '../src/app/core/models/movie-comment';
+import { MovieComment } from '../src/app/core/models/interfaces/movie-comment';
 
 export const comments: MovieComment[] = [
   {

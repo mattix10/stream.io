@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { ReplaySubject, Observable, map } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { UserResponse } from '../models/responses/user-response';
-import { Role } from '../models/roles.enum';
-import { User } from '../models/user';
-import { Response } from '../models/response';
+import { Role } from '../models/enums/roles.enum';
+import { User } from '../models/classes/user';
+import { Response } from '../models/responses/response';
 import { LoggerService } from './logger.service';
 
 @Injectable({
@@ -14,7 +14,6 @@ import { LoggerService } from './logger.service';
 })
 export class AuthService {
   readonly currentUserSource = new ReplaySubject<User | null>(1);
-  readonly #authUrl = environment.API_URL + 'user/';
   currentUser$ = this.currentUserSource.asObservable();
   isLoggedIn$: Observable<boolean> = this.currentUser$.pipe(
     map((user) => !!user?.userName)
@@ -23,6 +22,7 @@ export class AuthService {
   readonly #httpClient = inject(HttpClient);
   readonly #router = inject(Router);
   readonly #loggerService = inject(LoggerService);
+  readonly #authUrl = environment.API_URL + 'user/';
 
   constructor() {
     this.handleUser();
@@ -30,7 +30,7 @@ export class AuthService {
 
   login(form: { password: string; email: string }): Observable<void> {
     return this.#httpClient
-      .post<Response<UserResponse>>(`${this.#authUrl}sign-in`, form)
+      .post<UserResponse>(`${this.#authUrl}sign-in`, form)
       .pipe(
         map(({ result: { token } }) => {
           this.setCurrentUser(token);
@@ -74,7 +74,7 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  isTokenExpired() {
+  isTokenExpired(): boolean {
     const token = this.getToken();
 
     if (!token) return true;
@@ -102,11 +102,10 @@ export class AuthService {
     this.removeCurrentUser();
   }
 
-  private removeToken() {
+  private removeToken(): void {
     localStorage.removeItem('token');
   }
 
-  // TODO: set type
   private getDecodedToken(token: string) {
     return JSON.parse(atob(token.split('.')[1]));
   }

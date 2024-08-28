@@ -1,6 +1,4 @@
-import { MovieMetadata } from '../movie-metadata';
+import { MovieMetadata } from '../interfaces/movie-metadata';
+import { Response } from './response';
 
-export interface MovieMetadataResponse {
-  result: MovieMetadata;
-  message: string;
-}
+export type MovieMetadataResponse = Response<MovieMetadata>;

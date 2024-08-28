@@ -13,7 +13,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subject, take, tap } from 'rxjs';
-import { MovieComment } from 'src/app/core/models/movie-comment';
+import { MovieComment } from 'src/app/core/models/interfaces/movie-comment';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({

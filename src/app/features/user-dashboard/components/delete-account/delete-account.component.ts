@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize, tap } from 'rxjs';
-import { isLoading } from 'src/app/core/models/loading';
+import { isLoading } from 'src/app/core/models/interfaces/loading';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { EditHeaderComponent } from 'src/app/features/user-dashboard/components/edit-header/edit-header.component';

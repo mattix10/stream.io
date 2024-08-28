@@ -8,11 +8,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { LicenseRule } from 'src/app/core/models/license-rule';
-import { LicenseType } from 'src/app/core/models/license-type.enum';
+import { LicenseType } from 'src/app/core/models/enums/license-type.enum';
 import { LicenseTypePipe } from 'src/app/features/user-movies/pipes/license-type.pipe';
 import '@angular/common/locales/global/pl';
 import { LicenseDurationPipe } from 'src/app/features/user-movies/pipes/license-duration.pipe';
+import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
 
 @Component({
   selector: 'app-license-item',

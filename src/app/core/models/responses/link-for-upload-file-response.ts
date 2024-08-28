@@ -1,8 +1,6 @@
-export interface LinkForUploadFileResponse {
-  message: string;
-  result: UrlResponse;
-}
+import { Response } from './response';
 
+export type LinkForUploadFileResponse = Response<UrlResponse>;
 interface UrlResponse {
   url: string;
 }

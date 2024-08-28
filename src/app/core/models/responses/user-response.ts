@@ -1,6 +1,9 @@
-import { User } from '../user';
+import { User } from '../classes/user';
+import { Response } from './response';
 
-export interface UserResponse {
+export type UserResponse = Response<UserAuthData>;
+
+interface UserAuthData {
   user: User;
   token: string;
 }

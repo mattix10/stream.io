@@ -1,4 +1,4 @@
-import { LicenseDuration } from 'src/app/core/models/license-duration.enum';
+import { LicenseDuration } from 'src/app/core/models/enums/license-duration.enum';
 
 export const licenseDurationLabels = [
   { value: LicenseDuration.OneDay, label: 'Dzień' },

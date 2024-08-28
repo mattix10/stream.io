@@ -1,4 +1,4 @@
-import { BaseRegistrationRequest } from 'src/app/features/auth/models/base-registration-request';
+import { BaseRegistrationRequest } from 'src/app/core/models/requests/base-registration-request';
 import { password } from './user-registration';
 
 export const adminRegistration: BaseRegistrationRequest = {

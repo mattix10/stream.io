@@ -2,11 +2,9 @@
   <h2>Wyniki wyszukiwania dla "{{ searchValue }}":</h2>
   @if (movieMetadataList.length) {
   <div class="movie-items-container">
-    <app-movie-item
-      class="movie-item"
-      *ngFor="let movieMetadata of movieMetadataList"
-      [movieMetadata]="movieMetadata"
-    ></app-movie-item>
+    @for(movieMetadata of movieMetadataList; track movieMetadata) {
+    <app-movie-item class="movie-item" [movieMetadata]="movieMetadata" />
+    }
   </div>
   } @else {
   <div>Brak wyników</div>

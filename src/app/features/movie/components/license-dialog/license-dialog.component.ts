@@ -2,12 +2,12 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { LicenseItemComponent } from '../license-item/license-item.component';
 import { LicenseDialogConfigDetails } from '../../models/license-dialog-config';
 import { dialogConfig } from './license-dialog-config';
-import { LicenseRule } from 'src/app/core/models/license-rule';
-import { isLoading } from 'src/app/core/models/loading';
+import { isLoading } from 'src/app/core/models/interfaces/loading';
 import { EMPTY, finalize, Observable, tap } from 'rxjs';
 import { LicenseService } from '../../services/license.service';
 import { LicenseDialogType } from '../../models/license-dialog-type';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
 
 @Component({
   selector: 'app-license-dialog',

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { LinkForUploadFileResponse } from 'src/app/core/models/responses/link-for-upload-file-response';
-import { Response } from 'src/app/core/models/response';
+import { Response } from 'src/app/core/models/responses/response';
 import { LoggerService } from 'src/app/core/services/logger.service';
 import { FileType } from '../models/file-type';
 

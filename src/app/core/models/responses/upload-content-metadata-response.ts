@@ -1,7 +1,6 @@
-export interface UploadContentMetadataResponse {
-  message: string;
-  result: ContentId;
-}
+import { Response } from './response';
+
+export type UploadContentMetadataResponse = Response<ContentId>;
 
 interface ContentId {
   contentId: string;

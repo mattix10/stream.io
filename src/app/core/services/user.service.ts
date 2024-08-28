@@ -1,16 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { BaseRegistrationRequest } from 'src/app/features/auth/models/base-registration-request';
-import { RegistrationContentCreatorRequest } from 'src/app/features/auth/models/registration-content-creator-request';
+import { BaseRegistrationRequest } from 'src/app/core/models/requests/base-registration-request';
 import { UserData } from 'src/app/features/user-dashboard/models/user-data';
 import { BaseUpdateUserRequest } from '../models/requests/base-update-user-request';
 import { ChangePasswordRequest } from '../models/requests/change-password-request';
 import { UpdateContentCreatorRequest } from '../models/requests/update-content-creator-request';
 import { UpdateUserStatusRequest } from '../models/requests/update-user-status-request';
-import { User } from '../models/user';
+import { User } from '../models/classes/user';
 import { HttpService } from './http.service';
-import { Response } from '../models/response';
+import { Response } from '../models/responses/response';
 import { LoggerService } from './logger.service';
+import { RegistrationContentCreatorRequest } from '../models/requests/registration-content-creator-request';
 
 @Injectable({
   providedIn: 'root',
@@ -87,9 +87,9 @@ export class UserService {
   updateUserStatus(
     username: string,
     userStatus: UpdateUserStatusRequest
-  ): Observable<void> {
+  ): Observable<UpdateUserStatusRequest> {
     return this.#httpService
-      .updateStatus(`${this.#entity}/${username}/status`, userStatus)
+      .updateField(`${this.#entity}/${username}/status`, userStatus)
       .pipe(
         this.#loggerService.error(
           `Aktualizacja statusu użytkownika "${username}" nie powiodła się.`

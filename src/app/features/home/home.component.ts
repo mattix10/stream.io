@@ -3,14 +3,13 @@ import { MovieItemComponent } from './movie-item/movie-item.component';
 import { ContentService } from 'src/app/core/services/content.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import {
-  AllMoviesMetadataResponse,
-  ContentMetadata,
-} from 'src/app/core/models/responses/all-movies-metadata-response';
+import { AllMoviesMetadataResponse } from 'src/app/core/models/responses/all-movies-metadata-response';
 import { finalize, tap } from 'rxjs';
-import { isLoading } from '../../core/models/loading';
+import { isLoading } from '../../core/models/interfaces/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -40,8 +39,12 @@ export class HomeComponent implements OnInit, isLoading {
   private loadMovies(): void {
     this.isLoading = true;
 
+    const params = new HttpParams()
+      .set('currentPage', this.currentPage)
+      .set('itemsPerPage', this.itemsPerPage);
+
     this.#movieService
-      .getMovies()
+      .getMovies(params)
       .pipe(
         tap(({ result }: AllMoviesMetadataResponse) => {
           this.movieMetadataList = result.contents;

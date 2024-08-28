@@ -1,15 +1,9 @@
-import { BaseMovieMetadata } from '../base-movie-metadata';
-import { LicenseRule } from '../license-rule';
+import { UserContentMetadata } from '../interfaces/user-content-metadata';
+import { Response } from './response';
 
-export interface UserContentMetadataResponse {
-  result: UserContentMetadataResult;
-  message: string;
-}
+export type UserContentMetadataResponse = Response<UserContentMetadataResult>;
 
-export interface UserContentMetadataResult {
+interface UserContentMetadataResult {
   contentCreatorContents: UserContentMetadata[];
   count: number;
-}
-export interface UserContentMetadata extends BaseMovieMetadata {
-  licenseRules: LicenseRule[];
 }

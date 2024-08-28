@@ -13,11 +13,11 @@ import { ContentService } from 'src/app/core/services/content.service';
 import '@angular/common/locales/global/pl';
 import { LicenseTypePipe } from '../../pipes/license-type.pipe';
 import { LicenseDurationPipe } from '../../pipes/license-duration.pipe';
-import { UserContentMetadata } from 'src/app/core/models/responses/user-content-metadata-response';
 import { Observable, tap } from 'rxjs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FileUploadService } from '../../services/file-upload.service';
+import { UserContentMetadata } from 'src/app/core/models/interfaces/user-content-metadata';
 
 type MovieListItem = UserContentMetadata & {
   isExpanded: boolean;

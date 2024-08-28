@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { User } from 'src/app/core/models/user';
+import { User } from 'src/app/core/models/classes/user';
 
 @Component({
   selector: 'app-navigation-desktop',

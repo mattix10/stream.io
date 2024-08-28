@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { licenseDurationLabels } from '../models/license-duration-labels';
-import { LicenseDuration } from 'src/app/core/models/license-duration.enum';
+import { LicenseDuration } from 'src/app/core/models/enums/license-duration.enum';
 
 @Pipe({
   name: 'licenseDuration',

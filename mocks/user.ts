@@ -1,5 +1,5 @@
-import { Role } from '../src/app/core/models/roles.enum';
-import { User } from '../src/app/core/models/user';
+import { Role } from '../src/app/core/models/enums/roles.enum';
+import { User } from '../src/app/core/models/classes/user';
 
 export const user: User = {
   id: '12312323',

@@ -14,14 +14,14 @@ import {
   ReactiveFormsModule,
   // Validators,
 } from '@angular/forms';
-import { User } from 'src/app/core/models/user';
+import { User } from 'src/app/core/models/classes/user';
 import { UserData } from '../../models/user-data';
-import { Role } from 'src/app/core/models/roles.enum';
+import { Role } from 'src/app/core/models/enums/roles.enum';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { finalize, Observable, of, tap } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { EditHeaderComponent } from 'src/app/features/user-dashboard/components/edit-header/edit-header.component';
-import { isLoading } from 'src/app/core/models/loading';
+import { isLoading } from 'src/app/core/models/interfaces/loading';
 
 @Component({
   selector: 'app-user-data',

@@ -1,4 +1,4 @@
-import { MovieMetadata } from 'src/app/core/models/movie-metadata';
+import { MovieMetadata } from 'src/app/core/models/interfaces/movie-metadata';
 import { maliciousComments } from './malicious-comments';
 
 export const movieItems: MovieMetadata[] = [

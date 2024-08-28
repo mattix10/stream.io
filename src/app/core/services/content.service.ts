@@ -3,10 +3,7 @@ import { HttpService } from './http.service';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { AllMoviesMetadataResponse } from '../models/responses/all-movies-metadata-response';
-import {
-  UserContentMetadata,
-  UserContentMetadataResponse,
-} from '../models/responses/user-content-metadata-response';
+import { UserContentMetadataResponse } from '../models/responses/user-content-metadata-response';
 import { UploadContentMetadataResponse } from '../models/responses/upload-content-metadata-response';
 import { CreateCommentRequest } from '../models/requests/create-comment-request';
 import { MovieMetadataResponse } from '../models/responses/movie-metadata-response';
@@ -14,6 +11,7 @@ import { MovieLinkResponse } from '../models/responses/movie-link-response';
 import { LoggerService } from './logger.service';
 import { CreateContentMetadataRequest } from '../models/requests/create-content-metadata-request';
 import { UpdateContentMetadataRequest } from '../models/requests/update-content-metadata-request';
+import { UserContentMetadata } from '../models/interfaces/user-content-metadata';
 
 @Injectable({
   providedIn: 'root',
