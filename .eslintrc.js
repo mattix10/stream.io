@@ -23,5 +23,6 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   rules: {
     "@typescript-eslint/explicit-function-return-type": "on",
+    "@typescript-eslint/explicit-module-boundary-types": "error",
   },
 };
