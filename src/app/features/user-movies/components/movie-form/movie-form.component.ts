@@ -91,9 +91,8 @@ export class MovieFormComponent implements isLoading {
   movieForm = new FormGroup({
     title: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
-    // TODO: remove any
-    image: new FormControl<any>(''),
-    movie: new FormControl<any>(''),
+    image: new FormControl<File | null>(null),
+    movie: new FormControl<File | null>(null),
   });
   licenseRules: LicenseRule[] = [];
   clearLicenseRules = new Subject<void>();

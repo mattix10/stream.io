@@ -10,7 +10,7 @@ import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata
 @Component({
   selector: 'app-search-results',
   standalone: true,
-  imports: [CommonModule, MovieItemComponent, RouterModule],
+  imports: [MovieItemComponent, RouterModule],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.scss',
 })

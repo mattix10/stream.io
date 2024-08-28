@@ -88,8 +88,12 @@ export class MovieComponent implements OnInit, isLoading {
       .subscribe();
   }
 
+  onSubmitLicense(): void {
+    this.handleMovieLicense().subscribe();
+  }
+
   private getMovieDetails(): void {
-    this.getMovieuuid()
+    this.getMovieUuid()
       .pipe(
         // delay(500),
         switchMap(() =>
@@ -112,7 +116,7 @@ export class MovieComponent implements OnInit, isLoading {
       .subscribe();
   }
 
-  private getMovieuuid(): Observable<ParamMap> {
+  private getMovieUuid(): Observable<ParamMap> {
     return this.#activatedRoute.paramMap.pipe(
       tap((params: ParamMap) => {
         this.contentId = params.has('contentId')
@@ -199,9 +203,5 @@ export class MovieComponent implements OnInit, isLoading {
     this.movieLink = '';
     this.isLoading = true;
     this.isLicenseValid = false;
-  }
-
-  onSubmitLicense(): void {
-    this.handleMovieLicense().subscribe();
   }
 }

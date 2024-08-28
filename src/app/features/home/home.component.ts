@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { MovieItemComponent } from '../../shared/components/movie-item/movie-item.component';
 import { ContentService } from 'src/app/core/services/content.service';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AllMoviesMetadataResponse } from 'src/app/core/models/responses/all-movies-metadata-response';
 import { finalize, tap } from 'rxjs';
@@ -15,7 +14,6 @@ import { HttpParams } from '@angular/common/http';
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule,
     MovieItemComponent,
     RouterModule,
     SpinnerComponent,

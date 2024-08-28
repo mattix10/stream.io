@@ -1,11 +1,9 @@
-import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FileType } from 'src/app/features/user-movies/models/file-type';
 
 @Component({
   selector: 'app-drag-and-drop-upload-file',
   standalone: true,
-  imports: [NgIf],
   templateUrl: './drag-and-drop-upload-file.component.html',
   styleUrl: './drag-and-drop-upload-file.component.scss',
 })

@@ -1,12 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { UserTableComponent } from './user-table/user-table.component';
 import { User } from 'src/app/core/models/classes/user';
 import { AsyncPipe } from '@angular/common';
 import { finalize, mergeMap, Observable, tap } from 'rxjs';
-import { UserStatusEvent } from '../user-dashboard/models/user-status-event';
+import { UserStatusEvent } from './models/user-status-event';
 import { UserService } from 'src/app/core/services/user.service';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { isLoading } from 'src/app/core/models/interfaces/loading';
+import { UserTableComponent } from './components/user-table/user-table.component';
 
 @Component({
   selector: 'app-user-management',

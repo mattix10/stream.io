@@ -12,12 +12,7 @@ import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.comp
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [
-    SpinnerComponent,
-    ReactiveFormsModule,
-    EditHeaderComponent,
-    EditHeaderComponent,
-  ],
+  imports: [SpinnerComponent, ReactiveFormsModule, EditHeaderComponent],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss',
 })
@@ -36,6 +31,10 @@ export class ChangePasswordComponent implements isLoading {
     oldPassword: this.#formBuilder.control('', this.#validators),
     newPassword: this.#formBuilder.control('', this.#validators),
   });
+
+  get newPassword() {
+    return this.changePasswordForm.get('newPassword');
+  }
 
   onEdit(): void {
     this.isEditMode = !this.isEditMode;

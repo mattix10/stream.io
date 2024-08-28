@@ -1,4 +1,4 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import {
   Component,
   DEFAULT_CURRENCY_CODE,
@@ -17,7 +17,7 @@ import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
 @Component({
   selector: 'app-license-item',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, LicenseTypePipe, LicenseDurationPipe],
+  imports: [CurrencyPipe, LicenseTypePipe, LicenseDurationPipe],
   providers: [
     {
       provide: LOCALE_ID,
@@ -41,7 +41,7 @@ export class LicenseItemComponent implements OnInit {
 
   @Output() selectLicenseRuleChanged = new EventEmitter<LicenseRule>();
 
-  iconName: string = 'buy-license';
+  protected iconName: string = 'buy-license';
 
   private licenseIconName = {
     [LicenseType.Buy]: 'buy-license',
@@ -52,13 +52,13 @@ export class LicenseItemComponent implements OnInit {
     this.setIconName();
   }
 
-  setIconName(iconName?: string): void {
+  onSelectLicenseRule(licenseRule: LicenseRule): void {
+    this.selectLicenseRuleChanged.emit(licenseRule);
+  }
+
+  private setIconName(iconName?: string): void {
     this.iconName = iconName
       ? iconName
       : this.licenseIconName[this.licenseRule?.type!];
-  }
-
-  onSelectLicenseRule(licenseRule: LicenseRule): void {
-    this.selectLicenseRuleChanged.emit(licenseRule);
   }
 }

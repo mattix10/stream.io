@@ -34,19 +34,18 @@ export class LicenseDialogComponent implements isLoading {
 
   @Output() submitButtonChanged = new EventEmitter<void>();
 
-  readonly #licenseService = inject(LicenseService);
-
   isLoading: boolean = false;
   protected isLicenseExpired = false;
   protected dialogConfig: LicenseDialogConfigDetails =
     dialogConfig[LicenseDialogType.Buy];
   protected selectedRuleIndex?: number;
-  private dialogType?: LicenseDialogType;
-  private selectedLicenseRule?: LicenseRule;
+  protected dialogType?: LicenseDialogType;
+  readonly #licenseService = inject(LicenseService);
+  #selectedLicenseRule?: LicenseRule;
 
   onSelectLicenseRuleChange(licenseRule: LicenseRule, ruleIndex: number): void {
     this.selectedRuleIndex = ruleIndex;
-    this.selectedLicenseRule = licenseRule;
+    this.#selectedLicenseRule = licenseRule;
   }
 
   onSubmit(): void {
@@ -67,21 +66,21 @@ export class LicenseDialogComponent implements isLoading {
   }
 
   buyLicenseCall(): Observable<Response> {
-    if (!this.selectedLicenseRule || !this.contentId) return EMPTY;
+    if (!this.#selectedLicenseRule || !this.contentId) return EMPTY;
 
     return this.#licenseService.createLicense({
-      licenseRulesModel: this.selectedLicenseRule,
+      licenseRulesModel: this.#selectedLicenseRule,
       contentId: this.contentId,
     });
   }
 
   renewLicenseCall(): Observable<Response> {
-    if (!this.selectedLicenseRule || !this.licenseId || !this.contentId)
+    if (!this.#selectedLicenseRule || !this.licenseId || !this.contentId)
       return EMPTY;
 
     return this.#licenseService.updateLicense(
       {
-        licenseRulesModel: this.selectedLicenseRule,
+        licenseRulesModel: this.#selectedLicenseRule,
         contentId: this.contentId,
       },
       this.licenseId

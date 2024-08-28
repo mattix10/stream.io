@@ -1,4 +1,3 @@
-import { JsonPipe, KeyValuePipe, NgFor } from '@angular/common';
 import {
   Component,
   DestroyRef,
@@ -27,7 +26,7 @@ import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
 @Component({
   selector: 'app-license-rules-form',
   standalone: true,
-  imports: [ReactiveFormsModule, KeyValuePipe, FormsModule, NgFor, JsonPipe],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './license-rules-form.component.html',
   styleUrl: './license-rules-form.component.scss',
 })

@@ -12,7 +12,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  // Validators,
+  Validators,
 } from '@angular/forms';
 import { User } from 'src/app/core/models/classes/user';
 import { UserData } from '../../models/user-data';
@@ -45,23 +45,11 @@ export class UserDataComponent implements OnInit, isLoading {
   isEditMode: boolean = false;
   roles = Object.values(Role);
   userDataForm = new FormGroup({
-    email: new FormControl(
-      ''
-      // TODO: Uncomment
-      // Validators.email
-    ),
+    email: new FormControl('', Validators.email),
     userName: new FormControl(''),
     role: new FormControl(''),
-    phoneNumber: new FormControl('', [
-      // TODO: Uncomment
-      // Validators.maxLength(9),
-      // Validators.minLength(9),
-    ]),
-    nip: new FormControl('', [
-      // TODO: Uncomment
-      // Validators.maxLength(10),
-      // Validators.minLength(10),
-    ]),
+    phoneNumber: new FormControl(''),
+    nip: new FormControl(''),
   });
 
   get isContentCreator(): boolean {

@@ -1,13 +1,12 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgToggleModule } from 'ng-toggle-button';
 import { User } from 'src/app/core/models/classes/user';
-import { UserStatusEvent } from '../../user-dashboard/models/user-status-event';
+import { UserStatusEvent } from '../../models/user-status-event';
 
 @Component({
   selector: 'app-user-table',
   standalone: true,
-  imports: [NgIf, NgFor, NgToggleModule],
+  imports: [NgToggleModule],
   templateUrl: './user-table.component.html',
   styleUrl: './user-table.component.scss',
 })
