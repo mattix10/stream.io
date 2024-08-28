@@ -29,16 +29,6 @@ export class FileUploadService {
     );
   }
 
-  // getVideoLinkForContent(
-  //   contentId: string
-  // ): Observable<LinkForUploadFileResponse> {
-  //   return this.getLinkForUpload(FileType.Movie, contentId).pipe(
-  //     this.#loggerService.error(
-  //       'Pobieranie linku dla uploadu wideo nie powiodło się.'
-  //     )
-  //   );
-  // }
-
   getImageLink(): Observable<LinkForUploadFileResponse> {
     return this.getLinkForUpload(FileType.Image).pipe(
       this.#loggerService.error(
