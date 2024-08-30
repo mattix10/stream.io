@@ -6,8 +6,8 @@ import { environment } from 'src/environment/environment';
 import { UserResponse } from '../models/responses/user-response';
 import { Role } from '../models/enums/roles.enum';
 import { User } from '../models/classes/user';
-import { Response } from '../models/responses/response';
 import { LoggerService } from './logger.service';
+import { LoginRequest } from '../models/requests/login-request';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +28,7 @@ export class AuthService {
     this.handleUser();
   }
 
-  login(form: { password: string; email: string }): Observable<void> {
+  login(form: LoginRequest): Observable<void> {
     return this.#httpClient
       .post<UserResponse>(`${this.#authUrl}sign-in`, form)
       .pipe(

@@ -30,13 +30,13 @@
 
   <app-license-rules-form
     [submit]="submit"
-    [isEditMode]="_isEditMode"
+    [isEditMode]="isEditMode"
     [licenseRules]="licenseRules"
     [clearLicenseRules]="clearLicenseRules"
     (rulesChanged)="onRulesChanged($event)"
   />
 
-  @if(!_isEditMode) {
+  @if(!isEditMode) {
   <h3>Content</h3>
 
   <app-drag-and-drop-upload-file
@@ -60,6 +60,6 @@
     @if (isLoading) {
     <app-spinner [diameter]="18" />
     } @else {
-    {{ _isEditMode ? "Edytuj" : "Dodaj" }} film }
+    {{ isEditMode ? "Edytuj" : "Dodaj" }} film }
   </button>
 </form>

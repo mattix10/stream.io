@@ -27,13 +27,13 @@ import { LicenseRulesFormComponent } from '../license-rules-form/license-rules-f
 import { FileType } from '../../models/file-type';
 import { ContentService } from 'src/app/core/services/content.service';
 import { LinkForUploadFileResponse } from 'src/app/core/models/responses/link-for-upload-file-response';
-import { ImageFileId } from 'src/app/core/models/interfaces/image-file-id';
 import { Response } from 'src/app/core/models/responses/response';
-import { VideoFileId } from 'src/app/core/models/interfaces/video-file-id';
 import { isLoading } from 'src/app/core/models/interfaces/loading';
 import { FileUploadService } from '../../services/file-upload.service';
 import { UserContentMetadata } from 'src/app/core/models/interfaces/user-content-metadata';
 import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
+import { ImageFileId } from '../../models/image-file-id';
+import { VideoFileId } from '../../models/video-file-id';
 
 @Component({
   selector: 'app-movie-form',
@@ -49,7 +49,7 @@ import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
 })
 export class MovieFormComponent implements isLoading {
   @Input({ required: true }) set isEditMode(isEditMode: boolean) {
-    this._isEditMode = isEditMode;
+    this.#isEditMode = isEditMode;
     this.uploadImageTemplate?.removeFile();
     this.uploadMovieTemplate?.removeFile();
 
@@ -58,6 +58,10 @@ export class MovieFormComponent implements isLoading {
     }
 
     this.manageFormValidators();
+  }
+
+  get isEditMode(): boolean {
+    return this.#isEditMode;
   }
 
   @Input() set contentMetadata(contentMetadata: UserContentMetadata | null) {
@@ -98,7 +102,7 @@ export class MovieFormComponent implements isLoading {
   clearLicenseRules = new Subject<void>();
 
   isLoading: boolean = false;
-  _isEditMode = false;
+  #isEditMode = false;
 
   readonly fileType = FileType;
   readonly #fileUploadService = inject(FileUploadService);
@@ -148,7 +152,7 @@ export class MovieFormComponent implements isLoading {
       licenseRules: this.licenseRules,
     };
 
-    if (this._isEditMode) {
+    if (this.#isEditMode) {
       this.updateMovie(contentMetadataRequest);
       return;
     }
@@ -233,7 +237,7 @@ export class MovieFormComponent implements isLoading {
     const formFields = ['image', 'movie'];
 
     formFields.forEach((fieldName) => {
-      this._isEditMode
+      this.#isEditMode
         ? this.movieForm.get(fieldName)?.removeValidators(Validators.required)
         : this.movieForm.get(fieldName)?.addValidators(Validators.required);
       this.movieForm.get(fieldName)?.updateValueAndValidity();

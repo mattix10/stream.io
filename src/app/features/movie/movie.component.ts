@@ -66,13 +66,13 @@ export class MovieComponent implements OnInit, isLoading {
   isLicenseValid: boolean = false;
   licenseDialogType?: LicenseDialogType;
   license!: License;
+  protected licenseId?: string;
 
   readonly #movieService = inject(ContentService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
   readonly #licenseService = inject(LicenseService);
   readonly isLoggedIn$ = this.#authService.isLoggedIn$.pipe(take(1));
-  protected licenseId?: string;
 
   ngOnInit(): void {
     this.getMovieDetails();
@@ -164,7 +164,6 @@ export class MovieComponent implements OnInit, isLoading {
     this.isLoadingLicense = true;
 
     return this.#licenseService.getLicense(this.contentId).pipe(
-      // delay(500),
       catchError(() => {
         this.licenseDialogType = LicenseDialogType.Buy;
         return EMPTY;
