@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 
@@ -9,8 +7,6 @@ import { RouterModule } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: true,
-  imports: [NavbarComponent, ReactiveFormsModule, ToastrModule, RouterModule],
+  imports: [NavbarComponent, RouterModule],
 })
-export class AppComponent {
-  title = 'stream-io';
-}
+export class AppComponent {}

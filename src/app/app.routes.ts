@@ -56,6 +56,6 @@ export const routes: Routes = [
         (mod) => mod.SearchResultsComponent
       ),
   },
-  { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: '**', component: HomeComponent },
+  { path: '', component: HomeComponent, title: 'Stream.io', pathMatch: 'full' },
+  { path: '**', component: HomeComponent, title: 'Stream.io' },
 ];
