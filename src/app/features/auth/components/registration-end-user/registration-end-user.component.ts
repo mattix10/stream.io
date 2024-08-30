@@ -6,11 +6,11 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BaseRegistrationRequest } from '../../../core/models/requests/base-registration-request';
 import { finalize, tap } from 'rxjs';
-import { isLoading } from '../../../core/models/interfaces/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { UserService } from 'src/app/core/services/user.service';
+import { isLoading } from 'src/app/core/models/interfaces/loading';
+import { BaseRegistrationRequest } from 'src/app/core/models/requests/base-registration-request';
 
 @Component({
   selector: 'app-registration-end-user',

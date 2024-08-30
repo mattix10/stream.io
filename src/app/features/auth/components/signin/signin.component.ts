@@ -7,10 +7,10 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize, tap } from 'rxjs';
+import { isLoading } from 'src/app/core/models/interfaces/loading';
+import { LoginRequest } from 'src/app/core/models/requests/login-request';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { LoginRequest } from '../../../core/models/requests/login-request';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { isLoading } from '../../../core/models/interfaces/loading';
 
 @Component({
   selector: 'app-signin',

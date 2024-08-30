@@ -8,9 +8,9 @@ import {
 import { Router } from '@angular/router';
 import { finalize, tap } from 'rxjs';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { isLoading } from '../../../core/models/interfaces/loading';
 import { UserService } from 'src/app/core/services/user.service';
 import { RegistrationContentCreatorRequest } from 'src/app/core/models/requests/registration-content-creator-request';
+import { isLoading } from 'src/app/core/models/interfaces/loading';
 
 @Component({
   selector: 'app-registration-content-creator',

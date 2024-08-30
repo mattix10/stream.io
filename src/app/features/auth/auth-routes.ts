@@ -1,6 +1,6 @@
-import { RegistrationContentCreatorComponent } from './registration-content-creator/registration-content-creator.component';
-import { RegistrationEndUserComponent } from './registration-end-user/registration-end-user.component';
-import { SigninComponent } from './signin/signin.component';
+import { RegistrationContentCreatorComponent } from './components/registration-content-creator/registration-content-creator.component';
+import { RegistrationEndUserComponent } from './components/registration-end-user/registration-end-user.component';
+import { SigninComponent } from './components/signin/signin.component';
 
 export default [
   {
