@@ -1,12 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { User } from 'src/app/core/models/classes/user';
+import { NavigationDirective } from '../../navigation.directive';
 
 @Component({
   selector: 'app-navigation-mobile',
@@ -15,26 +9,19 @@ import { User } from 'src/app/core/models/classes/user';
   templateUrl: './navigation-mobile.component.html',
   styleUrl: './navigation-mobile.component.scss',
 })
-export class NavigationMobileComponent {
-  @Input() isUserAdmin = false;
-  @Input() isContentCreator = false;
-  @Input() user: User | null = null;
+export class NavigationMobileComponent extends NavigationDirective {
   @Output() toggleMobileMenuVisibilityChanged = new EventEmitter<void>();
-  @Output() logoutChanged = new EventEmitter<void>();
 
-  onLogout(): void {
-    this.logoutChanged.emit();
-  }
   readonly #breakpointMedium = 996;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
     if (window.innerWidth > this.#breakpointMedium) {
-      this.toggleMobileVisibility();
+      this.toggleMobileMenuVisibility();
     }
   }
 
-  toggleMobileVisibility(): void {
+  toggleMobileMenuVisibility(): void {
     this.toggleMobileMenuVisibilityChanged.emit();
   }
 }

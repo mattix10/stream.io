@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { User } from 'src/app/core/models/classes/user';
+import { NavigationDirective } from '../../navigation.directive';
 
 @Component({
   selector: 'app-navigation-desktop',
@@ -9,14 +9,4 @@ import { User } from 'src/app/core/models/classes/user';
   templateUrl: './navigation-desktop.component.html',
   styleUrl: './navigation-desktop.component.scss',
 })
-export class NavigationDesktopComponent {
-  @Input() isUserAdmin = false;
-  @Input() isContentCreator = false;
-  @Input() user: User | null = null;
-
-  @Output() logoutChanged = new EventEmitter<void>();
-
-  onLogout(): void {
-    this.logoutChanged.emit();
-  }
-}
+export class NavigationDesktopComponent extends NavigationDirective {}
