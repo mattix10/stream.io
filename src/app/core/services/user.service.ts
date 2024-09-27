@@ -6,11 +6,11 @@ import { BaseUpdateUserRequest } from '../models/requests/base-update-user-reque
 import { ChangePasswordRequest } from '../models/requests/change-password-request';
 import { UpdateContentCreatorRequest } from '../models/requests/update-content-creator-request';
 import { UpdateUserStatusRequest } from '../models/requests/update-user-status-request';
-import { User } from '../models/classes/user';
 import { HttpService } from './http.service';
-import { Response } from '../models/responses/response';
 import { LoggerService } from './logger.service';
 import { RegistrationContentCreatorRequest } from '../models/requests/registration-content-creator-request';
+import { UserResponse } from '../models/responses/user-response';
+import { UserListResponse } from '../models/responses/user-list-response';
 
 @Injectable({
   providedIn: 'root',
@@ -50,18 +50,20 @@ export class UserService {
       );
   }
 
-  getUser(): Observable<Response<User>> {
+  getUser(): Observable<UserResponse> {
     return this.#httpService
-      .getItem<Response<User>>(`${this.#entity}`)
+      .getItem<UserResponse>(`${this.#entity}`)
       .pipe(
         this.#loggerService.error('Nie udało się załadować danych użytkownika.')
       );
   }
 
-  getUsers(): Observable<any> {
+  getUsers(): Observable<UserListResponse> {
     return this.#httpService
       .getItems(`${this.#entity}/all`)
-      .pipe(this.#loggerService.error('Nie udało się załadować użytkowników.'));
+      .pipe(
+        this.#loggerService.error<any>('Nie udało się załadować użytkowników.')
+      );
   }
 
   updateEndUser(user: BaseUpdateUserRequest): Observable<void> {
@@ -89,7 +91,7 @@ export class UserService {
     userStatus: UpdateUserStatusRequest
   ): Observable<UpdateUserStatusRequest> {
     return this.#httpService
-      .updateField(`${this.#entity}/${username}/status`, userStatus)
+      .patch(`${this.#entity}/${username}/status`, userStatus)
       .pipe(
         this.#loggerService.error(
           `Aktualizacja statusu użytkownika "${username}" nie powiodła się.`
@@ -106,7 +108,7 @@ export class UserService {
     changePasswordRequest: ChangePasswordRequest
   ): Observable<ChangePasswordRequest> {
     return this.#httpService
-      .updateField<ChangePasswordRequest>(
+      .patch<ChangePasswordRequest>(
         `${this.#entity}/password`,
         changePasswordRequest
       )

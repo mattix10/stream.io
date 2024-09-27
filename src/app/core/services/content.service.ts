@@ -17,7 +17,9 @@ import { UserContentMetadata } from '../models/interfaces/user-content-metadata'
   providedIn: 'root',
 })
 export class ContentService {
-  selectedMovieForEdit$ = new BehaviorSubject<UserContentMetadata | null>(null);
+  selectedContentForEdit$ = new BehaviorSubject<UserContentMetadata | null>(
+    null
+  );
   readonly #httpService = inject(HttpService);
   readonly #loggerService = inject(LoggerService);
   readonly #entity = 'content';

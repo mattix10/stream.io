@@ -3,18 +3,19 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReplaySubject, Observable, map } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { UserResponse } from '../models/responses/user-response';
 import { Role } from '../models/enums/roles.enum';
 import { User } from '../models/classes/user';
 import { LoggerService } from './logger.service';
 import { LoginRequest } from '../models/requests/login-request';
+import { UserAuthDataResponse } from '../models/responses/user-auth-data-response';
+import { Token } from '../models/interfaces/token';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  readonly currentUserSource = new ReplaySubject<User | null>(1);
-  currentUser$ = this.currentUserSource.asObservable();
+  readonly #currentUserSource = new ReplaySubject<User | null>(1);
+  currentUser$ = this.#currentUserSource.asObservable();
   isLoggedIn$: Observable<boolean> = this.currentUser$.pipe(
     map((user) => !!user?.userName)
   );
@@ -30,7 +31,7 @@ export class AuthService {
 
   login(form: LoginRequest): Observable<void> {
     return this.#httpClient
-      .post<UserResponse>(`${this.#authUrl}sign-in`, form)
+      .post<UserAuthDataResponse>(`${this.#authUrl}sign-in`, form)
       .pipe(
         map(({ result: { token } }) => {
           this.setCurrentUser(token);
@@ -66,7 +67,7 @@ export class AuthService {
   setCurrentUser(token: string): void {
     const { sub: id, role, email, name } = this.getDecodedToken(token);
     const user = new User(id, role, email, name);
-    this.currentUserSource.next(user);
+    this.#currentUserSource.next(user);
     this.setToken(token);
   }
 
@@ -79,11 +80,12 @@ export class AuthService {
 
     if (!token) return true;
 
-    return this.tokenExpired(token) ? true : false;
+    const expiry = this.getDecodedToken(token).exp;
+    return Math.floor(new Date().getTime() / 1000) >= expiry;
   }
 
   removeCurrentUser(): void {
-    this.currentUserSource.next(null);
+    this.#currentUserSource.next(null);
   }
 
   private handleUser(): void {
@@ -103,19 +105,14 @@ export class AuthService {
   }
 
   private removeToken(): void {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
   }
 
-  private getDecodedToken(token: string) {
+  private getDecodedToken(token: string): Token {
     return JSON.parse(atob(token.split('.')[1]));
   }
 
   private setToken(token: string): void {
-    localStorage.setItem('token', token);
-  }
-
-  private tokenExpired(token: string): boolean {
-    const expiry = this.getDecodedToken(token).exp;
-    return Math.floor(new Date().getTime() / 1000) >= expiry;
+    sessionStorage.setItem('token', token);
   }
 }
