@@ -11,7 +11,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Subject, take, tap } from 'rxjs';
 import { MovieComment } from 'src/app/core/models/interfaces/movie-comment';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -50,7 +49,6 @@ export class CommentsComponent {
   @ViewChild('comment') comment?: ElementRef;
   @Output() commentChanged = new EventEmitter<string>();
 
-  domSanitizer = inject(DomSanitizer);
   comments?: MovieComment[];
 
   readonly #authService = inject(AuthService);
@@ -67,6 +65,6 @@ export class CommentsComponent {
     textarea.style.height = textarea.scrollHeight + 'px';
   }
 
-  private sortCommentsPredicate = (a: MovieComment, b: MovieComment) =>
+  private sortCommentsPredicate = (a: MovieComment, b: MovieComment): number =>
     new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime();
 }

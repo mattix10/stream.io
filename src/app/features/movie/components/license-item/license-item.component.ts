@@ -43,7 +43,7 @@ export class LicenseItemComponent implements OnInit {
 
   protected iconName: string = 'buy-license';
 
-  private licenseIconName = {
+  private licenseIconName: Record<LicenseType, string> = {
     [LicenseType.Buy]: 'buy-license',
     [LicenseType.Rent]: 'rent-license',
   };

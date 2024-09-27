@@ -1,9 +1,9 @@
 <div class="dashboard container home">
   <h2>Wyniki wyszukiwania dla "{{ searchValue }}":</h2>
-  @if (movieMetadataList.length) {
+  @if (contentMetadataList.length) {
   <div class="movie-items-container">
-    @for(movieMetadata of movieMetadataList; track movieMetadata) {
-    <app-movie-item class="movie-item" [movieMetadata]="movieMetadata" />
+    @for(contentMetadata of contentMetadataList; track contentMetadata) {
+    <app-movie-item class="movie-item" [contentMetadata]="contentMetadata" />
     }
   </div>
   } @else {

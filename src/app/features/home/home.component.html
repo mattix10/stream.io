@@ -8,13 +8,13 @@
     ></app-spinner>
   </div>
 
-  } @if (movieMetadataList.length) {
+  } @if (contentMetadataList.length) {
   <div class="movie-items-container">
-    @for (movieMetadata of movieMetadataList | paginate: { itemsPerPage,
-    currentPage }; track movieMetadata) {
+    @for (contentMetadata of contentMetadataList | paginate: { itemsPerPage,
+    currentPage }; track contentMetadata) {
     <app-movie-item
       class="movie-item"
-      [movieMetadata]="movieMetadata"
+      [contentMetadata]="contentMetadata"
     ></app-movie-item>
     }
   </div>
@@ -25,6 +25,6 @@
       nextLabel=""
     />
   </div>
-  } @if(!movieMetadataList.length && !isLoading) { Brak filmów do wyświetlenia.
-  }
+  } @if(!contentMetadataList.length && !isLoading) { Brak filmów do
+  wyświetlenia. }
 </div>

@@ -68,7 +68,7 @@ export class MovieComponent implements OnInit, isLoading {
   license!: License;
   protected licenseId?: string;
 
-  readonly #movieService = inject(ContentService);
+  readonly #contentService = inject(ContentService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
   readonly #licenseService = inject(LicenseService);
@@ -79,7 +79,7 @@ export class MovieComponent implements OnInit, isLoading {
   }
 
   onCommentChanged(body: string): void {
-    this.#movieService
+    this.#contentService
       .createComment({ body, contentId: this.contentId })
       .pipe(
         tap(() => this.submitComment.next()),
@@ -133,7 +133,7 @@ export class MovieComponent implements OnInit, isLoading {
   private getMovieMetadata(): Observable<MovieMetadataResponse> {
     this.isLoading = true;
 
-    return this.#movieService.getContent(this.contentId).pipe(
+    return this.#contentService.getContent(this.contentId).pipe(
       tap(({ result }) => {
         this.movieMetadata = result;
         this.movieMetadata.licenseRules
@@ -147,7 +147,7 @@ export class MovieComponent implements OnInit, isLoading {
   private getRecommendedMovies(): Observable<AllMoviesMetadataResponse> {
     this.isLoadingRecommendedMovies = true;
 
-    return this.#movieService
+    return this.#contentService
       .getMovies(new HttpParams().set('limit', '10'))
       .pipe(
         tap(({ result }: AllMoviesMetadataResponse) => {
@@ -187,7 +187,7 @@ export class MovieComponent implements OnInit, isLoading {
   private getMovieLink(): Observable<MovieLinkResponse> {
     this.isLoadingMovieLink = true;
 
-    return this.#movieService.getVideoLink(this.contentId).pipe(
+    return this.#contentService.getVideoLink(this.contentId).pipe(
       tap(({ result }) => {
         this.movieLink = result.url;
       }),

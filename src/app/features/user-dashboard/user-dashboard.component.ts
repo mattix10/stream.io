@@ -8,6 +8,7 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { UserService } from 'src/app/core/services/user.service';
 import { isLoading } from 'src/app/core/models/interfaces/loading';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { UserResponse } from 'src/app/core/models/responses/user-response';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -39,7 +40,7 @@ export class UserDashboardComponent implements isLoading, OnInit {
     this.loadUser().subscribe();
   }
 
-  private loadUser(): Observable<any> {
+  private loadUser(): Observable<UserResponse> {
     this.isLoading = true;
 
     return this.#userService.getUser().pipe(

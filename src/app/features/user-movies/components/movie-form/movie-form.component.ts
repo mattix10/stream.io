@@ -164,7 +164,7 @@ export class MovieFormComponent implements isLoading {
     title: string;
     description: string;
     licenseRules: LicenseRule[];
-  }) {
+  }): void {
     this.#contentService
       .updateContent(contentMetadataForm, this.#contentMetadata!.uuid)
       .pipe(
@@ -182,7 +182,7 @@ export class MovieFormComponent implements isLoading {
     title: string;
     description: string;
     licenseRules: LicenseRule[];
-  }) {
+  }): void {
     forkJoin([this.uploadImage(), this.uploadVideo()])
       .pipe(
         mergeMap(([imageResponse, movieResponse]) => {

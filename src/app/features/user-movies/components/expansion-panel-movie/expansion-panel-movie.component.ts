@@ -53,16 +53,16 @@ export class ExpansionPanelMovieComponent {
   @Input({ required: true }) isEditMode: boolean = false;
 
   @Output() removeMovieChanged = new EventEmitter<void>();
+  protected currentPage: number = 1;
+  protected itemsPerPage: number = 22;
   movieList: MovieListItem[] = [];
-  currentPage: number = 1;
-  itemsPerPage: number = 22;
   selectedMovie?: MovieListItem;
 
   readonly #contentService = inject(ContentService);
   readonly #destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
-    this.#contentService.selectedMovieForEdit$
+    this.#contentService.selectedContentForEdit$
       .pipe(
         takeUntilDestroyed(this.#destroyRef),
         tap((movie) => {
@@ -84,7 +84,7 @@ export class ExpansionPanelMovieComponent {
     this.selectedMovie = this.movieList.find((movie) => movie.uuid === uuid);
     if (!this.selectedMovie) return;
 
-    this.#contentService.selectedMovieForEdit$.next(this.selectedMovie);
+    this.#contentService.selectedContentForEdit$.next(this.selectedMovie);
   }
 
   deleteMovie(movie: UserContentMetadata): void {

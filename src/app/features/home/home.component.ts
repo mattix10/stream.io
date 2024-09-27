@@ -23,29 +23,29 @@ import { HttpParams } from '@angular/common/http';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit, isLoading {
-  movieMetadataList: ContentMetadata[] = [];
+  contentMetadataList: ContentMetadata[] = [];
   isLoading: boolean = false;
   currentPage: number = 1;
   itemsPerPage: number = 12;
 
-  readonly #movieService = inject(ContentService);
+  readonly #contentService = inject(ContentService);
 
   ngOnInit(): void {
-    this.loadMovies();
+    this.loadContentList();
   }
 
-  private loadMovies(): void {
+  private loadContentList(): void {
     this.isLoading = true;
 
     const params = new HttpParams()
       .set('currentPage', this.currentPage)
       .set('itemsPerPage', this.itemsPerPage);
 
-    this.#movieService
+    this.#contentService
       .getMovies(params)
       .pipe(
         tap(({ result }: AllMoviesMetadataResponse) => {
-          this.movieMetadataList = result.contents;
+          this.contentMetadataList = result.contents;
         }),
         finalize(() => (this.isLoading = false))
       )

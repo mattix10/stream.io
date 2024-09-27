@@ -9,11 +9,11 @@ import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata
   styleUrl: './movie-item.component.scss',
 })
 export class MovieItemComponent {
-  @Input() movieMetadata!: ContentMetadata;
+  @Input() contentMetadata!: ContentMetadata;
 
   readonly #router = inject(Router);
 
   protected navigateToMovieDetails(): void {
-    this.#router.navigate(['/movie', this.movieMetadata.uuid]);
+    this.#router.navigate(['/movie', this.contentMetadata.uuid]);
   }
 }

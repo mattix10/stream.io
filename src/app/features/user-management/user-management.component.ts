@@ -7,6 +7,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { isLoading } from 'src/app/core/models/interfaces/loading';
 import { UserTableComponent } from './components/user-table/user-table.component';
+import { UserListResponse } from 'src/app/core/models/responses/user-list-response';
 
 @Component({
   selector: 'app-user-management',
@@ -31,7 +32,7 @@ export class UserManagementComponent implements OnInit, isLoading {
       .subscribe();
   }
 
-  private getUserList(): Observable<any> {
+  private getUserList(): Observable<UserListResponse> {
     return this.#userService.getUsers().pipe(
       tap(({ result }) => (this.users = result.users)),
       finalize(() => (this.isLoading = false))

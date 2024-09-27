@@ -4,7 +4,6 @@ import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 import { map, mergeMap, tap } from 'rxjs';
 import { ContentService } from 'src/app/core/services/content.service';
 import { MovieItemComponent } from '../../shared/components/movie-item/movie-item.component';
-import { CommonModule } from '@angular/common';
 import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata';
 
 @Component({
@@ -15,18 +14,18 @@ import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata
   styleUrl: './search-results.component.scss',
 })
 export class SearchResultsComponent implements OnInit {
-  movieMetadataList: ContentMetadata[] = [];
   searchValue: string = '';
+  contentMetadataList: ContentMetadata[] = [];
 
   readonly #searchParamName = 'search';
   readonly #contentService = inject(ContentService);
   readonly #activatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.getSearchedMovies();
+    this.getSearchMovies();
   }
 
-  getSearchedMovies(): void {
+  getSearchMovies(): void {
     this.#activatedRoute.queryParams
       .pipe(
         mergeMap((params: Params) => {
@@ -42,8 +41,8 @@ export class SearchResultsComponent implements OnInit {
               )
             ),
             tap(
-              (movieMetadataList) =>
-                (this.movieMetadataList = movieMetadataList)
+              (contentMetadataList) =>
+                (this.contentMetadataList = contentMetadataList)
             )
           );
         })

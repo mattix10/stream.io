@@ -46,7 +46,8 @@ export class UserMoviesComponent implements OnInit, isLoading {
 
   onEditModeChange(isEditMode: boolean): void {
     this.isEditMode = isEditMode;
-    if (!this.isEditMode) this.#contentService.selectedMovieForEdit$.next(null);
+    if (!this.isEditMode)
+      this.#contentService.selectedContentForEdit$.next(null);
   }
 
   onSubmitForm(): void {
@@ -69,7 +70,7 @@ export class UserMoviesComponent implements OnInit, isLoading {
   }
 
   private loadSelectedMovieForEdit(): void {
-    this.#contentService.selectedMovieForEdit$
+    this.#contentService.selectedContentForEdit$
       .pipe(
         takeUntilDestroyed(this.#destroyRef),
         tap((selectedMovieForEdit) => {

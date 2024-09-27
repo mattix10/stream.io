@@ -1,10 +1,10 @@
-@if (movieMetadata) {
+@if (contentMetadata) {
 <div class="movie-item-container" (click)="navigateToMovieDetails()">
   <div class="image-container">
-    <img class="image" [src]="movieMetadata.imageUrl" alt="Zdjęcie filmu" />
+    <img class="image" [src]="contentMetadata.imageUrl" alt="Zdjęcie filmu" />
   </div>
   <div class="title-wrapper">
-    <div class="title">{{ movieMetadata.title }}</div>
+    <div class="title">{{ contentMetadata.title }}</div>
     <!-- <div class="duration">{{ movieMetadata.duration }} m</div> -->
   </div>
 </div>

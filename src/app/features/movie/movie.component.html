@@ -40,7 +40,7 @@
     </div>
     <div class="recommended-movies">
       @for (movie of recommendedMovies; track movie) {
-      <app-movie-item [movieMetadata]="movie" class="movie-item" />
+      <app-movie-item [contentMetadata]="movie" class="movie-item" />
       }
     </div>
   </div>
