@@ -61,7 +61,7 @@ export class SigninComponent implements isLoading {
       .subscribe();
   }
 
-  protected navigate(): void {
+  protected navigateToEndUserRegistration(): void {
     this.#router.navigateByUrl(`/auth/signup`);
   }
 }

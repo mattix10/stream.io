@@ -23,6 +23,7 @@
       type="password"
       class="input"
       formControlName="password"
+      (paste)="$event.preventDefault()"
       [class.invalid]="password?.touched && password?.invalid"
     />
     @if(password?.touched && password?.invalid) {
@@ -43,5 +44,7 @@
 </form>
 <div class="link-info">
   Nie masz konta? Zarejestruj się
-  <span class="redirect-message" (click)="navigate()">tutaj</span>
+  <span class="redirect-message" (click)="navigateToEndUserRegistration()"
+    >tutaj</span
+  >
 </div>

@@ -20,12 +20,12 @@ import { isLoading } from 'src/app/core/models/interfaces/loading';
   styleUrl: './../shared/shared-form.component.scss',
 })
 export class RegistrationContentCreatorComponent implements isLoading {
-  readonly #fb = inject(FormBuilder);
+  readonly #formBuilder = inject(FormBuilder);
   readonly #router = inject(Router);
   readonly #userService = inject(UserService);
   isLoading: boolean = false;
 
-  form = this.#fb.group({
+  form = this.#formBuilder.group({
     email: new FormControl('', [Validators.email, Validators.required]),
     username: new FormControl('', [
       Validators.minLength(6),

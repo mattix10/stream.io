@@ -6,7 +6,12 @@
 <div class="user-data-item">
   <div class="form-field">
     <div class="label">Hasło:</div>
-    <input type="password" class="input" [formControl]="password" />
+    <input
+      type="password"
+      class="input"
+      [formControl]="password"
+      (paste)="$event.preventDefault()"
+    />
   </div>
 </div>
 
