@@ -16,7 +16,7 @@
       <span class="list-title"> Użytkownicy </span>
     </li>
     } @if (user) {
-    <li class="list-item" [routerLink]="'/auth/signin'">
+    <li class="list-item" [routerLink]="'/auth/signin'" (click)="onLogout()">
       <span class="list-title"> Wyloguj </span>
     </li>
     } @if (!(user)) {
