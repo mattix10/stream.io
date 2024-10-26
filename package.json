@@ -12,14 +12,14 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^17.1.0",
-    "@angular/common": "^17.1.0",
-    "@angular/compiler": "^17.1.0",
-    "@angular/core": "^17.1.0",
-    "@angular/forms": "^17.1.0",
-    "@angular/platform-browser": "^17.1.0",
-    "@angular/platform-browser-dynamic": "^17.1.0",
-    "@angular/router": "^17.1.0",
+    "@angular/animations": "^18.2.9",
+    "@angular/common": "^18.2.9",
+    "@angular/compiler": "^18.2.9",
+    "@angular/core": "^18.2.9",
+    "@angular/forms": "^18.2.9",
+    "@angular/platform-browser": "^18.2.9",
+    "@angular/platform-browser-dynamic": "^18.2.9",
+    "@angular/router": "^18.2.9",
     "crypto-js": "^4.2.0",
     "ng-toggle-button": "^1.5.2",
     "ngx-pagination": "^6.0.3",
@@ -27,17 +27,17 @@
     "rxjs": "~7.8.0",
     "sjcl": "^1.0.8",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.3"
+    "zone.js": "~0.14.10"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.1.0",
+    "@angular-devkit/build-angular": "^18.2.10",
     "@angular-eslint/builder": "18.4.0",
     "@angular-eslint/eslint-plugin": "18.4.0",
     "@angular-eslint/eslint-plugin-template": "18.4.0",
     "@angular-eslint/schematics": "18.4.0",
     "@angular-eslint/template-parser": "18.4.0",
-    "@angular/cli": "~17.1.0",
-    "@angular/compiler-cli": "^17.1.0",
+    "@angular/cli": "~18.2.10",
+    "@angular/compiler-cli": "^18.2.9",
     "@types/crypto-js": "^4.2.2",
     "@types/jasmine": "~4.3.0",
     "@types/sjcl": "^1.0.34",
@@ -50,6 +50,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.3.3"
+    "typescript": "~5.5.4"
   }
 }
