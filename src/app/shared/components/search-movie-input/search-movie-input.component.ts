@@ -3,11 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
-  selector: 'app-search-movie-input',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './search-movie-input.component.html',
-  styleUrl: './search-movie-input.component.scss',
+    selector: 'app-search-movie-input',
+    imports: [FormsModule],
+    templateUrl: './search-movie-input.component.html',
+    styleUrl: './search-movie-input.component.scss'
 })
 export class SearchMovieInputComponent {
   readonly #router = inject(Router);

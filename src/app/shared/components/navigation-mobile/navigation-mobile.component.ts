@@ -4,7 +4,6 @@ import { NavigationDirective } from '../../navigation.directive';
 
 @Component({
   selector: 'app-navigation-mobile',
-  standalone: true,
   imports: [RouterLink],
   templateUrl: './navigation-mobile.component.html',
   styleUrl: './navigation-mobile.component.scss',
@@ -14,7 +13,7 @@ export class NavigationMobileComponent extends NavigationDirective {
 
   readonly #breakpointMedium = 996;
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onResize() {
     if (window.innerWidth > this.#breakpointMedium) {
       this.toggleMobileMenuVisibility();

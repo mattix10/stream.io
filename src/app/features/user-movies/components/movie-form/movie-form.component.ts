@@ -21,23 +21,22 @@ import {
   Subject,
   tap,
 } from 'rxjs';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { SpinnerComponent } from '@app/shared/components/spinner/spinner.component';
 import { DragAndDropUploadFileComponent } from '../drag-and-drop-upload-file/drag-and-drop-upload-file.component';
 import { LicenseRulesFormComponent } from '../license-rules-form/license-rules-form.component';
 import { FileType } from '../../models/file-type';
-import { ContentService } from 'src/app/core/services/content.service';
-import { LinkForUploadFileResponse } from 'src/app/core/models/responses/link-for-upload-file-response';
-import { Response } from 'src/app/core/models/responses/response';
-import { isLoading } from 'src/app/core/models/interfaces/loading';
+import { ContentService } from '@app/core/services/content.service';
+import { LinkForUploadFileResponse } from '@app/core/models/responses/link-for-upload-file-response';
+import { Response } from '@app/core/models/responses/response';
+import { isLoading } from '@app/core/models/interfaces/loading';
 import { FileUploadService } from '../../services/file-upload.service';
-import { UserContentMetadata } from 'src/app/core/models/interfaces/user-content-metadata';
-import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
+import { UserContentMetadata } from '@app/core/models/interfaces/user-content-metadata';
+import { LicenseRule } from '@app/core/models/interfaces/license-rule';
 import { ImageFileId } from '../../models/image-file-id';
 import { VideoFileId } from '../../models/video-file-id';
 
 @Component({
   selector: 'app-movie-form',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     DragAndDropUploadFileComponent,

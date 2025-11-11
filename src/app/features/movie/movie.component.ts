@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { CommentsComponent } from './components/comment/comments.component';
-import { MovieComment } from 'src/app/core/models/interfaces/movie-comment';
-import { ContentService } from 'src/app/core/services/content.service';
+import { MovieComment } from '@app/core/models/interfaces/movie-comment';
+import { ContentService } from '@app/core/services/content.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
 import {
   catchError,
   combineLatest,
@@ -17,12 +17,12 @@ import {
   take,
   tap,
 } from 'rxjs';
-import { MovieMetadata } from 'src/app/core/models/interfaces/movie-metadata';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { MovieMetadata } from '@app/core/models/interfaces/movie-metadata';
+import { SpinnerComponent } from '@app/shared/components/spinner/spinner.component';
 import { isLoading } from '../../core/models/interfaces/loading';
-import { MovieMetadataResponse } from 'src/app/core/models/responses/movie-metadata-response';
-import { MovieLinkResponse } from 'src/app/core/models/responses/movie-link-response';
-import { AllMoviesMetadataResponse } from 'src/app/core/models/responses/all-movies-metadata-response';
+import { MovieMetadataResponse } from '@app/core/models/responses/movie-metadata-response';
+import { MovieLinkResponse } from '@app/core/models/responses/movie-link-response';
+import { AllMoviesMetadataResponse } from '@app/core/models/responses/all-movies-metadata-response';
 import { HttpParams } from '@angular/common/http';
 import { MovieItemComponent } from '../../shared/components/movie-item/movie-item.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
@@ -31,13 +31,12 @@ import { LicenseService } from './services/license.service';
 import { MovieImageComponent } from './components/movie-image/movie-image.component';
 import { LicenseDialogComponent } from './components/license-dialog/license-dialog.component';
 import { LicenseDialogType } from './models/license-dialog-type';
-import { LicenseType } from 'src/app/core/models/enums/license-type.enum';
-import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata';
-import { License } from 'src/app/core/models/interfaces/license';
+import { LicenseType } from '@app/core/models/enums/license-type.enum';
+import { ContentMetadata } from '@app/core/models/interfaces/content-metadata';
+import { License } from '@app/core/models/interfaces/license';
 
 @Component({
   selector: 'app-movie',
-  standalone: true,
   imports: [
     CommonModule,
     CommentsComponent,

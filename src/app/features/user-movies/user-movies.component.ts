@@ -6,16 +6,15 @@ import { ExpansionPanelMovieComponent } from './components/expansion-panel-movie
 import { MovieFormComponent } from './components/movie-form/movie-form.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize, Observable, tap } from 'rxjs';
-import { UserContentMetadataResponse } from 'src/app/core/models/responses/user-content-metadata-response';
-import { ContentService } from 'src/app/core/services/content.service';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { isLoading } from 'src/app/core/models/interfaces/loading';
-import { UserContentMetadata } from 'src/app/core/models/interfaces/user-content-metadata';
+import { UserContentMetadataResponse } from '@app/core/models/responses/user-content-metadata-response';
+import { ContentService } from '@app/core/services/content.service';
+import { AuthService } from '@app/core/services/auth.service';
+import { SpinnerComponent } from '@app/shared/components/spinner/spinner.component';
+import { isLoading } from '@app/core/models/interfaces/loading';
+import { UserContentMetadata } from '@app/core/models/interfaces/user-content-metadata';
 
 @Component({
   selector: 'app-user-movies',
-  standalone: true,
   imports: [
     AsyncPipe,
     HeadersComponent,

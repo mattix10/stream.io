@@ -2,7 +2,7 @@
 @use "./reset.scss";
 @use "./fonts.scss";
 @use "./variables.scss" as var;
-@import "ngx-toastr/toastr";
+@use "ngx-toastr/toastr";
 
 .container {
   max-width: 1400px;

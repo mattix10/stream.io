@@ -8,15 +8,14 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { LicenseType } from 'src/app/core/models/enums/license-type.enum';
-import { LicenseTypePipe } from 'src/app/features/user-movies/pipes/license-type.pipe';
+import { LicenseType } from '@app/core/models/enums/license-type.enum';
+import { LicenseTypePipe } from '@app/features/user-movies/pipes/license-type.pipe';
 import '@angular/common/locales/global/pl';
-import { LicenseDurationPipe } from 'src/app/features/user-movies/pipes/license-duration.pipe';
-import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
+import { LicenseDurationPipe } from '@app/features/user-movies/pipes/license-duration.pipe';
+import { LicenseRule } from '@app/core/models/interfaces/license-rule';
 
 @Component({
   selector: 'app-license-item',
-  standalone: true,
   imports: [CurrencyPipe, LicenseTypePipe, LicenseDurationPipe],
   providers: [
     {

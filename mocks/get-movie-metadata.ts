@@ -1,6 +1,6 @@
-// import { LicenseDuration } from 'src/app/core/models/license-duration.enum';
-// import { LicenseType } from 'src/app/core/models/license-type.enum';
-// import { MovieMetadata } from 'src/app/core/models/movie-metadata';
+// import { LicenseDuration } from '@app/core/models/license-duration.enum';
+// import { LicenseType } from '@app/core/models/license-type.enum';
+// import { MovieMetadata } from '@app/core/models/movie-metadata';
 
 // export const getMovieMetadata: MovieMetadata = {
 //   uuid: 'string',

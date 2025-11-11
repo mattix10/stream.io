@@ -2,16 +2,15 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
 import { NavigationMobileComponent } from '../navigation-mobile/navigation-mobile.component';
 import { NavigationDesktopComponent } from '../navigation-desktop/navigation-desktop.component';
 import { combineLatest, map, Observable } from 'rxjs';
-import { User } from 'src/app/core/models/classes/user';
+import { User } from '@app/core/models/classes/user';
 import { SearchMovieInputComponent } from '../search-movie-input/search-movie-input.component';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
   imports: [
     RouterModule,
     CommonModule,

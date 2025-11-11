@@ -1,6 +1,6 @@
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata';
+import { ContentMetadata } from '@app/core/models/interfaces/content-metadata';
 
 @Component({
   selector: 'app-movie-item',

@@ -1,4 +1,4 @@
-import { LoginRequest } from 'src/app/core/models/requests/login-request';
+import { LoginRequest } from '@app/core/models/requests/login-request';
 import { usersRegistration } from './user-registration';
 
 export const userLogin: LoginRequest[] = [

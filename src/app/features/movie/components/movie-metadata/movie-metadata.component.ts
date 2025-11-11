@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MovieMetadata } from 'src/app/core/models/interfaces/movie-metadata';
+import { MovieMetadata } from '@app/core/models/interfaces/movie-metadata';
 
 @Component({
   selector: 'app-movie-metadata',

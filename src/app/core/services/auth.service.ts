@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReplaySubject, Observable, map } from 'rxjs';
-import { environment } from 'src/environment/environment';
+import { environment } from '@environment/environment';
 import { Role } from '../models/enums/roles.enum';
 import { User } from '../models/classes/user';
 import { LoggerService } from './logger.service';

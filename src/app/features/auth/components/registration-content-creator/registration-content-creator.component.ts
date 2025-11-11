@@ -7,14 +7,13 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize, tap } from 'rxjs';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { UserService } from 'src/app/core/services/user.service';
-import { RegistrationContentCreatorRequest } from 'src/app/core/models/requests/registration-content-creator-request';
-import { isLoading } from 'src/app/core/models/interfaces/loading';
+import { SpinnerComponent } from '@app/shared/components/spinner/spinner.component';
+import { UserService } from '@app/core/services/user.service';
+import { RegistrationContentCreatorRequest } from '@app/core/models/requests/registration-content-creator-request';
+import { isLoading } from '@app/core/models/interfaces/loading';
 
 @Component({
   selector: 'app-registration-content-creator',
-  standalone: true,
   imports: [ReactiveFormsModule, SpinnerComponent],
   templateUrl: './registration-content-creator.component.html',
   styleUrl: './../shared/shared-form.component.scss',

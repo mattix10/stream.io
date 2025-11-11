@@ -2,31 +2,31 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "paths": {
+      // A new catch-all that replaces the baseUrl:
+      "*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@environment/*": ["./src/environment/*"]
+    },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "esModuleInterop": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
-    //"noUnusedLocals": true,
-    //"noUnusedParameters": true,
-    "allowSyntheticDefaultImports": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ]
+    "typeRoots": ["node_modules/@types", "types"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -1,4 +1,4 @@
-import { LicenseType } from 'src/app/core/models/enums/license-type.enum';
+import { LicenseType } from '@app/core/models/enums/license-type.enum';
 
 export const licenseTypeLabels: LicenseTypeLabel[] = [
   { value: LicenseType.Buy, label: 'Kupno' },

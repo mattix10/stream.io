@@ -20,12 +20,11 @@ import {
 import { Subject, tap } from 'rxjs';
 import { licenseTypeOptions } from '../../models/license-type-options';
 import { licenseDurationOptions } from '../../models/license-duration-options';
-import { LicenseType } from 'src/app/core/models/enums/license-type.enum';
-import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
+import { LicenseType } from '@app/core/models/enums/license-type.enum';
+import { LicenseRule } from '@app/core/models/interfaces/license-rule';
 
 @Component({
   selector: 'app-license-rules-form',
-  standalone: true,
   imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './license-rules-form.component.html',
   styleUrl: './license-rules-form.component.scss',

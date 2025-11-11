@@ -9,7 +9,7 @@ import {
   LOCALE_ID,
   Output,
 } from '@angular/core';
-import { ContentService } from 'src/app/core/services/content.service';
+import { ContentService } from '@app/core/services/content.service';
 import '@angular/common/locales/global/pl';
 import { LicenseTypePipe } from '../../pipes/license-type.pipe';
 import { LicenseDurationPipe } from '../../pipes/license-duration.pipe';
@@ -17,14 +17,13 @@ import { Observable, tap } from 'rxjs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FileUploadService } from '../../services/file-upload.service';
-import { UserContentMetadata } from 'src/app/core/models/interfaces/user-content-metadata';
+import { UserContentMetadata } from '@app/core/models/interfaces/user-content-metadata';
 
 type MovieListItem = UserContentMetadata & {
   isExpanded: boolean;
 };
 @Component({
   selector: 'app-expansion-panel-movie',
-  standalone: true,
   imports: [
     CommonModule,
     CurrencyPipe,
