@@ -7,11 +7,10 @@ import { MovieItemComponent } from '../../shared/components/movie-item/movie-ite
 import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata';
 
 @Component({
-  selector: 'app-search-results',
-  standalone: true,
-  imports: [MovieItemComponent, RouterModule],
-  templateUrl: './search-results.component.html',
-  styleUrl: './search-results.component.scss',
+    selector: 'app-search-results',
+    imports: [MovieItemComponent, RouterModule],
+    templateUrl: './search-results.component.html',
+    styleUrl: './search-results.component.scss'
 })
 export class SearchResultsComponent implements OnInit {
   searchValue: string = '';

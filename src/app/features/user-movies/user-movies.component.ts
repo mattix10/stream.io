@@ -14,17 +14,16 @@ import { isLoading } from 'src/app/core/models/interfaces/loading';
 import { UserContentMetadata } from 'src/app/core/models/interfaces/user-content-metadata';
 
 @Component({
-  selector: 'app-user-movies',
-  standalone: true,
-  imports: [
-    AsyncPipe,
-    HeadersComponent,
-    MovieFormComponent,
-    ExpansionPanelMovieComponent,
-    SpinnerComponent,
-  ],
-  templateUrl: './user-movies.component.html',
-  styleUrl: './user-movies.component.scss',
+    selector: 'app-user-movies',
+    imports: [
+        AsyncPipe,
+        HeadersComponent,
+        MovieFormComponent,
+        ExpansionPanelMovieComponent,
+        SpinnerComponent,
+    ],
+    templateUrl: './user-movies.component.html',
+    styleUrl: './user-movies.component.scss'
 })
 export class UserMoviesComponent implements OnInit, isLoading {
   readonly #authService = inject(AuthService);

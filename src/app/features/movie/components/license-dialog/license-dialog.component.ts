@@ -10,11 +10,10 @@ import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.comp
 import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
 
 @Component({
-  selector: 'app-license-dialog',
-  standalone: true,
-  imports: [LicenseItemComponent, SpinnerComponent],
-  templateUrl: './license-dialog.component.html',
-  styleUrl: './license-dialog.component.scss',
+    selector: 'app-license-dialog',
+    imports: [LicenseItemComponent, SpinnerComponent],
+    templateUrl: './license-dialog.component.html',
+    styleUrl: './license-dialog.component.scss'
 })
 export class LicenseDialogComponent implements isLoading {
   @Input({ required: true }) licenseRules?: LicenseRule[];

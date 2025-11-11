@@ -23,28 +23,27 @@ type MovieListItem = UserContentMetadata & {
   isExpanded: boolean;
 };
 @Component({
-  selector: 'app-expansion-panel-movie',
-  standalone: true,
-  imports: [
-    CommonModule,
-    CurrencyPipe,
-    LicenseTypePipe,
-    LicenseDurationPipe,
-    NgxPaginationModule,
-  ],
-  templateUrl: './expansion-panel-movie.component.html',
-  styleUrl: './expansion-panel-movie.component.scss',
-  providers: [
-    {
-      provide: LOCALE_ID,
-      useValue: 'pl',
-    },
-    {
-      provide: DEFAULT_CURRENCY_CODE,
-      useValue: 'zł',
-    },
-    FileUploadService,
-  ],
+    selector: 'app-expansion-panel-movie',
+    imports: [
+        CommonModule,
+        CurrencyPipe,
+        LicenseTypePipe,
+        LicenseDurationPipe,
+        NgxPaginationModule,
+    ],
+    templateUrl: './expansion-panel-movie.component.html',
+    styleUrl: './expansion-panel-movie.component.scss',
+    providers: [
+        {
+            provide: LOCALE_ID,
+            useValue: 'pl',
+        },
+        {
+            provide: DEFAULT_CURRENCY_CODE,
+            useValue: 'zł',
+        },
+        FileUploadService,
+    ]
 })
 export class ExpansionPanelMovieComponent {
   @Input() set movies(movies: UserContentMetadata[]) {

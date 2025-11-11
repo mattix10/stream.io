@@ -13,11 +13,10 @@ import { isLoading } from 'src/app/core/models/interfaces/loading';
 import { BaseRegistrationRequest } from 'src/app/core/models/requests/base-registration-request';
 
 @Component({
-  selector: 'app-registration-end-user',
-  standalone: true,
-  imports: [ReactiveFormsModule, SpinnerComponent],
-  templateUrl: './registration-end-user.component.html',
-  styleUrl: './../shared/shared-form.component.scss',
+    selector: 'app-registration-end-user',
+    imports: [ReactiveFormsModule, SpinnerComponent],
+    templateUrl: './registration-end-user.component.html',
+    styleUrl: './../shared/shared-form.component.scss'
 })
 export class RegistrationEndUserComponent implements isLoading {
   form = new FormGroup({

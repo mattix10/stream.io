@@ -10,11 +10,10 @@ import { EditHeaderComponent } from 'src/app/features/user-dashboard/components/
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({
-  selector: 'app-change-password',
-  standalone: true,
-  imports: [SpinnerComponent, ReactiveFormsModule, EditHeaderComponent],
-  templateUrl: './change-password.component.html',
-  styleUrl: './change-password.component.scss',
+    selector: 'app-change-password',
+    imports: [SpinnerComponent, ReactiveFormsModule, EditHeaderComponent],
+    templateUrl: './change-password.component.html',
+    styleUrl: './change-password.component.scss'
 })
 export class ChangePasswordComponent implements isLoading {
   isEditMode = false;

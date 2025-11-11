@@ -24,11 +24,10 @@ import { LicenseType } from 'src/app/core/models/enums/license-type.enum';
 import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
 
 @Component({
-  selector: 'app-license-rules-form',
-  standalone: true,
-  imports: [ReactiveFormsModule, FormsModule],
-  templateUrl: './license-rules-form.component.html',
-  styleUrl: './license-rules-form.component.scss',
+    selector: 'app-license-rules-form',
+    imports: [ReactiveFormsModule, FormsModule],
+    templateUrl: './license-rules-form.component.html',
+    styleUrl: './license-rules-form.component.scss'
 })
 export class LicenseRulesFormComponent implements OnInit {
   @Input() set isEditMode(isEditMode: boolean) {

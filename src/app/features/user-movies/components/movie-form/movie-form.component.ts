@@ -36,16 +36,15 @@ import { ImageFileId } from '../../models/image-file-id';
 import { VideoFileId } from '../../models/video-file-id';
 
 @Component({
-  selector: 'app-movie-form',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    DragAndDropUploadFileComponent,
-    SpinnerComponent,
-    LicenseRulesFormComponent,
-  ],
-  templateUrl: './movie-form.component.html',
-  providers: [FileUploadService],
+    selector: 'app-movie-form',
+    imports: [
+        ReactiveFormsModule,
+        DragAndDropUploadFileComponent,
+        SpinnerComponent,
+        LicenseRulesFormComponent,
+    ],
+    templateUrl: './movie-form.component.html',
+    providers: [FileUploadService]
 })
 export class MovieFormComponent implements isLoading {
   @Input({ required: true }) set isEditMode(isEditMode: boolean) {

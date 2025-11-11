@@ -11,8 +11,7 @@ import { UserListResponse } from 'src/app/core/models/responses/user-list-respon
 
 @Component({
   selector: 'app-user-management',
-  standalone: true,
-  imports: [AsyncPipe, UserTableComponent, SpinnerComponent],
+  imports: [UserTableComponent, SpinnerComponent],
   templateUrl: './user-management.component.html',
 })
 export class UserManagementComponent implements OnInit, isLoading {

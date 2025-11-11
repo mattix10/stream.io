@@ -36,21 +36,20 @@ import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata
 import { License } from 'src/app/core/models/interfaces/license';
 
 @Component({
-  selector: 'app-movie',
-  standalone: true,
-  imports: [
-    CommonModule,
-    CommentsComponent,
-    SpinnerComponent,
-    MovieItemComponent,
-    VideoPlayerComponent,
-    MovieMetadataComponent,
-    MovieImageComponent,
-    LicenseDialogComponent,
-  ],
-  providers: [LicenseService],
-  templateUrl: './movie.component.html',
-  styleUrl: './movie.component.scss',
+    selector: 'app-movie',
+    imports: [
+        CommonModule,
+        CommentsComponent,
+        SpinnerComponent,
+        MovieItemComponent,
+        VideoPlayerComponent,
+        MovieMetadataComponent,
+        MovieImageComponent,
+        LicenseDialogComponent,
+    ],
+    providers: [LicenseService],
+    templateUrl: './movie.component.html',
+    styleUrl: './movie.component.scss'
 })
 export class MovieComponent implements OnInit, isLoading {
   comments: MovieComment[] = [];

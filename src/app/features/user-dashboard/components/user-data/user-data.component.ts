@@ -24,17 +24,16 @@ import { EditHeaderComponent } from 'src/app/features/user-dashboard/components/
 import { isLoading } from 'src/app/core/models/interfaces/loading';
 
 @Component({
-  selector: 'app-user-data',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SpinnerComponent,
-    EditHeaderComponent,
-  ],
-  templateUrl: './user-data.component.html',
-  styleUrl: './user-data.component.scss',
+    selector: 'app-user-data',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SpinnerComponent,
+        EditHeaderComponent,
+    ],
+    templateUrl: './user-data.component.html',
+    styleUrl: './user-data.component.scss'
 })
 export class UserDataComponent implements OnInit, isLoading {
   @Input({ required: true }) user!: User;

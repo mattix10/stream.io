@@ -11,16 +11,15 @@ import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.comp
 import { UserResponse } from 'src/app/core/models/responses/user-response';
 
 @Component({
-  selector: 'app-user-dashboard',
-  standalone: true,
-  imports: [
-    CommonModule,
-    UserDataComponent,
-    DeleteAccountComponent,
-    ChangePasswordComponent,
-    SpinnerComponent,
-  ],
-  templateUrl: './user-dashboard.component.html',
+    selector: 'app-user-dashboard',
+    imports: [
+        CommonModule,
+        UserDataComponent,
+        DeleteAccountComponent,
+        ChangePasswordComponent,
+        SpinnerComponent,
+    ],
+    templateUrl: './user-dashboard.component.html'
 })
 export class UserDashboardComponent implements isLoading, OnInit {
   user: User | null = null;

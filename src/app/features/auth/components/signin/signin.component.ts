@@ -13,11 +13,10 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({
-  selector: 'app-signin',
-  standalone: true,
-  imports: [ReactiveFormsModule, SpinnerComponent],
-  templateUrl: './signin.component.html',
-  styleUrl: './../shared/shared-form.component.scss',
+    selector: 'app-signin',
+    imports: [ReactiveFormsModule, SpinnerComponent],
+    templateUrl: './signin.component.html',
+    styleUrl: './../shared/shared-form.component.scss'
 })
 export class SigninComponent implements isLoading {
   form = new FormGroup({

@@ -4,11 +4,10 @@ import { User } from 'src/app/core/models/classes/user';
 import { UserStatusEvent } from '../../models/user-status-event';
 
 @Component({
-  selector: 'app-user-table',
-  standalone: true,
-  imports: [NgToggleModule],
-  templateUrl: './user-table.component.html',
-  styleUrl: './user-table.component.scss',
+    selector: 'app-user-table',
+    imports: [NgToggleModule],
+    templateUrl: './user-table.component.html',
+    styleUrl: './user-table.component.scss'
 })
 export class UserTableComponent {
   @Input({ required: true }) users: User[] = [];

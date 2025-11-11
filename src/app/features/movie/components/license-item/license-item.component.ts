@@ -15,21 +15,20 @@ import { LicenseDurationPipe } from 'src/app/features/user-movies/pipes/license-
 import { LicenseRule } from 'src/app/core/models/interfaces/license-rule';
 
 @Component({
-  selector: 'app-license-item',
-  standalone: true,
-  imports: [CurrencyPipe, LicenseTypePipe, LicenseDurationPipe],
-  providers: [
-    {
-      provide: LOCALE_ID,
-      useValue: 'pl',
-    },
-    {
-      provide: DEFAULT_CURRENCY_CODE,
-      useValue: 'zł',
-    },
-  ],
-  templateUrl: './license-item.component.html',
-  styleUrl: './license-item.component.scss',
+    selector: 'app-license-item',
+    imports: [CurrencyPipe, LicenseTypePipe, LicenseDurationPipe],
+    providers: [
+        {
+            provide: LOCALE_ID,
+            useValue: 'pl',
+        },
+        {
+            provide: DEFAULT_CURRENCY_CODE,
+            useValue: 'zł',
+        },
+    ],
+    templateUrl: './license-item.component.html',
+    styleUrl: './license-item.component.scss'
 })
 export class LicenseItemComponent implements OnInit {
   @Input() licenseRule?: LicenseRule;

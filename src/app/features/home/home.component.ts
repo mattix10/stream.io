@@ -11,16 +11,15 @@ import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata
 import { HttpParams } from '@angular/common/http';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [
-    MovieItemComponent,
-    RouterModule,
-    SpinnerComponent,
-    NgxPaginationModule,
-  ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+    selector: 'app-home',
+    imports: [
+        MovieItemComponent,
+        RouterModule,
+        SpinnerComponent,
+        NgxPaginationModule,
+    ],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit, isLoading {
   contentMetadataList: ContentMetadata[] = [];

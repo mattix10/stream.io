@@ -9,11 +9,10 @@ import { EditHeaderComponent } from 'src/app/features/user-dashboard/components/
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({
-  selector: 'app-delete-account',
-  standalone: true,
-  imports: [SpinnerComponent, ReactiveFormsModule, EditHeaderComponent],
-  templateUrl: './delete-account.component.html',
-  styleUrl: './delete-account.component.scss',
+    selector: 'app-delete-account',
+    imports: [SpinnerComponent, ReactiveFormsModule, EditHeaderComponent],
+    templateUrl: './delete-account.component.html',
+    styleUrl: './delete-account.component.scss'
 })
 export class DeleteAccountComponent implements isLoading {
   isEditMode = false;

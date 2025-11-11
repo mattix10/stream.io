@@ -10,18 +10,17 @@ import { User } from 'src/app/core/models/classes/user';
 import { SearchMovieInputComponent } from '../search-movie-input/search-movie-input.component';
 
 @Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [
-    RouterModule,
-    CommonModule,
-    FormsModule,
-    NavigationMobileComponent,
-    NavigationDesktopComponent,
-    SearchMovieInputComponent,
-  ],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss',
+    selector: 'app-navbar',
+    imports: [
+        RouterModule,
+        CommonModule,
+        FormsModule,
+        NavigationMobileComponent,
+        NavigationDesktopComponent,
+        SearchMovieInputComponent,
+    ],
+    templateUrl: './navbar.component.html',
+    styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit {
   protected isMobileMenuVisible = false;

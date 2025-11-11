@@ -16,12 +16,11 @@ import { MovieComment } from 'src/app/core/models/interfaces/movie-comment';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
-  selector: 'app-comments',
-  standalone: true,
-  imports: [CommonModule],
-  providers: [{ provide: LOCALE_ID, useValue: 'pl' }],
-  templateUrl: './comments.component.html',
-  styleUrl: './comments.component.scss',
+    selector: 'app-comments',
+    imports: [CommonModule],
+    providers: [{ provide: LOCALE_ID, useValue: 'pl' }],
+    templateUrl: './comments.component.html',
+    styleUrl: './comments.component.scss'
 })
 export class CommentsComponent {
   @Input() set contentComments(comments: MovieComment[]) {

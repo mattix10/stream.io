@@ -5,11 +5,10 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 
 @Component({
-  selector: 'app-movie-image',
-  standalone: true,
-  imports: [AsyncPipe, SpinnerComponent],
-  templateUrl: './movie-image.component.html',
-  styleUrl: './movie-image.component.scss',
+    selector: 'app-movie-image',
+    imports: [AsyncPipe, SpinnerComponent],
+    templateUrl: './movie-image.component.html',
+    styleUrl: './movie-image.component.scss'
 })
 export class MovieImageComponent implements isLoading {
   @Input() imageUrl = '';

@@ -16,11 +16,10 @@ import { License } from 'src/app/core/models/interfaces/license';
 type Padding = typeof CryptoJS.pad.NoPadding;
 
 @Component({
-  selector: 'app-video-player',
-  standalone: true,
-  imports: [AsyncPipe, CommonModule],
-  templateUrl: './video-player.component.html',
-  styleUrls: ['./video-player.component.scss'],
+    selector: 'app-video-player',
+    imports: [AsyncPipe, CommonModule],
+    templateUrl: './video-player.component.html',
+    styleUrls: ['./video-player.component.scss']
 })
 
 //TODO: Create DecryptionService and VideoManagementService and move relevant logic there...

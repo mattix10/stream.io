@@ -13,11 +13,10 @@ import { RegistrationContentCreatorRequest } from 'src/app/core/models/requests/
 import { isLoading } from 'src/app/core/models/interfaces/loading';
 
 @Component({
-  selector: 'app-registration-content-creator',
-  standalone: true,
-  imports: [ReactiveFormsModule, SpinnerComponent],
-  templateUrl: './registration-content-creator.component.html',
-  styleUrl: './../shared/shared-form.component.scss',
+    selector: 'app-registration-content-creator',
+    imports: [ReactiveFormsModule, SpinnerComponent],
+    templateUrl: './registration-content-creator.component.html',
+    styleUrl: './../shared/shared-form.component.scss'
 })
 export class RegistrationContentCreatorComponent implements isLoading {
   readonly #formBuilder = inject(FormBuilder);
