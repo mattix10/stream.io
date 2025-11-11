@@ -6,7 +6,8 @@
       // A new catch-all that replaces the baseUrl:
       "*": ["./src/*"],
       "@app/*": ["./src/app/*"],
-      "@lib/*": ["./src/lib/*"]
+      "@lib/*": ["./src/lib/*"],
+      "@environment/*": ["./src/environment/*"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

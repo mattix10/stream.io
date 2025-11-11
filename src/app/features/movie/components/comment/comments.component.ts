@@ -12,15 +12,15 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, take, tap } from 'rxjs';
-import { MovieComment } from 'src/app/core/models/interfaces/movie-comment';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { MovieComment } from '@app/core/models/interfaces/movie-comment';
+import { AuthService } from '@app/core/services/auth.service';
 
 @Component({
-    selector: 'app-comments',
-    imports: [CommonModule],
-    providers: [{ provide: LOCALE_ID, useValue: 'pl' }],
-    templateUrl: './comments.component.html',
-    styleUrl: './comments.component.scss'
+  selector: 'app-comments',
+  imports: [CommonModule],
+  providers: [{ provide: LOCALE_ID, useValue: 'pl' }],
+  templateUrl: './comments.component.html',
+  styleUrl: './comments.component.scss',
 })
 export class CommentsComponent {
   @Input() set contentComments(comments: MovieComment[]) {

@@ -1,4 +1,4 @@
-import { RegistrationContentCreatorRequest } from 'src/app/features/auth/models/registration-content-creator-request';
+import { RegistrationContentCreatorRequest } from '@app/features/auth/models/registration-content-creator-request';
 import { password } from './user-registration';
 
 export const contentCreatorRegistration: RegistrationContentCreatorRequest = {

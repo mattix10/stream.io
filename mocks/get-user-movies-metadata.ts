@@ -1,4 +1,4 @@
-import { UserContentMetadataResponse } from 'src/app/core/models/responses/user-content-metadata-response';
+import { UserContentMetadataResponse } from '@app/core/models/responses/user-content-metadata-response';
 
 export const getUserMoviesMetadataResponse: UserContentMetadataResponse = {
   result: {

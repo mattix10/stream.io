@@ -14,26 +14,26 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { User } from 'src/app/core/models/classes/user';
+import { User } from '@app/core/models/classes/user';
 import { UserData } from '../../models/user-data';
-import { Role } from 'src/app/core/models/enums/roles.enum';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { Role } from '@app/core/models/enums/roles.enum';
+import { SpinnerComponent } from '@app/shared/components/spinner/spinner.component';
 import { finalize, Observable, of, tap } from 'rxjs';
-import { UserService } from 'src/app/core/services/user.service';
-import { EditHeaderComponent } from 'src/app/features/user-dashboard/components/edit-header/edit-header.component';
-import { isLoading } from 'src/app/core/models/interfaces/loading';
+import { UserService } from '@app/core/services/user.service';
+import { EditHeaderComponent } from '@app/features/user-dashboard/components/edit-header/edit-header.component';
+import { isLoading } from '@app/core/models/interfaces/loading';
 
 @Component({
-    selector: 'app-user-data',
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        SpinnerComponent,
-        EditHeaderComponent,
-    ],
-    templateUrl: './user-data.component.html',
-    styleUrl: './user-data.component.scss'
+  selector: 'app-user-data',
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SpinnerComponent,
+    EditHeaderComponent,
+  ],
+  templateUrl: './user-data.component.html',
+  styleUrl: './user-data.component.scss',
 })
 export class UserDataComponent implements OnInit, isLoading {
   @Input({ required: true }) user!: User;

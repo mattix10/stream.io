@@ -1,25 +1,25 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { MovieItemComponent } from '../../shared/components/movie-item/movie-item.component';
-import { ContentService } from 'src/app/core/services/content.service';
+import { ContentService } from '@app/core/services/content.service';
 import { RouterModule } from '@angular/router';
-import { AllMoviesMetadataResponse } from 'src/app/core/models/responses/all-movies-metadata-response';
+import { AllMoviesMetadataResponse } from '@app/core/models/responses/all-movies-metadata-response';
 import { finalize, tap } from 'rxjs';
 import { isLoading } from '../../core/models/interfaces/loading';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { SpinnerComponent } from '@app/shared/components/spinner/spinner.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ContentMetadata } from 'src/app/core/models/interfaces/content-metadata';
+import { ContentMetadata } from '@app/core/models/interfaces/content-metadata';
 import { HttpParams } from '@angular/common/http';
 
 @Component({
-    selector: 'app-home',
-    imports: [
-        MovieItemComponent,
-        RouterModule,
-        SpinnerComponent,
-        NgxPaginationModule,
-    ],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss'
+  selector: 'app-home',
+  imports: [
+    MovieItemComponent,
+    RouterModule,
+    SpinnerComponent,
+    NgxPaginationModule,
+  ],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit, isLoading {
   contentMetadataList: ContentMetadata[] = [];

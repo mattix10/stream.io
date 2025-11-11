@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { BaseRegistrationRequest } from 'src/app/core/models/requests/base-registration-request';
-import { UserData } from 'src/app/features/user-dashboard/models/user-data';
+import { BaseRegistrationRequest } from '@app/core/models/requests/base-registration-request';
+import { UserData } from '@app/features/user-dashboard/models/user-data';
 import { BaseUpdateUserRequest } from '../models/requests/base-update-user-request';
 import { ChangePasswordRequest } from '../models/requests/change-password-request';
 import { UpdateContentCreatorRequest } from '../models/requests/update-content-creator-request';

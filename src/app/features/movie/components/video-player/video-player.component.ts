@@ -9,17 +9,17 @@ import {
   ElementRef,
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
 import * as CryptoJS from 'crypto-js';
 import WordArray from 'crypto-js/lib-typedarrays';
-import { License } from 'src/app/core/models/interfaces/license';
+import { License } from '@app/core/models/interfaces/license';
 type Padding = typeof CryptoJS.pad.NoPadding;
 
 @Component({
-    selector: 'app-video-player',
-    imports: [AsyncPipe, CommonModule],
-    templateUrl: './video-player.component.html',
-    styleUrls: ['./video-player.component.scss']
+  selector: 'app-video-player',
+  imports: [AsyncPipe, CommonModule],
+  templateUrl: './video-player.component.html',
+  styleUrls: ['./video-player.component.scss'],
 })
 
 //TODO: Create DecryptionService and VideoManagementService and move relevant logic there...

@@ -7,16 +7,16 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize, tap } from 'rxjs';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { UserService } from 'src/app/core/services/user.service';
-import { isLoading } from 'src/app/core/models/interfaces/loading';
-import { BaseRegistrationRequest } from 'src/app/core/models/requests/base-registration-request';
+import { SpinnerComponent } from '@app/shared/components/spinner/spinner.component';
+import { UserService } from '@app/core/services/user.service';
+import { isLoading } from '@app/core/models/interfaces/loading';
+import { BaseRegistrationRequest } from '@app/core/models/requests/base-registration-request';
 
 @Component({
-    selector: 'app-registration-end-user',
-    imports: [ReactiveFormsModule, SpinnerComponent],
-    templateUrl: './registration-end-user.component.html',
-    styleUrl: './../shared/shared-form.component.scss'
+  selector: 'app-registration-end-user',
+  imports: [ReactiveFormsModule, SpinnerComponent],
+  templateUrl: './registration-end-user.component.html',
+  styleUrl: './../shared/shared-form.component.scss',
 })
 export class RegistrationEndUserComponent implements isLoading {
   form = new FormGroup({

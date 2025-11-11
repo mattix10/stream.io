@@ -1,5 +1,5 @@
-import { LicenseType } from 'src/app/core/models/enums/license-type.enum';
-import { CreateContentMetadataRequest } from 'src/app/core/models/requests/create-content-metadata-request';
+import { LicenseType } from '@app/core/models/enums/license-type.enum';
+import { CreateContentMetadataRequest } from '@app/core/models/requests/create-content-metadata-request';
 
 export const uploadMovies: CreateContentMetadataRequest[] = [
   {

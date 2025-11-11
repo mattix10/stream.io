@@ -1,4 +1,4 @@
-import { BaseRegistrationRequest } from 'src/app/core/models/requests/base-registration-request';
+import { BaseRegistrationRequest } from '@app/core/models/requests/base-registration-request';
 
 export const password = 'P4ssword$';
 

@@ -2,18 +2,18 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize, tap } from 'rxjs';
-import { isLoading } from 'src/app/core/models/interfaces/loading';
-import { ChangePasswordRequest } from 'src/app/core/models/requests/change-password-request';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { UserService } from 'src/app/core/services/user.service';
-import { EditHeaderComponent } from 'src/app/features/user-dashboard/components/edit-header/edit-header.component';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { isLoading } from '@app/core/models/interfaces/loading';
+import { ChangePasswordRequest } from '@app/core/models/requests/change-password-request';
+import { AuthService } from '@app/core/services/auth.service';
+import { UserService } from '@app/core/services/user.service';
+import { EditHeaderComponent } from '@app/features/user-dashboard/components/edit-header/edit-header.component';
+import { SpinnerComponent } from '@app/shared/components/spinner/spinner.component';
 
 @Component({
-    selector: 'app-change-password',
-    imports: [SpinnerComponent, ReactiveFormsModule, EditHeaderComponent],
-    templateUrl: './change-password.component.html',
-    styleUrl: './change-password.component.scss'
+  selector: 'app-change-password',
+  imports: [SpinnerComponent, ReactiveFormsModule, EditHeaderComponent],
+  templateUrl: './change-password.component.html',
+  styleUrl: './change-password.component.scss',
 })
 export class ChangePasswordComponent implements isLoading {
   isEditMode = false;
